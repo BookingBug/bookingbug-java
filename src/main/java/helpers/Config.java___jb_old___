@@ -1,0 +1,70 @@
+package helpers;
+
+import play.Play;
+import play.mvc.Http;
+
+
+public class Config {
+
+    public String appId = Play.application().configuration().getString("application.auth.App-Id");
+    public String appKey = Play.application().configuration().getString("application.auth.App-Key");
+    public String userAgent = Play.application().configuration().getString("application.User-Agent");
+    public String serverUrl = Play.application().configuration().getString("application.serverUrl");
+
+    static {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (Exception e) {
+            logger.error("Got an exception loading driver! " + e.getMessage());
+        }
+
+        try {
+            Resource resource = new ClassPathResource("application.properties");
+            Properties prop = PropertiesLoaderUtils.loadProperties(resource);
+
+            appId = prop.getProperty("jdbc.url");
+            appKey = prop.getProperty("jdbc.username");
+            userAgent = prop.getProperty("jdbc.password");
+            serverUrl = prop.getProperty("jdbc.dbname");
+        } catch (IOException ex) {
+            logger.error("Got an exception loading db driver settings! "
+                    + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Default constructor. Loads NotNull values from the current session.
+     * The null ones are ignored and replaced with the default ones.
+     */
+    public Config() {
+        Http.Session session = Http.Context.current().session();
+        if (session.get("appId")!=null) {
+            appId = session.get("appId");
+        }
+
+        if (session.get("appKey")!=null) {
+            appKey = session.get("appKey");
+        }
+
+        if (session.get("userAgent")!=null) {
+            userAgent = session.get("userAgent");
+        }
+
+        if (session.get("serverUrl")!=null) {
+            serverUrl = session.get("serverUrl");
+        }
+    }
+
+
+    /**
+     * Saves the fields of the current object into the session.
+     */
+    public void saveIntoSession() {
+        Http.Session session = Http.Context.current().session();
+        session.put("appId", appId);
+        session.put("appKey", appKey);
+        session.put("userAgent", userAgent);
+        session.put("serverUrl", serverUrl);
+    }
+}
