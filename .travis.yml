@@ -4,7 +4,4 @@ jdk:
   - openjdk7
   - oraclejdk7
 
-before_install:
-  - cd java
-
 script: mvn test

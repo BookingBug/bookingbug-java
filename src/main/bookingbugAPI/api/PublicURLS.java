@@ -754,7 +754,7 @@ public class PublicURLS {
 
 
 
-    static class Session {
+    public static class Session {
         /**
          * <B>GET</B><BR>
          * Get the status of the current authenticated session.
@@ -762,7 +762,7 @@ public class PublicURLS {
          * This is useful if your user reloads the browser page and you are not maintaining the full session on the client.
          * @return UriTemplate
          */
-        static UriTemplate sessionStatus() {
+        public static UriTemplate sessionStatus() {
             return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/status").build();
         }
     }
@@ -1059,13 +1059,13 @@ public class PublicURLS {
 
 
 
-    static class NewLogin {
+    public static class NewLogin {
         /**
          * <B>GET</B><BR>
          * N/A
          * @return UriTemplate
          */
-        static UriTemplate newLogin(){
+        public static UriTemplate newLogin(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/new_login").build();
         }
     }
