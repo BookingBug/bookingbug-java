@@ -39,7 +39,9 @@ public class Company extends BBRoot{
     }
 
 
-    public Company() {}
+    public Company() {
+        super();
+    }
 
 /*
     //TODO temp. until get the purchase from the content representation
