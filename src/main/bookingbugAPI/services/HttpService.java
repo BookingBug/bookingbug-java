@@ -73,6 +73,10 @@ public class HttpService {
         return data;
     }
 
+    public static HttpServiceResponse api_GET(URL url, boolean testingMode) throws HttpException {
+        return callApi(url, null, "GET", urlEncodedContentType, null, testingMode);
+    }
+
     public static HttpServiceResponse api_GET(URL url) throws HttpException {
         return callApi(url, null, "GET", urlEncodedContentType, null);
     }
@@ -118,6 +122,10 @@ public class HttpService {
     }
 
     private static HttpServiceResponse callApi(URL url, String auth_token, String method, String contentType, Map<String,String> params) throws HttpException {
+        return callApi(url, auth_token, method, contentType, params, false);
+    }
+
+    private static HttpServiceResponse callApi(URL url, String auth_token, String method, String contentType, Map<String,String> params, boolean testingMode) throws HttpException {
         String returnString = "";
         String errorMessage = "";
         int responseCode = 200;
@@ -144,8 +152,10 @@ public class HttpService {
             }
 
             responseCode = urlConnection.getResponseCode();
-            log.info("Response code: "+responseCode);
-            System.out.println("Response code: "+responseCode);
+            if (!testingMode) {
+                log.info("Response code: " + responseCode);
+            }
+            //System.out.println("Response code: "+responseCode);
 
             InputStream inputStream = urlConnection.getErrorStream();
             if(responseCode >= 400) {
@@ -167,19 +177,25 @@ public class HttpService {
             in.close();
             returnString = response.toString();
 
-            if(throwError) {
-                errorMessage = "The call to " + url.toString() + " returned " + urlConnection.getResponseCode() + " . Error message: " + returnString;
-                System.out.println("Error message: "+ errorMessage);
-            } else{
+            if (!testingMode) {
+                if(throwError) {
+                    errorMessage = "The call to " + url.toString() + " returned " + urlConnection.getResponseCode() + " . Error message: " + returnString;
+                    //System.out.println("Error message: "+ errorMessage);
+                } else {
+                    Reader reader = new InputStreamReader(new ByteArrayInputStream(returnString.getBytes()));
+                    return new HttpServiceResponse(representationFactory.readRepresentation(HAL_JSON, reader), method, params, auth_token);
+                }
+            } else {
                 Reader reader = new InputStreamReader(new ByteArrayInputStream(returnString.getBytes()));
                 return new HttpServiceResponse(representationFactory.readRepresentation(HAL_JSON, reader), method, params, auth_token);
             }
+
+
         } catch (IOException e) {
             throw new HttpException("Error", returnString, e) ;
         } finally {
             if(urlConnection != null) urlConnection.disconnect();
-        }
-        throw new HttpException(errorMessage, returnString, responseCode);
+        } throw new HttpException(errorMessage, returnString, responseCode);
     }
 
     public PublicRoot start() throws IOException {
