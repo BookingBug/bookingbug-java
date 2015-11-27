@@ -85,6 +85,10 @@ public class HttpService {
         return callApi(url, auth_token, "GET", urlEncodedContentType, null);
     }
 
+    public static HttpServiceResponse api_POST(URL url, boolean testingMode) throws HttpException {
+        return callApi(url, null, "POST", urlEncodedContentType, null, testingMode);
+    }
+
     public static HttpServiceResponse api_POST(URL url) throws HttpException {
         return callApi(url, null, "POST", urlEncodedContentType, null);
     }

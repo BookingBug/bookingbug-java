@@ -33,8 +33,10 @@ import org.json.simple.JSONObject;
  */
 public class TokenGenerator {
 
-    private static final String COMPANY_ID = "{Your Company ID or Affiliate ID}";
-    private static final String SECURE_KEY = "{Your Secure Key}";
+    private static TokenGenerator INSTANCE;
+
+    //private static String companyId;
+    //private static String secureKey;//ukE2Sjx48dgFlyb27QkHhU
     private static final byte[] INIT_VECTOR = "OpenSSL for Ruby".getBytes();
 
     private SecretKeySpec secretKeySpec;
@@ -42,19 +44,19 @@ public class TokenGenerator {
     private URLCodec urlCodec = new URLCodec("ASCII");
     private Base64 base64 = new Base64();
 
-    private static TokenGenerator INSTANCE = new TokenGenerator();
 
+    public static TokenGenerator getInstance(String company_id, String secure_key) {
+        //no need for singleton pattern since this will block future login attempts
+        //if (INSTANCE == null) {
+            INSTANCE = new TokenGenerator(company_id, secure_key);
+        //}
 
-    public static TokenGenerator getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new TokenGenerator();
-        }
         return INSTANCE;
     }
 
 
-    private TokenGenerator() {
-        String salted = SECURE_KEY + COMPANY_ID;
+    private TokenGenerator(String company_id, String secure_key) {
+        String salted = secure_key + company_id;
         byte[] hash = DigestUtils.sha(salted);
         byte[] saltedHash = new byte[16];
         System.arraycopy(hash, 0, saltedHash, 0, 16);
