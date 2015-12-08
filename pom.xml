@@ -69,7 +69,7 @@
     </dependencies>
 
     <build>
-        <directory>target</directory>
+        <directory>target/${groupId}/${artifactId}/${version}</directory>
         <outputDirectory>target/classes</outputDirectory>
         <finalName>${artifactId}-${version}</finalName>
         <testOutputDirectory>target/test-classes</testOutputDirectory>
