@@ -1,7 +1,5 @@
 package helpers;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -25,7 +23,8 @@ public class Config {
             String propFileName = "config.properties";
 
             //InputStream inputStream = Config.class.getClassLoader().getResourceAsStream(propFileName);
-            InputStream inputStream = new FileInputStream(propFileName);
+            InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propFileName);
+            //InputStream inputStream = new FileInputStream(propFileName);
 
             if (inputStream != null) {
                 prop.load(inputStream);
