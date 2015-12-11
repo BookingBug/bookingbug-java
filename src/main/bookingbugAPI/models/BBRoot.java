@@ -83,7 +83,7 @@ public class BBRoot {
             //e.printStackTrace();
             auth_token = null;
             JsonRepresentationFactory representationFactory = new JsonRepresentationFactory();
-            InputStream ins = new ByteArrayInputStream(e.getErrorMessage().getBytes());
+            InputStream ins = new ByteArrayInputStream(e.getRawResponse().getBytes());
             Reader inputStreamReader = new InputStreamReader(ins);
             ContentRepresentation representation = representationFactory.readRepresentation(HAL_JSON, inputStreamReader);
             resp = new HttpServiceResponse(representation);

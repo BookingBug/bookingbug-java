@@ -77,17 +77,9 @@
         <testSourceDirectory>src/test</testSourceDirectory>
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>src/test/resources</directory>
             </resource>
         </resources>
-        <testResources>
-            <testResource>
-                <directory>src/test/resources</directory>
-               <!-- <excludes>
-                    <exclude>src/test/resources/config.properties</exclude>
-                </excludes>-->
-            </testResource>
-        </testResources>
     </build>
 
 </project>
