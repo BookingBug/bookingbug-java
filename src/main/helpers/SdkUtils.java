@@ -88,14 +88,16 @@ public class SdkUtils {
     public static String inflateLink(String link, Map<String, String[]> args) {
         UriTemplate template = UriTemplate.fromTemplate(link);
         Map<String, Object> toInflate = new HashMap<String, Object>();
-        toInflate.putAll(args);
-        return template.expand(toInflate);
-        /*for (Map.Entry<String,Object> entry : args.entrySet()) {
+
+        for (Map.Entry<String, String[]> entry : args.entrySet()) {
             final String key = entry.getKey();
-            final Object value = entry.getValue();
-            template.set(key, value);
+            final String[] value = entry.getValue();
+
+            if (value[0]!=null && !value[0].trim().isEmpty()) {
+                toInflate.put(key, value);
+            }
         }
-        return template.expand();*/
+        return template.expand(toInflate);
     }
 
 
