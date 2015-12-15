@@ -72,7 +72,7 @@ public class BBRoot {
      * @param params
      * @return Login
      */
-    public Login auth(Map<String,String> params) throws MalformedURLException {
+    public Login auth(Map<String,String> params) throws IOException {
         HttpServiceResponse resp;
 
         try {
@@ -81,12 +81,16 @@ public class BBRoot {
             auth_token = (String) resp.getRep().getValue("auth_token");
         } catch (HttpException e) {
             //e.printStackTrace();
-            auth_token = null;
-            JsonRepresentationFactory representationFactory = new JsonRepresentationFactory();
-            InputStream ins = new ByteArrayInputStream(e.getRawResponse().getBytes());
-            Reader inputStreamReader = new InputStreamReader(ins);
-            ContentRepresentation representation = representationFactory.readRepresentation(HAL_JSON, inputStreamReader);
-            resp = new HttpServiceResponse(representation);
+            if (e.getStatusCode() == 400) {
+                auth_token = null;
+                JsonRepresentationFactory representationFactory = new JsonRepresentationFactory();
+                InputStream ins = new ByteArrayInputStream(e.getRawResponse().getBytes());
+                Reader inputStreamReader = new InputStreamReader(ins);
+                ContentRepresentation representation = representationFactory.readRepresentation(HAL_JSON, inputStreamReader);
+                resp = new HttpServiceResponse(representation);
+            } else {
+                throw e;
+            }
         }
 
         return new Login(resp);
