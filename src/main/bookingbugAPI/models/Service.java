@@ -1,5 +1,6 @@
 package bookingbugAPI.models;
 
+import bookingbugAPI.api.PublicURLS;
 import bookingbugAPI.services.HttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import com.theoryinpractise.halbuilder.api.Link;
@@ -33,5 +34,6 @@ public class Service extends BBRoot {
         Service service = new Service(HttpService.api_GET(url, auth_token), auth_token);
         return service;
     }
+
 }
 

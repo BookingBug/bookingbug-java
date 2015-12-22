@@ -1,9 +1,14 @@
 package bookingbugAPI.models;
 
+import bookingbugAPI.api.PublicURLS;
+import bookingbugAPI.services.HttpService;
 import helpers.HttpServiceResponse;
 
+import java.io.IOException;
+import java.net.URL;
 
-public class EventGroup extends BBRoot{
+
+public class EventGroup extends BBRoot {
 
 
     public EventGroup(HttpServiceResponse httpServiceResponse){

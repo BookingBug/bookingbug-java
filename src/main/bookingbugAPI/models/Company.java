@@ -39,9 +39,7 @@ public class Company extends BBRoot{
     }
 
 
-    public Company() {
-        super();
-    }
+    public Company() {}
 
 /*
     //TODO temp. until get the purchase from the content representation
@@ -68,24 +66,27 @@ public class Company extends BBRoot{
 
     /**
      * Get All Bookable Services
-     * @return Resource
+     * @return BBCollection<Service>
      * @throws IOException
      */
-    public Resource serviceList() throws IOException {
+    public BBCollection<Service> serviceList() throws IOException {
         URL url = new URL(PublicURLS.Service.serviceList().set("companyId", this.id).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<Service> services = new BBCollection<Service>(HttpService.api_GET(url, auth_token), auth_token);
+        services.setCollectionNameSpace("services");
+        return services;
     }
 
 
     /**
      * Get a Specific Service.
      * @param serviceId Service Id
-     * @return Resource
+     * @return Service
      * @throws IOException
      */
-    public Resource serviceRead(String serviceId) throws IOException {
+    public Service serviceRead(String serviceId) throws IOException {
         URL url = new URL(PublicURLS.Service.serviceRead().set("companyId", this.id).set("serviceId", serviceId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<Service> service = new BBCollection<Service>(HttpService.api_GET(url, auth_token), auth_token);
+        return service.getObjectAtIndex(0);
     }
 
 
@@ -99,47 +100,53 @@ public class Company extends BBRoot{
 
     /**
      * Get All Bookable People for a Company.
-     * @return Resource
+     * @return BBCollection<People>
      * @throws IOException
      */
-    public Resource personList() throws IOException {
+    public BBCollection<People> personList() throws IOException {
         URL url = new URL(PublicURLS.Person.personList().set("companyId", this.id).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<People> people = new BBCollection<People>(HttpService.api_GET(url, auth_token), auth_token);
+        people.setCollectionNameSpace("people");
+        return people;
     }
 
 
     /**
      * Get a Specific Bookable Person’s Details.
      * @param personId Person Id
-     * @return Resource
+     * @return People
      * @throws IOException
      */
-    public Resource personRead(String personId) throws IOException {
+    public People personRead(String personId) throws IOException {
         URL url = new URL(PublicURLS.Person.personRead().set("companyId", this.id).set("personId", personId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<People> people = new BBCollection<People>(HttpService.api_GET(url, auth_token), auth_token);
+        return people.getObjectAtIndex(0);
     }
 
 
     /**
      * Get a Specific Person Details using a Reference ID
-     * @return
+     * @return People
      * @throws IOException
      */
-    public Resource personReadUsingReferenceId(String ref) throws IOException {
+    public People personReadUsingReferenceId(String ref) throws IOException {
         URL url = new URL(PublicURLS.Person.personReadUsingReferenceId().set("companyId", this.id).set("ref", ref).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<People> people = new BBCollection<People>(HttpService.api_GET(url, auth_token), auth_token);
+        return people.getObjectAtIndex(0);
     }
 
 
     /**
      * Get All Bookable Resources
      * Results are returned as a paginated list.
-     * @return Resource
+     * @return BBCollection<Resource>
      * @throws IOException
      */
-    public Resource resourceList() throws IOException {
+    public BBCollection<Resource> resourceList() throws IOException {
         URL url = new URL(PublicURLS.Resource.resourceList().set("companyId", this.id).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<Resource> resources = new BBCollection<Resource>(HttpService.api_GET(url, auth_token), auth_token);
+        resources.setCollectionNameSpace("resources");
+        return resources;
     }
 
 
@@ -151,7 +158,8 @@ public class Company extends BBRoot{
      */
     public Resource resourceRead(String resourceId) throws IOException {
         URL url = new URL(PublicURLS.Resource.resourceRead().set("companyId", this.id).set("resourceId", resourceId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<Resource> resource = new BBCollection<Resource>(HttpService.api_GET(url, auth_token), auth_token);
+        return resource.getObjectAtIndex(0);
     }
 
 
@@ -169,45 +177,52 @@ public class Company extends BBRoot{
 
     /**
      * Get a List of Bookable Events.
-     * @return Resource
+     * @return BBCollection<Event>
      * @throws IOException
      */
-    public Resource eventList() throws IOException {
+    public BBCollection<Event> eventList() throws IOException {
         URL url = new URL(PublicURLS.Event.eventList().set("companyId", this.id).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<Event> events = new BBCollection<Event>(HttpService.api_GET(url, auth_token), auth_token);
+        events.setCollectionNameSpace("events");
+        return events;
     }
 
 
     /**
      * Get a Specific Event.
-     * @return Resource
+     * @return Event
      * @throws IOException
      */
-    public Resource eventRead(String eventId) throws IOException {
+    public Event eventRead(String eventId) throws IOException {
         URL url = new URL(PublicURLS.Event.eventRead().set("companyId", this.id).set("eventId", eventId).expand());
-        return new Resource(HttpService.api_GET(url), auth_token);
+        BBCollection<Event> events = new BBCollection<Event>(HttpService.api_GET(url), auth_token);
+        return events.getObjectAtIndex(0);
     }
 
 
     /**
      * Get the Bookable Items Based on Another Item
-     * @return Resource
+     * @return BBCollection<BookableItem>
      * @throws IOException
      */
-    public Resource bookableItemsList() throws IOException {
+    public BBCollection<BookableItem> bookableItemsList() throws IOException {
         URL url = new URL(PublicURLS.Bookable.bookableItemsList().set("companyId", this.id).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<BookableItem> bookableItems = new BBCollection<BookableItem>(HttpService.api_GET(url, auth_token), auth_token);
+        bookableItems.setCollectionNameSpace("items");
+        return bookableItems;
     }
 
 
     /**
      * This loads a list of bookable items for a particular date
-     * @return Resource
+     * @return BBCollection<BookableItem>
      * @throws IOException
      */
-    public Resource bookableItemsByDate(String date) throws IOException {
+    public BBCollection<BookableItem> bookableItemsByDate(String date) throws IOException {
         URL url = new URL(PublicURLS.Bookable.bookableItemsByDate().set("companyId", this.id).set("date", date).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<BookableItem> bookableItems = new BBCollection<BookableItem>(HttpService.api_GET(url, auth_token), auth_token);
+        bookableItems.setCollectionNameSpace("bookable_items_by_date");
+        return bookableItems;
     }
 
 
@@ -257,104 +272,118 @@ public class Company extends BBRoot{
 
     /**
      * Get All Event Groups.
-     * @return Resource
+     * @return BBCollection<EventGroup>
      * @throws IOException
      */
-    public Resource eventGroupList() throws IOException {
+    public BBCollection<EventGroup> eventGroupList() throws IOException {
         URL url = new URL(PublicURLS.EventGroup.eventGroupList().set("companyId", this.id).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<EventGroup> eventGroups = new BBCollection<EventGroup>(HttpService.api_GET(url, auth_token), auth_token);
+        eventGroups.setCollectionNameSpace("event_groups");
+        return eventGroups;
     }
 
 
     /**
      * Get a Specific Event Group.
-     * @return Resource
+     * @return EventGroup
      * @throws IOException
      */
-    public Resource eventGroupRead(String eventGroupId) throws IOException {
+    public EventGroup eventGroupRead(String eventGroupId) throws IOException {
         URL url = new URL (PublicURLS.EventGroup.eventGroupRead().set("companyId", this.id).set("serviceId", eventGroupId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<EventGroup> eventGroups = new BBCollection<EventGroup>(HttpService.api_GET(url, auth_token), auth_token);
+        return eventGroups.getObjectAtIndex(0);
     }
 
 
     /**
      * Get a List of Courses or Repeating Events for a Company.
-     * @return Resource
+     * @return BBCollection<EventChain>
      * @throws IOException
      */
-    public Resource eventChainList() throws IOException {
+    public BBCollection<EventChain> eventChainList() throws IOException {
         URL url = new URL (PublicURLS.EventChain.eventChainList().set("companyId", this.id).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<EventChain> eventChains = new BBCollection<EventChain>(HttpService.api_GET(url, auth_token), auth_token);
+        eventChains.setCollectionNameSpace("event_chains");
+        return eventChains;
     }
 
 
     /**
      * Get a Specific Event Chain.
-     * @return Resource
+     * @return EventChain
      * @throws IOException
      */
-    public Resource eventChainRead(String eventChainId) throws IOException {
+    public EventChain eventChainRead(String eventChainId) throws IOException {
         URL url = new URL (PublicURLS.EventChain.eventChainRead().set("companyId", this.id).set("eventChainId", eventChainId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<EventChain> eventChains = new BBCollection<EventChain>(HttpService.api_GET(url, auth_token), auth_token);
+        return eventChains.getObjectAtIndex(0);
     }
 
 
     /**
      * Get All Questions for a Company.
      * <BR>Results are returned as a group of question for a specific question group.
-     * @return Resource
+     * @return BBCollection<BookingQuestion>
      * @throws IOException
      */
-    public Resource bookingQuestionList(String detailGroupId) throws IOException {
+    public BBCollection<BookingQuestion> bookingQuestionList(String detailGroupId) throws IOException {
         URL url = new URL(PublicURLS.BookingQuestion.bookingQuestionList().set("companyId", this.id).set("detailGroupId", detailGroupId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<BookingQuestion> bokingQuestions = new BBCollection<BookingQuestion>(HttpService.api_GET(url, auth_token), auth_token);
+        bokingQuestions.setCollectionNameSpace("booking_questions");
+        return bokingQuestions;
     }
 
 
     /**
      * Question Read
      * @param questionId Question Id
-     * @return Resource
+     * @return BookingQuestion
      * @throws IOException
      */
-    public Resource bookingQuestionRead(String questionId) throws IOException {
+    public BookingQuestion bookingQuestionRead(String questionId) throws IOException {
         URL url = new URL(PublicURLS.BookingQuestion.bookingQuestionRead().set("companyId", this.id).set("questionId", questionId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<BookingQuestion> bokingQuestions = new BBCollection<BookingQuestion>(HttpService.api_GET(url, auth_token), auth_token);
+        return bokingQuestions.getObjectAtIndex(0);
     }
 
 
     /**
      * Get all Survey Questions for a Service
      * @param detail_group_id Question Group Id
-     * @return Result
+     * @return BBCollection<SurveyQuestion>
      * @throws IOException
      */
-    public Resource surveyQuestionList(String detail_group_id) throws IOException {
+    public BBCollection<SurveyQuestion> surveyQuestionList(String detail_group_id) throws IOException {
         URL url = new URL(PublicURLS.SurveyQuestion.surveyQuestionList().set("companyId", this.id).set("detail_group_id", detail_group_id).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<SurveyQuestion> surveyQuestions = new BBCollection<SurveyQuestion>(HttpService.api_GET(url, auth_token), auth_token);
+        surveyQuestions.setCollectionNameSpace("survey_questions");
+        return surveyQuestions;
     }
 
 
     /**
      * List of Categories for a Company.
-     * @return Resource
+     * @return BBCollection<Category>
      * @throws IOException
      */
-    public Resource categoryList() throws IOException {
+    public BBCollection<Category> categoryList() throws IOException {
         URL url = new URL(PublicURLS.Category.categoryList().set("companyId", this.id).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<Category> categories = new BBCollection<Category>(HttpService.api_GET(url, auth_token), auth_token);
+        categories.setCollectionNameSpace("categories");
+        return categories;
     }
 
 
     /**
      * Load a Specific Category Details
      * @param categoryId Category Id
-     * @return Resource
+     * @return Category
      * @throws IOException
      */
-    public Resource categoryRead(String categoryId) throws IOException {
+    public Category categoryRead(String categoryId) throws IOException {
         URL url = new URL(PublicURLS.Category.categoryRead().set("companyId", this.id).set("categoryId", categoryId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<Category> categories = new BBCollection<Category>(HttpService.api_GET(url, auth_token), auth_token);
+        return categories.getObjectAtIndex(0);
     }
 
 
@@ -398,9 +427,10 @@ public class Company extends BBRoot{
      * @return Resource
      * @throws IOException
      */
-    public Resource findByEmail(String email) throws IOException {
+    public Client findByEmail(String email) throws IOException {
         URL url = new URL(PublicURLS.Client.findByEmail().set("companyId", this.id).set("email", email).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<Client> clients = new BBCollection<Client>(HttpService.api_GET(url, auth_token), auth_token);
+        return clients.getObjectAtIndex(0);
     }
 
 
@@ -410,9 +440,11 @@ public class Company extends BBRoot{
      * @return Resource
      * @throws IOException
      */
-    public Resource readChildClients(String clientId) throws IOException {
+    public BBCollection<Client> childClientsRead(String clientId) throws IOException {
         URL url = new URL(PublicURLS.Client.readChildClients().set("companyId", this.id).set("clientId", clientId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<Client> childClients = new BBCollection<Client>(HttpService.api_GET(url, auth_token), auth_token);
+        childClients.setCollectionNameSpace("child_clients");
+        return childClients;
     }
 
 
@@ -471,9 +503,11 @@ public class Company extends BBRoot{
      * @return Resource
      * @throws IOException
      */
-    public Resource addressList() throws IOException {
+    public BBCollection<Address> addressList() throws IOException {
         URL url = new URL(PublicURLS.Address.addressList().set("companyId", this.id).expand());
-        return new Resource(HttpService.api_GET(url), auth_token);
+        BBCollection<Address> addresses = new BBCollection<Address>(HttpService.api_GET(url), auth_token);
+        addresses.setCollectionNameSpace("address");
+        return addresses;
     }
 
 
@@ -484,9 +518,10 @@ public class Company extends BBRoot{
      * @return Resource
      * @throws IOException
      */
-    public Resource addressRead(String addressId) throws IOException {
+    public Address addressRead(String addressId) throws IOException {
         URL url = new URL (PublicURLS.Address.addressRead().set("companyId", this.id).set("addressId", addressId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<Address> addresses = new BBCollection<Address>(HttpService.api_GET(url, auth_token), auth_token);
+        return addresses.getObjectAtIndex(0);
     }
 
 
@@ -496,9 +531,10 @@ public class Company extends BBRoot{
      * @return Resource
      * @throws IOException
      */
-    public Resource customerAddress(String customerId) throws IOException {
+    public Address customerAddress(String customerId) throws IOException {
         URL url = new URL(PublicURLS.Address.customerAddress().set("companyId", this.id).set("customerId", customerId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<Address> addresses = new BBCollection<Address>(HttpService.api_GET(url, auth_token), auth_token);
+        return addresses.getObjectAtIndex(0);
     }
 
 
@@ -508,9 +544,11 @@ public class Company extends BBRoot{
      * @return Resource
      * @throws IOException
      */
-    public Resource postCodeAddress(String postcode) throws IOException {
+    public BBCollection<Address> postCodeAddress(String postcode) throws IOException {
         URL url = new URL(PublicURLS.Address.postCodeAddress().set("companyId", this.id).set("postcode", postcode).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<Address> addresses = new BBCollection<Address>(HttpService.api_GET(url, auth_token), auth_token);
+        addresses.setCollectionNameSpace("address");
+        return addresses;
     }
 
 
@@ -519,9 +557,11 @@ public class Company extends BBRoot{
      * @return Resource
      * @throws IOException
      */
-    public Resource productsList() throws IOException {
+    public BBCollection<Product> productsList() throws IOException {
         URL url = new URL(PublicURLS.Products.productsList().set("companyId", this.id).expand());
-        return new Resource(HttpService.api_GET(url), auth_token);
+        BBCollection<Product> products = new BBCollection<Product>(HttpService.api_GET(url), auth_token);
+        products.setCollectionNameSpace("products");
+        return products;
     }
 
 
@@ -531,9 +571,10 @@ public class Company extends BBRoot{
      * @return Resource
      * @throws IOException
      */
-    public Resource productsRead(String productId) throws IOException {
+    public Product productsRead(String productId) throws IOException {
         URL url = new URL (PublicURLS.Products.productRead().set("companyId", this.id).set("productId", productId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        BBCollection<Product> products = new BBCollection<Product>(HttpService.api_GET(url, auth_token), auth_token);
+        return products.getObjectAtIndex(0);
     }
 
 
@@ -542,9 +583,11 @@ public class Company extends BBRoot{
      * @return Resource
      * @throws IOException
      */
-    public Resource slotList() throws IOException {
+    public BBCollection<Slot> slotList() throws IOException {
         URL url = new URL(PublicURLS.Slot.slotList().set("companyId", this.id).expand());
-        return new Resource(HttpService.api_GET(url), auth_token);
+        BBCollection<Slot> slots = new BBCollection<Slot>(HttpService.api_GET(url), auth_token);
+        slots.setCollectionNameSpace("slots");
+        return slots;
     }
 
 
@@ -554,9 +597,10 @@ public class Company extends BBRoot{
      * @return Resource
      * @throws IOException
      */
-    public Resource slotRead(String slotId) throws IOException {
+    public Slot slotRead(String slotId) throws IOException {
         URL url = new URL(PublicURLS.Slot.slotRead().set("companyId", this.id).set("slotId", slotId).expand());
-        return new Resource(HttpService.api_GET(url), auth_token);
+        BBCollection<Slot> slots = new BBCollection<Slot>(HttpService.api_GET(url), auth_token);
+        return slots.getObjectAtIndex(0);
     }
 
 

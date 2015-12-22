@@ -6,8 +6,6 @@ import helpers.HttpServiceResponse;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Map;
-
 
 public class Administrator extends BBRoot {
 
@@ -21,11 +19,6 @@ public class Administrator extends BBRoot {
     }
 
 
-    /**
-     * getCompany
-     * @return Company
-     * @throws IOException
-     */
     public Company getCompany() throws IOException {
         if(company == null){
             String link = response.getRep().getLinkByRel("company").getHref();
@@ -36,11 +29,6 @@ public class Administrator extends BBRoot {
     }
 
 
-    /**
-     * getEditSchema
-     * @return BBRoot
-     * @throws IOException
-     */
     public BBRoot getEditSchema() throws IOException {
         if(schema == null) {
             String link = response.getRep().getLinkByRel("edit").getHref();
@@ -49,16 +37,4 @@ public class Administrator extends BBRoot {
         }
         return schema;
     }
-
-
-    /**
-     * login
-     * @param params
-     * @return Login
-     * @throws IOException
-     */
-    public Login login(Map<String,String> params) throws  IOException {
-        return auth(params, response.getRep().getLinkByRel("login"));
-    }
-
 }

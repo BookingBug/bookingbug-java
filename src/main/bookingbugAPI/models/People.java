@@ -1,5 +1,7 @@
 package bookingbugAPI.models;
 
+
+
 import com.damnhandy.uri.template.UriTemplate;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import bookingbugAPI.services.HttpService;
