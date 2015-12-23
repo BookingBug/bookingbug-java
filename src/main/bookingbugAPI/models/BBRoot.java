@@ -68,6 +68,14 @@ public class BBRoot {
     }
 
 
+    public Login auth(Map<String,String> params, Link link) throws IOException{
+        URL url = new URL (link.getHref());
+        HttpServiceResponse resp = HttpService.api_POST(url, params);
+        auth_token = (String) resp.getRep().getValue("auth_token");
+        return new Login(resp);
+    }
+
+
     public String get(String key){
         String val = null;
         try{

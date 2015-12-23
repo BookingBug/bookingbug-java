@@ -6,6 +6,8 @@ import helpers.HttpServiceResponse;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Map;
+
 
 public class Administrator extends BBRoot {
 
@@ -36,5 +38,10 @@ public class Administrator extends BBRoot {
             schema = new BBRoot(HttpService.api_GET(url, auth_token), auth_token);
         }
         return schema;
+    }
+
+
+    public Login login(Map<String,String> params) throws  IOException {
+        return auth(params, response.getRep().getLinkByRel("login"));
     }
 }

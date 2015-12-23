@@ -93,4 +93,85 @@ public class AdminURLS {
             return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/admin").path(UriTemplateBuilder.var("companyId")).literal("/events").path(UriTemplateBuilder.var("eventId")).build();
         }
     }
+
+
+    public static class Bookings {
+        public static UriTemplate bookingNew(){
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId")).literal("/bookings").literal("/new").build();
+        }
+
+        public static UriTemplate bookingEdit(){
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId")).literal("/bookings")
+                    .path(UriTemplateBuilder.var("id")).literal("/edit").build();
+        }
+
+        public static UriTemplate bookingList(){
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId")).literal("/bookings").build();
+        }
+
+        public static UriTemplate bookingRead(){
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId")).literal("/bookings")
+                    .path(UriTemplateBuilder.var("id")).build();
+        }
+
+        public static UriTemplate bookingCreate(){
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId")).literal("/bookings").build();
+        }
+
+        public static UriTemplate bookingUpdate(){
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId")).literal("/bookings")
+                    .path(UriTemplateBuilder.var("id")).build();
+        }
+
+        public static UriTemplate bookingCancel(){
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId")).literal("/bookings")
+                    .path(UriTemplateBuilder.var("id")).build();
+        }
+
+        public static UriTemplate bookingCheckIn(){
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId")).literal("/bookings")
+                    .path(UriTemplateBuilder.var("id")).literal("/check_in").build();
+        }
+
+        public static UriTemplate bookingMarkStatus(){
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId")).literal("/bookings")
+                    .path(UriTemplateBuilder.var("id")).literal("/multi_status").build();
+        }
+
+        public static UriTemplate bookingAddPrivateNote(){
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId")).literal("/bookings")
+                    .path(UriTemplateBuilder.var("booking_id")).literal("/private_notes").build();
+        }
+
+        public static UriTemplate bookingUpdatePrivateNote(){
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId")).literal("/bookings")
+                    .path(UriTemplateBuilder.var("booking_id")).literal("/private_notes")
+                    .path(UriTemplateBuilder.var("id")).build();
+        }
+
+        public static UriTemplate bookingDeletePrivateNote(){
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId")).literal("/bookings")
+                    .path(UriTemplateBuilder.var("booking_id")).literal("/private_notes")
+                    .path(UriTemplateBuilder.var("id")).build();
+        }
+
+        public static UriTemplate bookingAnswerQuestion(){
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId")).literal("/bookings")
+                    .path(UriTemplateBuilder.var("booking_id")).literal("/answers").build();
+        }
+    }
+
 }

@@ -2,6 +2,7 @@ package bookingbugAPI.models;
 
 import bookingbugAPI.api.AdminURLS;
 import bookingbugAPI.api.PublicURLS;
+import bookingbugAPI.models.params.BookingListParams;
 import com.damnhandy.uri.template.UriTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -13,6 +14,7 @@ import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import bookingbugAPI.services.HttpService;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 import helpers.HttpServiceResponse;
+import helpers.SdkUtils;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -830,6 +832,21 @@ public class Company extends BBRoot{
     public Resource deleteBasketCoupon() throws IOException {
         URL url = new URL(PublicURLS.Basket.deleteBasketCoupon().set("companyId", this.id).expand());
         return new Resource(HttpService.api_DELETE(url), auth_token);
+    }
+
+
+    /**
+     * getBookingList
+     * @return BBCollection<Booking>
+     * @throws IOException
+     */
+    public BBCollection<Booking> getBookingList_Admin(BookingListParams bLParams) throws IOException {
+        String urlStr = AdminURLS.Bookings.bookingList().set("companyId", this.id).expand();
+        String expanded = SdkUtils.inflateLink(urlStr, bLParams.getParams());
+        URL url = new URL(expanded);
+        BBCollection<Booking> bookings = new BBCollection<Booking>(HttpService.api_GET(url, auth_token), auth_token);
+        bookings.setCollectionNameSpace("bookings");
+        return bookings;
     }
 
 
