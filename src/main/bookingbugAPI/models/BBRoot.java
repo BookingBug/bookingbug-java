@@ -6,12 +6,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import com.theoryinpractise.halbuilder.api.Link;
 import com.theoryinpractise.halbuilder.api.RepresentationException;
+import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 import helpers.Config;
 import helpers.HttpServiceResponse;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
+
+import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON;
 
 
 /**
@@ -60,11 +63,26 @@ public class BBRoot {
 
 
     public Login auth(Map<String,String> params) throws IOException{
-        URL url = new URL (UriTemplate.fromTemplate(new Config().serverUrl + "/login").expand());
-        response = HttpService.api_POST(url, params);
-        auth_token = (String) response.getRep().getValue("auth_token");
-        return new Login(response);
+        HttpServiceResponse resp;
+        try {
+            URL url = new URL(UriTemplate.fromTemplate(new Config().serverUrl + "/login").expand());
+            resp = HttpService.api_POST(url, params);
+            auth_token = (String) resp.getRep().getValue("auth_token");
+        } catch (HttpException e) {
+            //e.printStackTrace();
+            if (e.getStatusCode() == 400) {
+                auth_token = null;
+                JsonRepresentationFactory representationFactory = new JsonRepresentationFactory();
+                InputStream ins = new ByteArrayInputStream(e.getRawResponse().getBytes());
+                Reader inputStreamReader = new InputStreamReader(ins);
+                ContentRepresentation representation = representationFactory.readRepresentation(HAL_JSON, inputStreamReader);
+                resp = new HttpServiceResponse(representation);
+            } else {
+                throw e;
+            }
+        }
 
+        return new Login(resp);
     }
 
 

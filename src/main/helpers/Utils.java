@@ -20,7 +20,7 @@ import java.util.Set;
 import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON;
 
 
-public class SdkUtils {
+public class Utils {
 
 
     /**

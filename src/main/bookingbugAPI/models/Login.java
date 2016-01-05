@@ -38,16 +38,16 @@ public class Login extends BBRoot {
     }
 
 
-    public Map<String, String> getCredentials() {
-        Map<String, String> credentials = new HashMap<String, String>();
-        credentials.put("email", email);
-        credentials.put("password", password);
-        return credentials;
+    public Login login(Map<String,String> params) throws  IOException {
+        return auth(params, response.getRep().getLinkByRel("login"));
     }
 
 
-    public Login login(Map<String,String> params) throws  IOException {
-        return auth(params, response.getRep().getLinkByRel("login"));
+    public Map<String, String> getCredentials() {
+        Map<String, String> credentials = new HashMap<>();
+        credentials.put("email", email);
+        credentials.put("password", password);
+        return credentials;
     }
 
 
@@ -95,7 +95,8 @@ public class Login extends BBRoot {
         ArrayList<Administrator> admins = new ArrayList<Administrator>();
         List<ContentRepresentation> admin_reps = (List<ContentRepresentation>) getRep().getResourcesByRel("administrators");
         for(ContentRepresentation representation : admin_reps) {
-            admins.add(new Administrator(response, auth_token));
+            //admins.add(new Administrator(response, auth_token));
+            admins.add(new Administrator(new HttpServiceResponse(representation), auth_token));
         }
         return admins;
     }

@@ -3,11 +3,10 @@ package bookingbugAPI.models;
 
 
 import com.damnhandy.uri.template.UriTemplate;
-import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import bookingbugAPI.services.HttpService;
 import com.theoryinpractise.halbuilder.api.Link;
 import helpers.HttpServiceResponse;
-import helpers.SdkUtils;
+import helpers.Utils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -61,7 +60,7 @@ public class People extends BBRoot{
     }
 
     public People getPerson(Link link) throws IOException{
-        String absUrl = SdkUtils.absoluteURL(link.getHref());
+        String absUrl = Utils.absoluteURL(link.getHref());
         URL url = new URL(UriTemplate.fromTemplate(absUrl).expand());
         return new People(HttpService.api_GET(url, auth_token), auth_token);
     }

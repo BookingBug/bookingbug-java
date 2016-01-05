@@ -9,9 +9,6 @@ import helpers.Config;
 public class PublicURLS {
 
     public static class Company {
-
-        public static String businessQuestionsLink = "company_questions";
-
         //TODO: replace it everywhere with Details.companyDetails() or vice versa. // check with sebi & team
 //        static UriTemplate companyList() {
             //use companyId instead of company_id due to execution error: named capturing group is missing trailing > near (BUG IN DAMNHANDY)
@@ -49,16 +46,13 @@ public class PublicURLS {
          */
         public static UriTemplate businessQuestions() {
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + businessQuestionsLink).build();
+                    .literal("/company_questions").build();
         }
     }
 
 
 
     public static class Service {
-
-        public static String servicesLink = "services";
-
         /**
          * <B>GET</B><BR>
          * Get All Bookable Services.
@@ -67,7 +61,7 @@ public class PublicURLS {
          */
         public static UriTemplate serviceList(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + servicesLink).build();
+                    .literal("/services").build();
         }
 
         /**
@@ -78,16 +72,13 @@ public class PublicURLS {
          */
         public static UriTemplate serviceRead() {
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + servicesLink).path("serviceId").build();
+                    .literal("/services").path("serviceId").build();
         }
     }
 
 
 
     public static class Person {
-
-        public static String peopleLink = "people";
-
         /**
          * <B>GET</B><BR>
          * Get All Bookable People for a Company.
@@ -96,7 +87,7 @@ public class PublicURLS {
          */
         public static UriTemplate personList(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + peopleLink).build();
+                    .literal("/people").build();
         }
 
         /**
@@ -106,7 +97,7 @@ public class PublicURLS {
          */
         public static UriTemplate personRead(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + peopleLink).path("personId").build();
+                    .literal("/people").path("personId").build();
         }
 
 
@@ -118,16 +109,13 @@ public class PublicURLS {
          */
         public static UriTemplate personReadUsingReferenceId(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + peopleLink + "/find_by_ref").path("ref").build();
+                    .literal("/people/find_by_ref").path("ref").build();
         }
     }
 
 
 
     public static class Resource {
-
-        public static String resourcesLink = "resources";
-
         /**
          * <B>GET</B><BR>
          * Get All Bookable Resources.
@@ -136,7 +124,7 @@ public class PublicURLS {
          */
         public static UriTemplate resourceList(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + resourcesLink).build();
+                    .literal("/resources").build();
         }
 
         /**
@@ -146,23 +134,20 @@ public class PublicURLS {
          */
         public static UriTemplate resourceRead(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + resourcesLink).path("resourceId").build();
+                    .literal("/resources").path("resourceId").build();
         }
     }
 
 
 
     public static class Details {
-
-        public static String companyLink = "company";
-
         /**
          * <B>GET</B><BR>
          * Load All of the Links and Properties of a Company.
          * @return UriTemplate
          */
         public static UriTemplate companyDetails() {
-            return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/" + companyLink)
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/company")
                     .path(UriTemplateBuilder.var("companyId")).build();
         }
     }
@@ -170,17 +155,14 @@ public class PublicURLS {
 
 
     public static class Event {
-
-        public static String eventsLink = "events";
-
         /**
          * <B>GET</B><BR>
          * Get a List of Bookable Events.
          * @return UriTemplate
          */
         public static UriTemplate eventList(){
-            return UriTemplate.buildFromTemplate(new Config().serverUrl).path("companyId")
-                    .literal("/" + eventsLink).build();
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
+                    .literal("/events").build();
         }
 
         /**
@@ -189,8 +171,7 @@ public class PublicURLS {
          * @return UriTemplate
          */
         public static UriTemplate eventRead(){
-            return UriTemplate.buildFromTemplate(new Config().serverUrl).path("companyId")
-                    .literal("/" + eventsLink).path("eventId").build();
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).path("companyId").literal("/events").path("eventId").build();
         }
     }
 
@@ -277,9 +258,6 @@ public class PublicURLS {
 
 
     public static class EventGroup {
-
-        public static String eventGroupsLink = "event_groups";
-
         /**
          * <B>GET</B><BR>
          * Get All Event Groups.
@@ -288,7 +266,7 @@ public class PublicURLS {
          */
         public static UriTemplate eventGroupList(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + eventGroupsLink).build();
+                    .literal("/event_groups").build();
         }
 
         /**
@@ -298,16 +276,13 @@ public class PublicURLS {
          */
         public static UriTemplate eventGroupRead(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + eventGroupsLink).path("serviceId").build();
+                    .literal("/event_groups").path("serviceId").build();
         }
     }
 
 
 
     public static class EventChain {
-
-        public static String eventChainsLink = "event_chains";
-
         /**
          * <B>GET</B><BR>
          * Get a List of Courses or Repeating Events for a Company.
@@ -315,7 +290,7 @@ public class PublicURLS {
          */
         public static UriTemplate eventChainList(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + eventChainsLink).build();
+                    .literal("/event_chains").build();
         }
 
         /**
@@ -325,16 +300,13 @@ public class PublicURLS {
          */
         public static UriTemplate eventChainRead(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + eventChainsLink).path("eventChainId").build();
+                    .literal("/event_chains").path("eventChainId").build();
         }
     }
 
 
 
     public static class BookingQuestion {
-
-        public static String questionsLink = "questions";
-
         /**
          * <B>GET</B><BR>
          * Get All Questions for a Company.
@@ -344,7 +316,7 @@ public class PublicURLS {
          */
         public static UriTemplate bookingQuestionList(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + questionsLink).literal("?detail_group_id=").reserved("detailGroupId").build();
+                    .literal("/questions").literal("?detail_group_id=").reserved("detailGroupId").build();
         }
 
         /**
@@ -354,7 +326,7 @@ public class PublicURLS {
          */
         public static UriTemplate bookingQuestionRead(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + questionsLink).path("questionId").build();
+                    .literal("/questions").path("questionId").build();
         }
     }
 
@@ -376,9 +348,6 @@ public class PublicURLS {
 
 
     public static class Category {
-
-        public static String categoriesLink = "categories";
-
         /**
          * <B>GET</B><BR>
          * List of Categories for a Company.
@@ -386,7 +355,7 @@ public class PublicURLS {
          */
         public static UriTemplate categoryList(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + categoriesLink).build();
+                    .literal("/categories").build();
         }
 
         /**
@@ -396,7 +365,7 @@ public class PublicURLS {
          */
         public static UriTemplate categoryRead(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + categoriesLink).path("categoryId").build();
+                    .literal("/categories").path("categoryId").build();
         }
 
         /**
@@ -413,9 +382,6 @@ public class PublicURLS {
 
 
     public static class Client {
-
-        public static String clientLink = "client";
-
         /**
          * <B>POST</B><BR>
          * Create a new client for a business.
@@ -423,7 +389,7 @@ public class PublicURLS {
          */
         public static UriTemplate createClient(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + clientLink).build();
+                    .literal("/client").build();
         }
 
         /**
@@ -434,7 +400,7 @@ public class PublicURLS {
          */
         public static UriTemplate updateClient(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + clientLink).path("clientId").build();
+                    .literal("/client").path("clientId").build();
         }
 
         /**
@@ -444,7 +410,7 @@ public class PublicURLS {
          */
         public static UriTemplate findByEmail() {
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + clientLink + "/find_by_email").path("email").build();
+                    .literal("/client/find_by_email").path("email").build();
         }
 
         /**
@@ -454,7 +420,7 @@ public class PublicURLS {
          */
         public static UriTemplate readChildClients() {
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + clientLink).path("clientId").literal("/child_clients").build();
+                    .literal("/client").path("clientId").literal("/child_clients").build();
         }
     }
 
@@ -477,9 +443,6 @@ public class PublicURLS {
 
 
     public static class Address {
-
-        public static String addressesLink = "addresses";
-
         /**
          * <B>GET</B><BR>
          * Get All Addresses for a Company.
@@ -490,7 +453,7 @@ public class PublicURLS {
          */
         public static UriTemplate addressList(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + addressesLink).build();
+                    .literal("/addresses").build();
         }
 
         /**
@@ -501,7 +464,7 @@ public class PublicURLS {
          */
         public static UriTemplate addressRead(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + addressesLink).path("addressId").build();
+                    .literal("/addresses").path("addressId").build();
         }
 
         /**
@@ -511,7 +474,7 @@ public class PublicURLS {
          */
         public static UriTemplate customerAddress() {
             return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/company").path(UriTemplateBuilder.var("companyId")).
-                    literal("/" + addressesLink + "/address").path(UriTemplateBuilder.var("customerId")).build();
+                    literal("/addresses/address").path(UriTemplateBuilder.var("customerId")).build();
         }
 
         /**
@@ -521,16 +484,13 @@ public class PublicURLS {
          */
         public static UriTemplate postCodeAddress() {
             return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/company").path(UriTemplateBuilder.var("companyId")).
-                    literal("/" + addressesLink).path(UriTemplateBuilder.var("postcode")).build();
+                    literal("/addresses").path(UriTemplateBuilder.var("postcode")).build();
         }
     }
 
 
 
     public static class Products {
-
-        public static String productsLink = "products";
-
         /**
          * <B>GET</B><BR>
          * Get all Products for a Company.
@@ -538,7 +498,7 @@ public class PublicURLS {
          */
         public static UriTemplate productsList(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + productsLink).build();
+                    .literal("/products").build();
         }
 
         /**
@@ -548,16 +508,13 @@ public class PublicURLS {
          */
         public static UriTemplate productRead(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + productsLink).path("productId").build();
+                    .literal("/products").path("productId").build();
         }
     }
 
 
 
     public static class Slot {
-
-        public static String slotsLink = "slots";
-
         /**
          * <B>GET</B><BR>
          * N/A
@@ -565,7 +522,7 @@ public class PublicURLS {
          */
         public static UriTemplate slotList() {
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + slotsLink).build();
+                    .literal("/slots").build();
         }
 
         /**
@@ -575,7 +532,7 @@ public class PublicURLS {
          */
         public static UriTemplate slotRead() {
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + slotsLink).path("slotId").build();
+                    .literal("/slots").path("slotId").build();
         }
     }
 
@@ -797,7 +754,7 @@ public class PublicURLS {
 
 
 
-    public static class Session {
+    static class Session {
         /**
          * <B>GET</B><BR>
          * Get the status of the current authenticated session.
@@ -805,7 +762,7 @@ public class PublicURLS {
          * This is useful if your user reloads the browser page and you are not maintaining the full session on the client.
          * @return UriTemplate
          */
-        public static UriTemplate sessionStatus() {
+        static UriTemplate sessionStatus() {
             return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/status").build();
         }
     }
@@ -1102,13 +1059,13 @@ public class PublicURLS {
 
 
 
-    public static class NewLogin {
+    static class NewLogin {
         /**
          * <B>GET</B><BR>
          * N/A
          * @return UriTemplate
          */
-        public static UriTemplate newLogin(){
+        static UriTemplate newLogin(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/new_login").build();
         }
     }

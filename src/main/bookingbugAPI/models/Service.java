@@ -1,11 +1,10 @@
 package bookingbugAPI.models;
 
-import bookingbugAPI.api.PublicURLS;
 import bookingbugAPI.services.HttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import com.theoryinpractise.halbuilder.api.Link;
 import helpers.HttpServiceResponse;
-import helpers.SdkUtils;
+import helpers.Utils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,7 +28,7 @@ public class Service extends BBRoot {
 
 
     public Service getService(Link link) throws IOException {
-        String absUrl = SdkUtils.absoluteURL(link.getHref());
+        String absUrl = Utils.absoluteURL(link.getHref());
         URL url = new URL(UriTemplate.fromTemplate(absUrl).expand());
         Service service = new Service(HttpService.api_GET(url, auth_token), auth_token);
         return service;
