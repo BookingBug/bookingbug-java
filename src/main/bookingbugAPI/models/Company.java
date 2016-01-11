@@ -1004,6 +1004,21 @@ public class Company extends BBRoot{
     }
 
 
+    public BBCollection<Client> clientList_Admin(ClientListParams clParams) throws IOException {
+        String urlStr = AdminURLS.Client.clientList().set("companyId", this.id).expand();
+        URL url = new URL(Utils.inflateLink(urlStr, clParams.getParams()));
+        BBCollection<Client> clients = new BBCollection<Client>(HttpService.api_GET(url, auth_token), auth_token, "clients", Client.class);
+        return clients;
+    }
+
+
+    public Client clientRead_Admin(String clientId) throws IOException {
+        URL url = new URL (AdminURLS.Client.clientRead().set("companyId", this.id).set("clientId", clientId).expand());
+        BBCollection<Client> clients = new BBCollection<Client>(HttpService.api_GET(url, auth_token), auth_token, "clients", Client.class);
+        return clients.getObjectAtIndex(0);
+    }
+
+
     public BBRoot getClientSchema() throws IOException {
 /*        String link = rep.getLinkByRel("client_details").getHref();
         URL url = new URL(UriTemplate.fromTemplate(link).expand());

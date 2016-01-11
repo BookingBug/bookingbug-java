@@ -46,6 +46,8 @@ public class BBCollection<T extends BBRoot> extends BBRoot implements Iterable<T
     public T getObjectAtIndex(int idx){
         //return (T) new BBRoot(new HttpServiceResponse((ContentRepresentation)getRep().getResourcesByRel(collectionNameSpace).get(idx)));
 
+        System.out.println(">>> >>> getting object at [" + idx + "] out of [" + this.size() + "].");
+
         try {
             T obj = class_type.getConstructor(HttpServiceResponse.class).newInstance(new HttpServiceResponse((ContentRepresentation)getRep().getResourcesByRel(collectionNameSpace).get(idx)));
             return obj;
