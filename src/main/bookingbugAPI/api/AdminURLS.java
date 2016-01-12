@@ -395,7 +395,7 @@ public class AdminURLS {
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/client")
                     .literal("/find_by_ref")
-                    .path(UriTemplateBuilder.var("refId"))
+                    .path(UriTemplateBuilder.var("referenceId"))
                     .build();
         }
 
@@ -415,8 +415,9 @@ public class AdminURLS {
         public static UriTemplate userRead() {
             return UriTemplate.buildFromTemplate(new Config().serverUrl)
                     .literal("/admin")
-                    .path(UriTemplateBuilder.var("user"))
-                    .literal("/userId")
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .literal("/user")
+                    .path(UriTemplateBuilder.var("userId"))
                     .build();
         }
     }
@@ -457,7 +458,7 @@ public class AdminURLS {
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/deals")
                     .literal("/ref")
-                    .path(UriTemplateBuilder.var("refId"))
+                    .path(UriTemplateBuilder.var("referenceId"))
                     .build();
         }
 
