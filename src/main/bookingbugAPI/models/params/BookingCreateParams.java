@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class BookingCreateParams {
+public class BookingCreateParams extends Params{
 
     String datetime;
     String service_id;
@@ -54,17 +54,17 @@ public class BookingCreateParams {
      * getParams
      * @return Map<String, String[]>
      */
-    public Map<String, String[]> getParams() {
-        Map<String, String[]> params = new HashMap<String, String[]>();
+    public Map<String, String> getParams() {
+        /*Map<String, String> params = new HashMap<String, String>();
 
-        params.put("datetime",      new String[]{datetime});
-        params.put("service_id",    new String[]{service_id});
-        params.put("person_id",     new String[]{person_id});
-        params.put("resource_id",   new String[]{resource_id});
-        params.put("member_id",     new String[]{member_id});
-        params.put("notifications", new String[]{notifications});
-
-        return params;
+        params.put("datetime",      datetime);
+        params.put("service_id",    service_id);
+        params.put("person_id",     person_id);
+        params.put("resource_id",   resource_id);
+        params.put("member_id",     member_id);
+        params.put("notifications", notifications);*/
+        return getNotNullStringMap();
+        //return params;
     }
 
 

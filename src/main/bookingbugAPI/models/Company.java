@@ -1039,9 +1039,9 @@ public class Company extends BBRoot{
 
     public Booking bookingCreate_Admin(BookingCreateParams bCParams) throws IOException {
         String urlStr = AdminURLS.Bookings.bookingCreate().set("companyId", this.id).expand();
-        URL url = new URL(Utils.inflateLink(urlStr, bCParams.getParams()));
-        BBCollection<Booking> bookings = new BBCollection<Booking>(HttpService.api_GET(url, auth_token), auth_token, "booking", Booking.class);
-        return bookings.getObjectAtIndex(0);
+        URL url = new URL (urlStr);
+
+        return new Booking(HttpService.api_POST(url, bCParams.getParams(), auth_token), auth_token);
     }
 
     /**
