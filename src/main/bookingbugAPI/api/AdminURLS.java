@@ -380,6 +380,14 @@ public class AdminURLS {
                     .build();
         }
 
+        public static UriTemplate clientCreate() {
+            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+                    .literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .literal("/client")
+                    .build();
+        }
+
         public static UriTemplate clientRead() {
             return UriTemplate.buildFromTemplate(new Config().serverUrl)
                     .literal("/admin")

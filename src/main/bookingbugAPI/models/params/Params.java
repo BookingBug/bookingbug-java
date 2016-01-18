@@ -20,4 +20,18 @@ public abstract class Params {
 		}
 	    return result;
 	}
+
+	public void setNotNullStringMap(Map<String, String> map) {
+
+		Field[] declaredFields = this.getClass().getDeclaredFields();
+		for (Field field : declaredFields) {
+			try {
+				if(field.getType() == String.class && map.containsKey(field.getName()) && map.get(field.getName()) != null)
+					field.set(this, map.get(field.getName()));
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+
+		}
+	}
 }

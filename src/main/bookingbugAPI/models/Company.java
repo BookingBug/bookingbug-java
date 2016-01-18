@@ -1123,6 +1123,19 @@ public class Company extends BBRoot{
         return clients.getObjectAtIndex(0);
     }
 
+    /**
+     * Create a Client for a company
+     * @param cCParams
+     * @return Client
+     * @throws IOException
+     */
+    public Client clientCreate_Admin(ClientCreateParams cCParams) throws IOException {
+        String urlStr = AdminURLS.Client.clientCreate().set("companyId", this.id).expand();
+        URL url = new URL (urlStr);
+
+        return new Client(HttpService.api_POST(url, cCParams.getParams(), auth_token), auth_token);
+    }
+
 
     /**
      * Read details about a logged in user, including details about which companies they have access to.
