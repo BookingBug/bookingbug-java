@@ -5,6 +5,7 @@ import bookingbugAPI.models.PublicRoot;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 import helpers.Config;
 import bookingbugAPI.models.BBRoot;
@@ -170,6 +171,8 @@ public class HttpService {
             }
 
             JsonRepresentationFactory representationFactory = new JsonRepresentationFactory();
+            representationFactory.withFlag(RepresentationFactory.STRIP_NULLS);
+
             BufferedReader in = new BufferedReader( new InputStreamReader(inputStream) );
 
             String inputLine;

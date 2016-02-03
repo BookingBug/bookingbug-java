@@ -1,9 +1,12 @@
 package bookingbugAPI.models;
 
+import bookingbugAPI.api.AdminURLS;
+import bookingbugAPI.models.params.BookingUpdateParams;
 import bookingbugAPI.services.HttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import helpers.HttpServiceResponse;
 
+import java.awt.print.Book;
 import java.io.IOException;
 import java.net.URL;
 
@@ -61,6 +64,16 @@ public class Booking extends BBRoot {
         String link = getRep().getLinkByRel("edit").getHref();
         URL url = new URL(UriTemplate.fromTemplate(link).expand());
         return new BBRoot(HttpService.api_GET(url, auth_token));
+    }
+
+    /**
+     * Returns a new Booking - update the current booking with provided params
+     * @param bParams
+     * @throws IOException
+     */
+    public Booking bookingUpdate_Admin(BookingUpdateParams bParams) throws IOException {
+        URL url = new URL (AdminURLS.Bookings.bookingUpdate().set("companyId", getCompany_id()).set("id", this.id).expand());
+        return new Booking(HttpService.api_PUT(url, bParams.getParams(), auth_token), auth_token);
     }
 
 

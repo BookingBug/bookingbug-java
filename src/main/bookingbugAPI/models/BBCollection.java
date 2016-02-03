@@ -44,20 +44,12 @@ public class BBCollection<T extends BBRoot> extends BBRoot implements Iterable<T
      * @return T extends BBRoot
      */
     public T getObjectAtIndex(int idx){
-        //return (T) new BBRoot(new HttpServiceResponse((ContentRepresentation)getRep().getResourcesByRel(collectionNameSpace).get(idx)));
-
-        System.out.println(">>> >>> getting object at [" + idx + "] out of [" + this.size() + "].");
+        //System.out.println(">>> >>> getting object at [" + idx + "] out of [" + this.size() + "].");
 
         try {
-            T obj = class_type.getConstructor(HttpServiceResponse.class).newInstance(new HttpServiceResponse((ContentRepresentation)getRep().getResourcesByRel(collectionNameSpace).get(idx)));
+            T obj = class_type.getConstructor(HttpServiceResponse.class, String.class).newInstance(new HttpServiceResponse((ContentRepresentation)getRep().getResourcesByRel(collectionNameSpace).get(idx)), auth_token);
             return obj;
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
         }
 

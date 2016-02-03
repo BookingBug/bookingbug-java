@@ -1070,13 +1070,6 @@ public class Company extends BBRoot{
     }
 
 
-    public Booking bookingEdit_Admin(String bookingId) throws IOException {
-        URL url = new URL (AdminURLS.Bookings.bookingEdit().set("companyId", this.id).set("id", bookingId).expand());
-        BBCollection<Booking> bookings = new BBCollection<Booking>(HttpService.api_GET(url, auth_token), auth_token, "booking", Booking.class);
-        return bookings.getObjectAtIndex(0);
-    }
-
-
     public Booking bookingCancel_Admin(String bookingId, BookingCancelParams bcParams) throws IOException {
         String urlStr = AdminURLS.Bookings.bookingCancel().set("companyId", this.id).set("id", bookingId).expand();
         URL url = new URL(Utils.inflateLink(urlStr, bcParams.getParams()));
