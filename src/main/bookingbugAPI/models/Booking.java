@@ -1,10 +1,12 @@
 package bookingbugAPI.models;
 
 import bookingbugAPI.api.AdminURLS;
+import bookingbugAPI.models.params.BookingCancelParams;
 import bookingbugAPI.models.params.BookingUpdateParams;
 import bookingbugAPI.services.HttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import helpers.HttpServiceResponse;
+import helpers.Utils;
 
 import java.awt.print.Book;
 import java.io.IOException;
@@ -74,6 +76,17 @@ public class Booking extends BBRoot {
     public Booking bookingUpdate_Admin(BookingUpdateParams bParams) throws IOException {
         URL url = new URL (AdminURLS.Bookings.bookingUpdate().set("companyId", getCompany_id()).set("id", this.id).expand());
         return new Booking(HttpService.api_PUT(url, bParams.getParams(), auth_token), auth_token);
+    }
+
+    /**
+     * Deletes the booking
+     * @param bcParams
+     * @return
+     * @throws IOException
+     */
+    public Booking bookingCancel_Admin(BookingCancelParams bcParams) throws IOException {
+        URL url = new URL(AdminURLS.Bookings.bookingCancel().set("companyId", getCompany_id()).set("id", this.id).expand());
+        return new Booking(HttpService.api_DELETE(url, HttpService.jsonContentType, bcParams.getParams(),  auth_token), auth_token);
     }
 
 

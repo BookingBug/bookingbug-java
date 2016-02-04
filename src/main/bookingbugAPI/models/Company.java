@@ -1070,14 +1070,6 @@ public class Company extends BBRoot{
     }
 
 
-    public Booking bookingCancel_Admin(String bookingId, BookingCancelParams bcParams) throws IOException {
-        String urlStr = AdminURLS.Bookings.bookingCancel().set("companyId", this.id).set("id", bookingId).expand();
-        URL url = new URL(Utils.inflateLink(urlStr, bcParams.getParams()));
-        BBCollection<Booking> bookings = new BBCollection<Booking>(HttpService.api_DELETE(url, auth_token), auth_token, "booking", Booking.class);
-        return bookings.getObjectAtIndex(0);
-    }
-
-
     /**
      * Get all the coupons for a Company.
      * @return BBCollection<Coupons>

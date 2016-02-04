@@ -6,8 +6,16 @@
 
     <groupId>BookingBug-SDK</groupId>
     <artifactId>BookingBug-SDK</artifactId>
-    <version>1.0</version>
+    <version>1.2</version>
 
+
+    <distributionManagement>
+        <repository>
+            <id>bintray-acornel-bb-java</id>
+            <name>acornel-bb-java</name>
+            <url>https://api.bintray.com/maven/acornel/bb-java/bookingbug-java/;publish=1</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>

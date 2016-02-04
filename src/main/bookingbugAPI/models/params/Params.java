@@ -6,6 +6,12 @@ import java.util.Map;
 
 public abstract class Params {
 
+	public Params() {}
+
+	public Params(Map<String, String> args){
+		setNotNullStringMap(args);
+	}
+
 	public Map<String, String> getNotNullStringMap() {
 	    Map<String, String> result = new HashMap<String, String>();
 	    Field[] declaredFields = this.getClass().getDeclaredFields();
@@ -33,5 +39,9 @@ public abstract class Params {
 			}
 
 		}
+	}
+
+	public Map<String, String> getParams(){
+		return getNotNullStringMap();
 	}
 }

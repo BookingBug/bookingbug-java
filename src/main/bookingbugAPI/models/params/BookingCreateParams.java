@@ -49,25 +49,6 @@ public class BookingCreateParams extends Params{
         }
     }
 
-
-    /**
-     * getParams
-     * @return Map<String, String[]>
-     */
-    public Map<String, String> getParams() {
-        /*Map<String, String> params = new HashMap<String, String>();
-
-        params.put("datetime",      datetime);
-        params.put("service_id",    service_id);
-        params.put("person_id",     person_id);
-        params.put("resource_id",   resource_id);
-        params.put("member_id",     member_id);
-        params.put("notifications", notifications);*/
-        return getNotNullStringMap();
-        //return params;
-    }
-
-
     public String getDatetime() {
         return datetime;
     }
