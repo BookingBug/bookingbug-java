@@ -179,7 +179,7 @@ public class PublicURLS {
          * @return UriTemplate
          */
         public static UriTemplate eventList(){
-            return UriTemplate.buildFromTemplate(new Config().serverUrl).path("companyId")
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
                     .literal("/" + eventsLink).build();
         }
 
@@ -189,8 +189,7 @@ public class PublicURLS {
          * @return UriTemplate
          */
         public static UriTemplate eventRead(){
-            return UriTemplate.buildFromTemplate(new Config().serverUrl).path("companyId")
-                    .literal("/" + eventsLink).path("eventId").build();
+            return UriTemplate.buildFromTemplate(new Config().serverUrl).path("companyId").literal("/" + eventsLink).path("eventId").build();
         }
     }
 
@@ -797,7 +796,7 @@ public class PublicURLS {
 
 
 
-    public static class Session {
+    static class Session {
         /**
          * <B>GET</B><BR>
          * Get the status of the current authenticated session.
@@ -805,7 +804,7 @@ public class PublicURLS {
          * This is useful if your user reloads the browser page and you are not maintaining the full session on the client.
          * @return UriTemplate
          */
-        public static UriTemplate sessionStatus() {
+        static UriTemplate sessionStatus() {
             return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/status").build();
         }
     }
@@ -1102,13 +1101,13 @@ public class PublicURLS {
 
 
 
-    public static class NewLogin {
+    static class NewLogin {
         /**
          * <B>GET</B><BR>
          * N/A
          * @return UriTemplate
          */
-        public static UriTemplate newLogin(){
+        static UriTemplate newLogin(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).literal("/new_login").build();
         }
     }

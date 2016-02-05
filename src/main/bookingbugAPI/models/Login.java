@@ -10,6 +10,7 @@ import helpers.HttpServiceResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +38,13 @@ public class Login extends BBRoot {
     }
 
 
+    public Login login(Map<String,String> params) throws  IOException {
+        return auth(params, response.getRep().getLinkByRel("login"));
+    }
+
+
     public Map<String, String> getCredentials() {
-        Map<String, String> credentials = new HashMap<String, String>();
+        Map<String, String> credentials = new HashMap<>();
         credentials.put("email", email);
         credentials.put("password", password);
         return credentials;
@@ -82,6 +88,17 @@ public class Login extends BBRoot {
     public Administrator getAdministrator(Link link) throws IOException {
         URL url = new URL(UriTemplate.fromTemplate(link.getHref()).expand());
         return new Administrator(HttpService.api_GET(url, auth_token), auth_token);
+    }
+
+
+    public ArrayList<Administrator> getAdministrators() {
+        ArrayList<Administrator> admins = new ArrayList<Administrator>();
+        List<ContentRepresentation> admin_reps = (List<ContentRepresentation>) getRep().getResourcesByRel("administrators");
+        for(ContentRepresentation representation : admin_reps) {
+            //admins.add(new Administrator(response, auth_token));
+            admins.add(new Administrator(new HttpServiceResponse(representation), auth_token));
+        }
+        return admins;
     }
 
 

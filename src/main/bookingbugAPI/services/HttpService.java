@@ -5,10 +5,12 @@ import bookingbugAPI.models.PublicRoot;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 import helpers.Config;
 import bookingbugAPI.models.BBRoot;
 import helpers.HttpServiceResponse;
+import helpers.hal_addon.CustomJsonRepresentationFactory;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -125,6 +127,10 @@ public class HttpService {
         return callApi(url, auth_token, "DELETE", urlEncodedContentType, null);
     }
 
+    public static HttpServiceResponse api_DELETE(URL url, String contentType, Map<String,String> params, String auth_token) throws HttpException {
+        return callApi(url, auth_token, "DELETE", contentType, params);
+    }
+
     private static HttpServiceResponse callApi(URL url, String auth_token, String method, String contentType, Map<String,String> params) throws HttpException {
         return callApi(url, auth_token, method, contentType, params, false);
     }
@@ -169,7 +175,9 @@ public class HttpService {
                 inputStream = urlConnection.getInputStream();
             }
 
-            JsonRepresentationFactory representationFactory = new JsonRepresentationFactory();
+            CustomJsonRepresentationFactory representationFactory = new CustomJsonRepresentationFactory();
+            representationFactory.withFlag(RepresentationFactory.STRIP_NULLS);
+
             BufferedReader in = new BufferedReader( new InputStreamReader(inputStream) );
 
             String inputLine;

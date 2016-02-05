@@ -5,7 +5,6 @@ import helpers.HttpServiceResponse;
 
 public class Event extends BBRoot{
 
-    
     public Event(HttpServiceResponse httpServiceResponse){
         super(httpServiceResponse);
     }
