@@ -5,15 +5,21 @@ import bookingbugAPI.models.params.BookingCancelParams;
 import bookingbugAPI.models.params.BookingUpdateParams;
 import bookingbugAPI.services.HttpService;
 import com.damnhandy.uri.template.UriTemplate;
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import helpers.HttpServiceResponse;
-import helpers.Utils;
 
-import java.awt.print.Book;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.logging.Logger;
 
 
 public class Booking extends BBRoot {
+
+    private final static Logger log = Logger.getLogger(Booking.class.getName());
 
     /*
     private String updated_at;
@@ -221,6 +227,31 @@ public class Booking extends BBRoot {
 
     public String getDatetime() {
         return get("datetime");
+    }
+
+    public Date getDateTimeObj(){
+        Date datetime = null;
+        try {
+            datetime = new ISO8601DateFormat().parse(get("datetime"));
+        } catch (ParseException | NullPointerException e) {
+            //e.printStackTrace();
+            log.warning("Cannot parse datetime format: " + e.toString());
+        }
+        return datetime;
+    }
+
+    public Date getEndDateTimeObj(){
+        Date endDateTime = null;
+        Date startDateTime = getDateTimeObj();
+        try {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(startDateTime);
+            cal.add(Calendar.MINUTE, Integer.parseInt(getDuration()));
+            endDateTime = cal.getTime();
+        }catch (Exception e){
+            log.warning("Cannot get booking end datetime: " + e.toString());
+        }
+        return endDateTime;
     }
 
     public String getResource_name() {
