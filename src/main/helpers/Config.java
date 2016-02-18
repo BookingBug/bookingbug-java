@@ -27,7 +27,7 @@ public class Config {
      * @param willUseCustomSettings
      * @param configStream
      */
-    public void setUseCustomSettings (boolean willUseCustomSettings, String configStream) {
+    public static void setUseCustomSettings (boolean willUseCustomSettings, String configStream) {
         useCustomSettings = willUseCustomSettings;
         cfgStream = configStream;
     }
@@ -44,7 +44,7 @@ public class Config {
                 prop.load(new StringReader(cfgStream));
                 logger.log(Level.ALL, "Settings loaded from the provided string.");
             } else {
-                String propFileName = "config.properties";
+                String propFileName = "bb_sdk_config.properties";
 
                 //InputStream inputStream = Config.class.getClassLoader().getResourceAsStream(propFileName);
                 InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propFileName);
