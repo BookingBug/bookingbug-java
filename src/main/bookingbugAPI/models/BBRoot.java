@@ -13,6 +13,7 @@ import helpers.HttpServiceResponse;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
+import java.util.logging.Logger;
 
 import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON;
 
@@ -25,6 +26,8 @@ import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON
     "rep", "auth_token", "id", "data", "links"
 })
 public class BBRoot {
+
+    protected final Logger log = Logger.getLogger(this.getClass().getName());
 
     protected HttpServiceResponse response;
     protected String auth_token = null;
