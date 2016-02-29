@@ -369,9 +369,9 @@ public class Company extends BBRoot{
      * @return Resource
      * @throws IOException
      */
-    public Resource availabilityDaysForBookableItem() throws IOException {
+    public BBCollection<BookableAvailability> availabilityDaysForBookableItem() throws IOException {
         URL url = new URL(PublicURLS.Bookable.availabilityDaysForBookableItem().set("companyId", this.id).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        return new BBCollection<BookableAvailability>(HttpService.api_GET(url, auth_token), auth_token, "events", BookableAvailability.class);
     }
 
 

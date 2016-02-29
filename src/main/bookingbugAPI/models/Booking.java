@@ -19,8 +19,6 @@ import java.util.logging.Logger;
 
 public class Booking extends BBRoot {
 
-    private final static Logger log = Logger.getLogger(Booking.class.getName());
-
     /*
     private String updated_at;
     private String company_id;
