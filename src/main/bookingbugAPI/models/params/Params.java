@@ -1,15 +1,34 @@
 package bookingbugAPI.models.params;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Params {
+public class Params {
+
+	private int page = 1;
+    private int per_page = 100;
 
 	public Params() {}
 
 	public Params(Map<String, String> args){
 		setNotNullStringMap(args);
+	}
+
+	public static Params withPagination(int page, int per_page){
+		Params params = new Params();
+		params.page = page;
+		params.per_page = per_page;
+		return params;
+	}
+
+	public static Params withPagination(int page){
+		Params params = new Params();
+		params.page = page;
+		return params;
 	}
 
 	public Map<String, String> getNotNullStringMap() {
@@ -44,4 +63,24 @@ public abstract class Params {
 	public Map<String, String> getParams(){
 		return getNotNullStringMap();
 	}
+
+    public int getPage() {
+        return page;
+    }
+
+    public int getPer_page() {
+        return per_page;
+    }
+
+	@Override
+	public String toString(){
+		String json = "";
+		try {
+			json = new ObjectMapper().writeValueAsString(this);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return json;
+	}
+
 }

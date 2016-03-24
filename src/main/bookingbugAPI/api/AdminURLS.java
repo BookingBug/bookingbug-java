@@ -625,6 +625,16 @@ public class AdminURLS {
                     .path(UriTemplateBuilder.var("refId"))
                     .build();
         }
+
+        public static UriTemplate eventChainEventsList() {
+            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+                    .literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .literal("/event_chains")
+                    .path(UriTemplateBuilder.var("eventChainId"))
+                    .literal("/events")
+                    .build();
+        }
     }
 
 

@@ -179,8 +179,11 @@ public class PublicURLS {
          * @return UriTemplate
          */
         public static UriTemplate eventList(){
-            return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + eventsLink).build();
+            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .literal("/" + eventsLink)
+                    .query(UriTemplateBuilder.var("page"), UriTemplateBuilder.var("per_page"))
+                    .build();
         }
 
         /**
@@ -244,7 +247,9 @@ public class PublicURLS {
          */
         public static UriTemplate availabilityTimesForBookableItem() {
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/time_data").build();
+                    .literal("/time_data")
+                    .query("event_id", "service_id", "resource_id","resource_ids", "person_id", "group_id", "location",
+                    "date", "end_date", "duration", "num_resources").build();
         }
 
         /**
@@ -314,7 +319,9 @@ public class PublicURLS {
          */
         public static UriTemplate eventChainList(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + eventChainsLink).build();
+                    .literal("/" + eventChainsLink)
+                    .query(UriTemplateBuilder.var("page"), UriTemplateBuilder.var("per_page"))
+                    .build();
         }
 
         /**

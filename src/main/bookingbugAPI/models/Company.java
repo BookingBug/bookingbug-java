@@ -322,9 +322,21 @@ public class Company extends BBRoot{
      * @throws IOException
      */
     public BBCollection<Event> eventList() throws IOException {
-        URL url = new URL(PublicURLS.Event.eventList().set("companyId", this.id).expand());
-        BBCollection<Event> events = new BBCollection<Event>(HttpService.api_GET(url, auth_token), auth_token, "events", Event.class);
-        return events;
+        return eventList(new Params());
+    }
+
+    /**
+     * Get a List of Bookable Events.
+     * @param params Parameters for pagination
+     * @return BBCollection<Event>
+     * @throws IOException
+     */
+    public BBCollection<Event> eventList(Params params) throws IOException {
+        UriTemplate template = Utils.TemplateWithPagination(
+                PublicURLS.Event.eventList().set("companyId", this.id),
+                params);
+        URL url = new URL(template.expand());
+        return new BBCollection<Event>(HttpService.api_GET(url, auth_token), auth_token, "events", Event.class);
     }
 
 
@@ -369,9 +381,13 @@ public class Company extends BBRoot{
      * @return Resource
      * @throws IOException
      */
-    public BBCollection<BookableAvailability> availabilityDaysForBookableItem() throws IOException {
-        URL url = new URL(PublicURLS.Bookable.availabilityDaysForBookableItem().set("companyId", this.id).expand());
-        return new BBCollection<BookableAvailability>(HttpService.api_GET(url, auth_token), auth_token, "events", BookableAvailability.class);
+    public BBRoot availabilityDaysForBookableItem(TimeDataParams params) throws IOException {
+        URL url = new URL(
+                PublicURLS.Bookable.availabilityDaysForBookableItem()
+                        .set("companyId", this.id)
+                        .set((Map)params.getParams())
+                        .expand());
+        return new BBRoot(HttpService.api_GET(url, auth_token), auth_token);
     }
 
 
@@ -380,9 +396,13 @@ public class Company extends BBRoot{
      * @return Resource
      * @throws IOException
      */
-    public Resource availabilityTimesForBookableItem() throws IOException {
-        URL url = new URL(PublicURLS.Bookable.availabilityTimesForBookableItem().set("companyId", this.id).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+    public BBCollection<BookableAvailability> availabilityTimesForBookableItem(TimeDataParams params) throws IOException {
+        URL url = new URL(
+                PublicURLS.Bookable.availabilityTimesForBookableItem()
+                        .set("companyId", this.id)
+                        .set((Map)params.getParams())
+                        .expand());
+        return new BBCollection<BookableAvailability>(HttpService.api_GET(url, auth_token), auth_token, "events", BookableAvailability.class);
     }
 
 
@@ -439,7 +459,20 @@ public class Company extends BBRoot{
      * @throws IOException
      */
     public BBCollection<EventChain> eventChainList() throws IOException {
-        URL url = new URL (PublicURLS.EventChain.eventChainList().set("companyId", this.id).expand());
+        return eventChainList(new Params());
+    }
+
+    /**
+     * Get a List of Courses or Repeating Events for a Company.
+     * @param params Parameters for pagination
+     * @return BBCollection<EventChain>
+     * @throws IOException
+     */
+    public BBCollection<EventChain> eventChainList(Params params) throws IOException {
+        UriTemplate template = Utils.TemplateWithPagination(
+                PublicURLS.EventChain.eventChainList().set("companyId", this.id),
+                params);
+        URL url = new URL(template.expand());
         BBCollection<EventChain> eventChains = new BBCollection<EventChain>(HttpService.api_GET(url, auth_token), auth_token, "event_chains", EventChain.class);
         return eventChains;
     }
