@@ -1,6 +1,8 @@
 package helpers;
 
+import bookingbugAPI.models.params.Params;
 import com.damnhandy.uri.template.UriTemplate;
+import com.damnhandy.uri.template.UriTemplateBuilder;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -45,6 +47,24 @@ public class Utils {
        return absoluteURL(url, null);
     }
 
+    /**
+     * Given a string url returns a templated url with pagination
+     * @param fromTemplate String to convert to UriTemplate
+     * @return
+     */
+    public static UriTemplate paginatedUriTemplate(String fromTemplate){
+        return UriTemplate.buildFromTemplate(fromTemplate)
+                .query(UriTemplateBuilder.var("page"), UriTemplateBuilder.var("per_page"))
+                .build();
+    }
+
+    public static UriTemplate TemplateWithPagination(UriTemplate template, Params params){
+        if(params != null){
+            template.set("page", params.getPage());
+            template.set("per_page", params.getPer_page());
+        }
+        return template;
+    }
 
     /**
      * @param content

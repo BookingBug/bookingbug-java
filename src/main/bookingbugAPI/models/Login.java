@@ -5,7 +5,10 @@ import bookingbugAPI.services.HttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import com.theoryinpractise.halbuilder.api.Link;
+import helpers.Config;
 import helpers.HttpServiceResponse;
+import helpers.TokenGenerator;
+import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

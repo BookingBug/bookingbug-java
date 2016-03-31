@@ -107,6 +107,18 @@ public class BBRoot {
         return val;
     }
 
+    public boolean getBoolean(String key, boolean defaultValue) {
+        String val = this.get(key);
+        if(val != null) return Boolean.parseBoolean(val);
+        return defaultValue;
+    }
+
+    public int getInteger(String key, int defaultValue) {
+        String val = this.get(key);
+        if(val != null) return Integer.parseInt(val);
+        return defaultValue;
+    }
+
 
     public String getAuth_token() {
         return auth_token;
