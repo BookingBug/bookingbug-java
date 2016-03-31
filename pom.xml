@@ -6,7 +6,7 @@
 
     <groupId>BookingBug-SDK</groupId>
     <artifactId>BookingBug-SDK</artifactId>
-    <version>1.4</version>
+    <version>1.5</version>
 
 
     <distributionManagement>

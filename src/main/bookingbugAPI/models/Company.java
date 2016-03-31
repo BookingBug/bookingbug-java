@@ -12,6 +12,7 @@ import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.factories.SchemaFactoryWrapper;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import bookingbugAPI.services.HttpService;
+import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 import helpers.HttpServiceResponse;
 import helpers.Utils;
@@ -19,6 +20,7 @@ import helpers.Utils;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON;
@@ -638,17 +640,23 @@ public class Company extends BBRoot{
     }
 
 
+
     /**
      * Loads all of the public settings for a company, this allows you to configure a booking widget,
      * and shows all of the details need to book and show an appropriate widget.
-     * @return Resource
+     * @return CompanySettings
      * @throws IOException
      */
-    public Resource settingsDetails() throws IOException {
-        URL url = new URL(PublicURLS.Company.settingsDetails().set("companyId", this.id).expand());
-        return new Resource(HttpService.api_GET(url));
+    public CompanySettings getSettings() throws IOException {
+        if(getRep().getResourcesByRel("settings").size() > 0) {
+            //Return settings from embedded
+            return new CompanySettings(new HttpServiceResponse((ContentRepresentation) getRep().getResourcesByRel("settings").get(0)));
+        } else {
+            //Call API
+            URL url = new URL(PublicURLS.Company.settingsDetails().set("companyId", this.id).expand());
+            return new CompanySettings(HttpService.api_GET(url));
+        }
     }
-
 
     /**
      * You can either get all the company questions or pass a param to specifiy that you only want company questions

@@ -11,6 +11,7 @@ public class AdminURLS {
         public static UriTemplate company() {
             return UriTemplate.buildFromTemplate(new Config().serverUrl)
                     .literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId"))
                     .literal("/company")
                     .build();
         }

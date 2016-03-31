@@ -14,6 +14,10 @@ public class Params {
 
 	public Params() {}
 
+	public Params(int page) {
+		this.page = page;
+	}
+
 	public Params(Map<String, String> args){
 		setNotNullStringMap(args);
 	}
@@ -62,6 +66,12 @@ public class Params {
 
 	public Map<String, String> getParams(){
 		return getNotNullStringMap();
+	}
+
+	public Map<String, Object> getParamsMapObj() {
+		Map<String, Object> objectMap = new HashMap<>();
+		objectMap.putAll(getParams());
+		return objectMap;
 	}
 
     public int getPage() {

@@ -182,7 +182,9 @@ public class PublicURLS {
             return UriTemplate.buildFromTemplate(new Config().serverUrl)
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/" + eventsLink)
-                    .query(UriTemplateBuilder.var("page"), UriTemplateBuilder.var("per_page"))
+                    .query("page", "per_page", "event_chain_id",
+                            "start_date", "end_date", "resource_id", "person_id",
+                            "event_group_id", "summary", "member_level_id")
                     .build();
         }
 
