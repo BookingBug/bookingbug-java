@@ -3,6 +3,9 @@ package bookingbugAPI.models;
 import bookingbugAPI.services.HttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import com.theoryinpractise.halbuilder.api.Link;
 import com.theoryinpractise.halbuilder.api.RepresentationException;
@@ -148,6 +151,16 @@ public class BBRoot {
 
     public String toString() {
         return response.getRep().getContent();
+    }
+
+    public String toPrettyString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(response.getRep());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return toString();
+        }
     }
 
 

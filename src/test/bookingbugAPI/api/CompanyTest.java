@@ -1,16 +1,10 @@
 package bookingbugAPI.api;
 
-import bookingbugAPI.models.Company;
-import bookingbugAPI.models.Currency;
-import bookingbugAPI.models.HttpException;
-import bookingbugAPI.models.Login;
+import bookingbugAPI.models.*;
 import bookingbugAPI.services.HttpService;
-import helpers.TokenGenerator;
-import org.json.simple.JSONObject;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
@@ -37,6 +31,23 @@ public class CompanyTest {
             assertNotNull(company.getSettings());
             assertEquals(company.getSettings().getCurrency(), Currency.GBP);
         }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void companyBookingSchema(){
+        Company company = null;
+        SchemaForm schemaForm = null;
+        try {
+            URL url = new URL(AdminURLS.Company.company().set("companyId", companyId).expand());
+            company = new Company(HttpService.api_GET(url, token), token);
+            assertNotNull(company);
+
+            schemaForm = company.getNewBookingSchema();
+            assertNotNull(schemaForm);
+            schemaForm.getSchemaJson();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

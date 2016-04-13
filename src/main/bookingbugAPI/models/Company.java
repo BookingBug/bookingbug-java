@@ -12,7 +12,6 @@ import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.factories.SchemaFactoryWrapper;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import bookingbugAPI.services.HttpService;
-import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 import helpers.HttpServiceResponse;
 import helpers.Utils;
@@ -20,7 +19,6 @@ import helpers.Utils;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 import java.util.Map;
 
 import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON;
@@ -1077,6 +1075,11 @@ public class Company extends BBRoot{
         return new Resource(HttpService.api_DELETE(url), auth_token);
     }
 
+    public SchemaForm getNewBookingSchema() throws IOException {
+        String link = getRep().getLinkByRel("new_booking").getHref();
+        URL url = new URL(UriTemplate.fromTemplate(link).expand());
+        return new SchemaForm(HttpService.api_GET(url, auth_token));
+    }
 
     public Booking bookingCreate_Admin(BookingCreateParams bCParams) throws IOException {
         String urlStr = AdminURLS.Bookings.bookingCreate().set("companyId", this.id).expand();
@@ -1109,6 +1112,8 @@ public class Company extends BBRoot{
         BBCollection<Booking> bookings = new BBCollection<Booking>(HttpService.api_GET(url, auth_token), auth_token, "booking", Booking.class);
         return bookings.getObjectAtIndex(0);
     }
+
+
 
 
     /**

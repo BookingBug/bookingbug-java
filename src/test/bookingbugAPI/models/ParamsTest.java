@@ -2,11 +2,15 @@ package bookingbugAPI.models;
 
 import bookingbugAPI.models.params.BookingCreateParams;
 import bookingbugAPI.models.params.ClientCreateParams;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -21,7 +25,7 @@ public class ParamsTest {
         params.setService_id("service_id");
         params.setMember_id("member_id");
 
-        Map<String, String> map = params.getParams();
+        Map map = params.getParams();
         assertTrue(map.size() == 3);
 
         assertTrue(map.containsKey("datetime"));
@@ -55,5 +59,16 @@ public class ParamsTest {
         assertTrue(params2.getLast_name().equals("last"));
         assertTrue(params2.getPostcode().equals("123"));
         assertTrue(params2.getMember_type().equals("3"));
+    }
+
+    @Test
+    public void jsonParamsTest() {
+        String json = "{\"str\":\"val\", \"num\":0, \"arr\":[29], \"arr2\":[{\"name\":\"mkyong1\"}, {\"name\":\"mkyong1\"}]}}";
+        BookingCreateParams params = new BookingCreateParams();
+        params.setJson(json);
+        Map m = params.getParams();
+        assertNotNull(m);
+        assertTrue(m.containsKey("arr2") && m.get("arr2") != null && m.get("arr2") instanceof ArrayList);
+        assertTrue(m.containsKey("str") && "val".equals(m.get("str")));
     }
 }

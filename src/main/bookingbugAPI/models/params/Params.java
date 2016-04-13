@@ -3,6 +3,7 @@ package bookingbugAPI.models.params;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,9 @@ public class Params {
 
 	private int page = 1;
     private int per_page = 100;
+
+	public boolean hasJson = false;
+	private String jsonContent;
 
 	public Params() {}
 
@@ -33,6 +37,11 @@ public class Params {
 		Params params = new Params();
 		params.page = page;
 		return params;
+	}
+
+	public void setJson(String json) {
+		hasJson = true;
+		jsonContent = json;
 	}
 
 	public Map<String, String> getNotNullStringMap() {
@@ -64,10 +73,32 @@ public class Params {
 		}
 	}
 
-	public Map<String, String> getParams(){
-		return getNotNullStringMap();
+	/**
+	 * Get parameters. If hasJson is true (setJson method has been called) then the parameters will be extracted from
+	 * json string. Otherwise all non null declared fields of this object will be included
+	 *
+	 * @return Generic Map with parameters
+     */
+	public Map getParams(){
+		if(!hasJson)
+			// Return default map
+			return getNotNullStringMap();
+
+		// Return map from jsonContent
+		ObjectMapper mapper = new ObjectMapper();
+		HashMap map = new HashMap<>();
+		try {
+			map = mapper.readValue(jsonContent, HashMap.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return map;
 	}
 
+    /**
+     * @see Params#getParams()
+     * @return
+     */
 	public Map<String, Object> getParamsMapObj() {
 		Map<String, Object> objectMap = new HashMap<>();
 		objectMap.putAll(getParams());
@@ -84,13 +115,12 @@ public class Params {
 
 	@Override
 	public String toString(){
-		String json = "";
+		String jsonThis = "";
 		try {
-			json = new ObjectMapper().writeValueAsString(this);
+            jsonThis = new ObjectMapper().writeValueAsString(this);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-		return json;
+		return hasJson ? jsonContent : jsonThis;
 	}
-
 }
