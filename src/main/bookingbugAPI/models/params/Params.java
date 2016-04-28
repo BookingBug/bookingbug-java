@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,17 +47,22 @@ public class Params {
 	}
 
 	public Map<String, String> getNotNullStringMap() {
-	    Map<String, String> result = new HashMap<String, String>();
+	    Map<String, String> result = new HashMap<>();
 	    Field[] declaredFields = this.getClass().getDeclaredFields();
 	    for (Field field : declaredFields) {
 			try {
-				if(field.getType() == String.class && (String)field.get(this) != null)
-					result.put(field.getName(), (String)field.get(this));
+				if(field.get(this) != null)
+					result.put(field.getName(), field.get(this).toString());
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
 
 		}
+
+		//Add pagination params
+		result.put("page", String.valueOf(getPage()));
+		result.put("per_page", String.valueOf(getPer_page()));
+
 	    return result;
 	}
 
@@ -112,6 +119,16 @@ public class Params {
     public int getPer_page() {
         return per_page;
     }
+
+	public Params setPerPage(int per_page) {
+		this.per_page = per_page;
+		return this;
+	}
+
+	public Params setPage(int page) {
+		this.page = page;
+		return this;
+	}
 
 	@Override
 	public String toString(){

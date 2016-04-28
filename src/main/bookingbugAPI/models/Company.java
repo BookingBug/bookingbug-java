@@ -124,8 +124,10 @@ public class Company extends BBRoot{
      * @throws IOException
      */
     public BBCollection<Service> serviceList_Admin(ServiceListParams slParams) throws IOException {
-        String urlStr = AdminURLS.Service.serviceList().set("companyId", this.id).expand();
-        URL url = new URL(Utils.inflateLink(urlStr, slParams.getParams()));
+        UriTemplate template = Utils.TemplateWithPagination(
+                AdminURLS.Service.serviceList().set("companyId", this.id),
+                slParams);
+        URL url = new URL(template.expand());
         BBCollection<Service> services = new BBCollection<Service>(HttpService.api_GET(url, auth_token), auth_token, "services", Service.class);
         return services;
     }
@@ -470,7 +472,7 @@ public class Company extends BBRoot{
      */
     public BBCollection<EventChain> eventChainList(Params params) throws IOException {
         UriTemplate template = Utils.TemplateWithPagination(
-                PublicURLS.EventChain.eventChainList().set("companyId", this.id),
+                AdminURLS.EventChain.eventChainList().set("companyId", this.id),
                 params);
         URL url = new URL(template.expand());
         BBCollection<EventChain> eventChains = new BBCollection<EventChain>(HttpService.api_GET(url, auth_token), auth_token, "event_chains", EventChain.class);
@@ -1094,8 +1096,13 @@ public class Company extends BBRoot{
      * @throws IOException
      */
     public BBCollection<Booking> bookingList_Admin(BookingListParams bLParams) throws IOException {
-        String urlStr = AdminURLS.Bookings.bookingList().set("companyId", this.id).expand();
-        URL url = new URL(Utils.inflateLink(urlStr, bLParams.getParams()));
+        URL url;
+        if(getLink("bookings") != null)
+            url = new URL(Utils.inflateLink(getLink("bookings"), bLParams.getParams()));
+        else {
+            UriTemplate template = AdminURLS.Bookings.bookingList().set("companyId", this.id);
+            url = new URL(Utils.inflateLink(template, bLParams.getParams()));
+        }
         BBCollection<Booking> bookings = new BBCollection<Booking>(HttpService.api_GET(url, auth_token), auth_token, "bookings", Booking.class);
         return bookings;
     }

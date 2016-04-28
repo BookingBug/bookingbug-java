@@ -86,6 +86,7 @@ public class AdminURLS {
                     .literal("/admin")
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/services")
+                    .query(UriTemplateBuilder.var("page"), UriTemplateBuilder.var("per_page"))
                     .build();
         }
 
@@ -95,6 +96,16 @@ public class AdminURLS {
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/services")
                     .path(UriTemplateBuilder.var("serviceId"))
+                    .build();
+        }
+
+        public static UriTemplate serviceNewBooking() {
+            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+                    .literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .literal("/services")
+                    .path(UriTemplateBuilder.var("serviceId"))
+                    .literal("/new_booking")
                     .build();
         }
     }
@@ -270,6 +281,7 @@ public class AdminURLS {
                     .literal("/admin")
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/bookings")
+                    .query(UriTemplateBuilder.var("page"), UriTemplateBuilder.var("per_page"))
                     .build();
         }
 

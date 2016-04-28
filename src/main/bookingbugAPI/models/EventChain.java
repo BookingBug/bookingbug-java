@@ -28,6 +28,11 @@ public class EventChain extends BBRoot{
 
     public EventChain() {}
 
+    public SchemaForm getNewBookingSchema() throws IOException {
+        URL url = new URL(UriTemplate.fromTemplate(this.getRep().getLinkByRel("new_booking").getHref()).expand());
+        return new SchemaForm(HttpService.api_GET(url, this.auth_token));
+    }
+
     /**
      * Get a List of Bookable Events for an EventChain.
      * @param params Parameters for pagination

@@ -26,7 +26,6 @@ public class ParamsTest {
         params.setMember_id("member_id");
 
         Map map = params.getParams();
-        assertTrue(map.size() == 3);
 
         assertTrue(map.containsKey("datetime"));
         assertTrue(map.containsKey("service_id"));
@@ -45,7 +44,6 @@ public class ParamsTest {
         params.setLast_name("Last");
 
         Map<String, String> map = params.getParams();
-        assertTrue(map.size() == 3);
 
         assertTrue(map.containsKey("first_name"));
         assertTrue(map.get("first_name").equals("first"));

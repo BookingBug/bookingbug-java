@@ -99,25 +99,30 @@ public class Utils {
         return vars.length > 0;
     }
 
+    public static String inflateLink(UriTemplate template, Map args) {
+        Map<String, Object> toInflate = new HashMap<String, Object>();
+
+        for (Object key : args.keySet()) {
+            final Object value = args.get(key);
+
+            if(value == null || (value instanceof String && ((String) value).trim().isEmpty()))
+                continue;
+
+            if(value instanceof String[] && (((String[])value).length > 0 || ((String[])value)[0].trim().isEmpty()))
+                continue;
+
+            toInflate.put(key.toString(), value);
+        }
+        return template.expand(toInflate);
+    }
 
     /**
      * @param link
      * @param args
      * @return
      */
-    public static String inflateLink(String link, Map<String, String[]> args) {
-        UriTemplate template = UriTemplate.fromTemplate(link);
-        Map<String, Object> toInflate = new HashMap<String, Object>();
-
-        for (Map.Entry<String, String[]> entry : args.entrySet()) {
-            final String key = entry.getKey();
-            final String[] value = entry.getValue();
-
-            if (value[0]!=null && !value[0].trim().isEmpty()) {
-                toInflate.put(key, value);
-            }
-        }
-        return template.expand(toInflate);
+    public static String inflateLink(String link, Map args) {
+        return inflateLink(UriTemplate.fromTemplate(link), args);
     }
 
 

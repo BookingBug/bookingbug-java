@@ -33,7 +33,7 @@ public class CustomJsonRepresentationReader implements RepresentationReader {
         this.mapper = new ObjectMapper();
 
         SimpleModule simpleModule = new SimpleModule();
-        simpleModule.addDeserializer(String.class, new CustomJsonDeserializer());
+        simpleModule.addDeserializer(Object.class, new CustomJsonDeserializer());
         this.mapper.registerModule(simpleModule);
     }
 

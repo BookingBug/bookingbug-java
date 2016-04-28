@@ -67,7 +67,9 @@ public class PublicURLS {
          */
         public static UriTemplate serviceList(){
             return UriTemplate.buildFromTemplate(new Config().serverUrl).path(UriTemplateBuilder.var("companyId"))
-                    .literal("/" + servicesLink).build();
+                    .literal("/" + servicesLink)
+                    .query(UriTemplateBuilder.var("page"), UriTemplateBuilder.var("per_page"))
+                    .build();
         }
 
         /**
