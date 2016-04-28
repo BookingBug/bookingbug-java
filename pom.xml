@@ -6,7 +6,7 @@
 
     <groupId>BookingBug-SDK</groupId>
     <artifactId>BookingBug-SDK</artifactId>
-    <version>1.4</version>
+    <version>1.8</version>
 
 
     <distributionManagement>
@@ -72,6 +72,12 @@
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.reactivex</groupId>
+            <artifactId>rxjava</artifactId>
+            <version>1.1.0</version>
         </dependency>
 
     </dependencies>

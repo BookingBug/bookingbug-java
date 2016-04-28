@@ -1,5 +1,6 @@
 package helpers;
 
+import bookingbugAPI.services.HttpService;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 
 import java.util.Map;
@@ -10,7 +11,8 @@ public class HttpServiceResponse {
     protected ContentRepresentation rep;
 
     protected String method;
-    protected Map<String,String> params;
+    protected String contentType = HttpService.jsonContentType;
+    protected Map params;
     protected String authToken;
 
 
@@ -22,7 +24,7 @@ public class HttpServiceResponse {
     }
 
 
-    public HttpServiceResponse(ContentRepresentation rep, String method, Map<String, String> params) {
+    public HttpServiceResponse(ContentRepresentation rep, String method, Map params) {
         this.rep = rep;
         this.method = method;
         this.params = params;
@@ -30,9 +32,10 @@ public class HttpServiceResponse {
     }
 
 
-    public HttpServiceResponse(ContentRepresentation rep, String method, Map<String, String> params, String auth_token) {
+    public HttpServiceResponse(ContentRepresentation rep, String method, String contentType, Map params, String auth_token) {
         this.rep = rep;
         this.method = method;
+        this.contentType = contentType;
         this.params = params;
         this.authToken = auth_token;
     }
@@ -58,12 +61,12 @@ public class HttpServiceResponse {
     }
 
 
-    public void setParams(Map<String, String> params) {
+    public void setParams(Map params) {
         this.params = params;
     }
 
 
-    public Map<String, String> getParams() {
+    public Map getParams() {
         return params;
     }
 
@@ -84,17 +87,14 @@ public class HttpServiceResponse {
             paramsStr += " -H \"Auth_Token:" + authToken + "\"";
         }
 
-        if (params!=null) {
+        try {
+            paramsStr += " -H \"Content-Type: " + contentType + "\"";
             paramsStr += " -d \"";
-            int i=0;
-            for (Map.Entry<String, String> param : params.entrySet()) {
-                if (i>0) {
-                    paramsStr += "&";
-                }
-                paramsStr += param.getKey() + "=" + param.getValue();
-                i++;
-            }
+            paramsStr += Http.getEncoder(contentType).encode(params);
             paramsStr += "\"";
+        }
+        catch (Http.EncodingException | Http.UnknownContentType | NullPointerException e) {
+            e.printStackTrace();
         }
 
         return paramsStr;
