@@ -3,6 +3,14 @@ package bookingbugAPI.services;
 import bookingbugAPI.models.HttpException;
 import bookingbugAPI.models.PublicRoot;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.DatabaseTable;
+import com.j256.ormlite.table.TableUtils;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import helpers.Config;
@@ -15,6 +23,8 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -102,7 +112,17 @@ public class HttpService {
         int responseCode = 200;
         boolean throwError = false;
         HttpURLConnection urlConnection = null;
+        NetResponse cache = getDBResponse(url.toString(), method);
+
         try {
+
+            if(cache != null) {
+                CustomJsonRepresentationFactory representationFactory = new CustomJsonRepresentationFactory();
+                representationFactory.withFlag(RepresentationFactory.STRIP_NULLS);
+                Reader reader = new InputStreamReader(new ByteArrayInputStream(cache.resp.getBytes()));
+                return new HttpServiceResponse(representationFactory.readRepresentation(HAL_JSON, reader), method, contentType, params, auth_token);
+            }
+
             //http://stackoverflow.com/questions/7615645/ssl-handshake-alert-unrecognized-name-error-since-upgrade-to-java-1-7-0
             System.setProperty("jsse.enableSNIExtension", "false");
             Config config = new Config();
@@ -151,6 +171,8 @@ public class HttpService {
             in.close();
             returnString = response.toString();
 
+            storeResult(url.toString(), method, returnString);
+
             if (!testingMode) {
                 if(throwError) {
                     errorMessage = "The call to " + url.toString()
@@ -173,5 +195,86 @@ public class HttpService {
         } finally {
             if(urlConnection != null) urlConnection.disconnect();
         } throw new HttpException(errorMessage, returnString, responseCode);
+    }
+
+    private static NetResponse getDBResponse(String url, String method) {
+        Dao<NetResponse, Integer> respDao;
+        ConnectionSource connectionSource = null;
+        try {
+
+            // create our data-source for the database
+            connectionSource = new JdbcConnectionSource("jdbc:sqlite:test.db");
+            respDao = DaoManager.createDao(connectionSource, NetResponse.class);
+            TableUtils.createTableIfNotExists(connectionSource, NetResponse.class);
+
+            QueryBuilder<NetResponse, Integer> builder = respDao.queryBuilder();
+            builder.where().eq("url", url).and().eq("method", method);
+            List<NetResponse> responses = respDao.query(builder.prepare());
+            if(responses.size() > 0)
+                return responses.get(0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // destroy the data source which should close underlying connections
+            if (connectionSource != null) {
+                try {
+                    connectionSource.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+    private static void storeResult(String url, String method, String str) {
+
+        Dao<NetResponse, Integer> respDao;
+        ConnectionSource connectionSource = null;
+        try {
+
+            // create our data-source for the database
+            connectionSource = new JdbcConnectionSource("jdbc:sqlite:test.db");
+            respDao = DaoManager.createDao(connectionSource, NetResponse.class);
+            TableUtils.createTableIfNotExists(connectionSource, NetResponse.class);
+
+            NetResponse response = new NetResponse(url, method, str);
+            respDao.create(response);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // destroy the data source which should close underlying connections
+            if (connectionSource != null) {
+                try {
+                    connectionSource.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @DatabaseTable(tableName = "net_response")
+    public static class NetResponse {
+        @DatabaseField(generatedId = true)
+        private int id;
+
+        @DatabaseField
+        private String url;
+
+        @DatabaseField
+        private String method;
+
+        @DatabaseField
+        private String resp;
+
+        public NetResponse(){}
+
+        public NetResponse(String url, String method, String resp) {
+            this.url = url;
+            this.method = method;
+            this.resp = resp;
+        }
     }
 }

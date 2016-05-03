@@ -6,7 +6,7 @@
 
     <groupId>BookingBug-SDK</groupId>
     <artifactId>BookingBug-SDK</artifactId>
-    <version>1.8</version>
+    <version>1.9</version>
 
 
     <distributionManagement>
@@ -78,6 +78,18 @@
             <groupId>io.reactivex</groupId>
             <artifactId>rxjava</artifactId>
             <version>1.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.8.11.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.j256.ormlite</groupId>
+            <artifactId>ormlite-jdbc</artifactId>
+            <version>4.43</version>
         </dependency>
 
     </dependencies>
