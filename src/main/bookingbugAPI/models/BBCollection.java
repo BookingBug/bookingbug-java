@@ -83,6 +83,10 @@ public class BBCollection<T extends BBRoot> extends BBRoot implements Iterable<T
         return getRep().getResourcesByRel(collectionNameSpace).size();
     }
 
+    public boolean hasNext() {
+        return getLink("next") != null;
+    }
+
 
     public Iterator<T> iterator() {
         return new BBCollectionIterator(this);
