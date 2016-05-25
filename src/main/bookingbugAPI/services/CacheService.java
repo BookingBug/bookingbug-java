@@ -16,12 +16,24 @@ import java.util.List;
 public class CacheService  {
 
     SQLite db;
+    boolean mock;
 
-    public CacheService() {
-        db = new JDBC_Sqlite();
+    public CacheService(SQLite db, boolean mock) {
+        this.db = db;
+        this.mock = mock;
+    }
+
+    public static CacheService JDBC() {
+        return new CacheService(new JDBC_Sqlite(), false);
+    }
+
+    public static CacheService MOCK() {
+        return new CacheService(new JDBC_Sqlite(), true);
     }
 
     public void storeResult(String url, String method, String resp) {
+        if(mock) return;
+
         Dao<HttpService.NetResponse, Integer> respDao;
 
         try {
@@ -37,6 +49,7 @@ public class CacheService  {
     }
 
     public HttpService.NetResponse getDBResponse(String url, String method) {
+        if(mock) return null;
         try {
             db.createIfNotExists();
             Dao<HttpService.NetResponse, Integer> respDao = db.getDao();
@@ -67,7 +80,7 @@ public class CacheService  {
     /**
      * Implementation for SQLite with JDBC
      */
-    public final class JDBC_Sqlite implements SQLite {
+    public static final class JDBC_Sqlite implements SQLite {
 
         ConnectionSource connectionSource;
         Dao<HttpService.NetResponse, Integer> dao;

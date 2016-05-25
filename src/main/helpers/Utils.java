@@ -8,7 +8,9 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import com.theoryinpractise.halbuilder.api.Link;
+import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
+import helpers.hal_addon.CustomJsonRepresentationFactory;
 
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayInputStream;
@@ -70,11 +72,11 @@ public class Utils {
      * @param content
      * @return
      */
-    public static ContentRepresentation stringToContent(String content) {
-        JsonRepresentationFactory representationFactory = new JsonRepresentationFactory();
-        InputStream ins = new ByteArrayInputStream(content.getBytes());
-        Reader instr = new InputStreamReader(ins);
-        return representationFactory.readRepresentation(HAL_JSON, instr);
+    public static ContentRepresentation stringToContentRep(String content) {
+        CustomJsonRepresentationFactory representationFactory = new CustomJsonRepresentationFactory();
+        representationFactory.withFlag(RepresentationFactory.STRIP_NULLS);
+        Reader reader = new InputStreamReader(new ByteArrayInputStream(content.getBytes()));
+        return representationFactory.readRepresentation(HAL_JSON, reader);
     }
 
 

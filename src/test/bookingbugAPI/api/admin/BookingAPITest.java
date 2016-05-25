@@ -1,7 +1,6 @@
 package bookingbugAPI.api.admin;
 
 import bookingbugAPI.api.API;
-import bookingbugAPI.api.AdminAPI;
 import bookingbugAPI.api.AdminURLS;
 import bookingbugAPI.models.BBCollection;
 import bookingbugAPI.models.Booking;
@@ -42,7 +41,7 @@ public class BookingAPITest {
     public void getBookings(){
         Company company = getCompany();
 
-        API.APIBuilder builder = new API.APIBuilder().withCache(new CacheService()).withToken(token);
+        API.APIBuilder builder = new API.APIBuilder().withCache(CacheService.JDBC()).withAuthToken(token);
         API api = builder.build();
 
         try {

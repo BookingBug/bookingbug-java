@@ -276,5 +276,9 @@ public class HttpService {
             this.method = method;
             this.resp = resp;
         }
+
+        public String getResp() {
+            return resp;
+        }
     }
 }
