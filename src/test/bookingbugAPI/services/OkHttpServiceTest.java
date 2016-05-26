@@ -6,10 +6,14 @@ import com.squareup.okhttp.mockwebserver.Dispatcher;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.okhttp.mockwebserver.RecordedRequest;
+import helpers.HttpServiceResponse;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
@@ -37,6 +41,21 @@ public class OkHttpServiceTest {
             //Check auth token on protected path
             if(request.getPath().equals("/admin/") &&  !auth_token.equals(request.getHeader("Auth-Token")))
                 return new MockResponse().setResponseCode(401);
+
+            //Check post data
+            if(request.getPath().equals("/post/") && Objects.equals(request.getMethod(), "POST") && request.getBodySize() != 0) {
+                return new MockResponse().setResponseCode(201).setBody("{\"status\":\"201\"}");
+            }
+
+            //Check put data
+            if(request.getPath().equals("/put/") && Objects.equals(request.getMethod(), "PUT") && request.getBodySize() != 0) {
+                return new MockResponse().setResponseCode(201).setBody("{\"status\":\"updated\"}");
+            }
+
+            //Check delete data
+            if(request.getPath().equals("/delete/") && Objects.equals(request.getMethod(), "DELETE")) {
+                return new MockResponse().setResponseCode(201).setBody("{\"status\":\"deleted\"}");
+            }
 
             return new MockResponse().setResponseCode(200).setBody("{}");
         }
@@ -97,6 +116,115 @@ public class OkHttpServiceTest {
         ex = tryGet(httpService, adminURL);
         assertNull("No exception should be raised when auth_token is included on admin path", ex);
 
+        server.shutdown();
+    }
+
+    /**
+     * Test POST api
+     * @throws IOException
+     */
+    @Test
+    public void testPOST() throws IOException {
+        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withCache(CacheService.MOCK());
+        OkHttpService httpService = new OkHttpService(config);
+
+        MockWebServer server = new MockWebServer();
+        server.setDispatcher(dispatcher);
+        server.start();
+
+        HttpException ex = null;
+        HttpServiceResponse response = null;
+        URL postURL = server.url("/post/").url();
+
+        Map params = new HashMap();
+        params.put("param1", "val1");
+
+        try {
+            //With specific encoding
+            response = httpService.api_POST(postURL, HttpService.urlEncodedContentType, params);
+            assertEquals("Received status should be 201", response.getRep().getContent(), "{\"status\":\"201\"}");
+
+            //With default encoding
+            response = httpService.api_POST(postURL, params);
+            assertEquals("Received status should be 201", response.getRep().getContent(), "{\"status\":\"201\"}");
+        } catch (HttpException e) {
+            ex = e;
+        }
+        assertNull(ex);
+        server.shutdown();
+    }
+
+    /**
+     * Test PUT api
+     * @throws IOException
+     */
+    @Test
+    public void testPUT() throws IOException {
+        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withCache(CacheService.MOCK());
+        OkHttpService httpService = new OkHttpService(config);
+
+        MockWebServer server = new MockWebServer();
+        server.setDispatcher(dispatcher);
+        server.start();
+
+        HttpException ex = null;
+        HttpServiceResponse response = null;
+        URL putURL = server.url("/put/").url();
+
+        Map params = new HashMap();
+        params.put("param1", "val1");
+
+        try {
+            //With specific encoding
+            response = httpService.api_PUT(putURL, HttpService.urlEncodedContentType, params);
+            assertEquals("Received status should be 201", response.getRep().getContent(), "{\"status\":\"updated\"}");
+
+            //With default encoding
+            response = httpService.api_PUT(putURL, params);
+            assertEquals("Received status should be 201", response.getRep().getContent(), "{\"status\":\"updated\"}");
+        } catch (HttpException e) {
+            ex = e;
+        }
+        assertNull(ex);
+        server.shutdown();
+    }
+
+    /**
+     * Test DELETE api
+     * @throws IOException
+     */
+    @Test
+    public void testDELETE() throws IOException {
+        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withCache(CacheService.MOCK());
+        OkHttpService httpService = new OkHttpService(config);
+
+        MockWebServer server = new MockWebServer();
+        server.setDispatcher(dispatcher);
+        server.start();
+
+        HttpException ex = null;
+        HttpServiceResponse response = null;
+        URL deleteURL = server.url("/delete/").url();
+
+        Map params = new HashMap();
+        params.put("param1", "val1");
+
+        try {
+            //Without params
+            response = httpService.api_DELETE(deleteURL);
+            assertEquals("Received status should be 200", response.getRep().getContent(), "{\"status\":\"deleted\"}");
+
+            //With specific encoding
+            response = httpService.api_DELETE(deleteURL, HttpService.urlEncodedContentType, params);
+            assertEquals("Received status should be 201", response.getRep().getContent(), "{\"status\":\"deleted\"}");
+
+            //With default encoding
+            response = httpService.api_DELETE(deleteURL, params);
+            assertEquals("Received status should be 201", response.getRep().getContent(), "{\"status\":\"deleted\"}");
+        } catch (HttpException e) {
+            ex = e;
+        }
+        assertNull(ex);
         server.shutdown();
     }
 
