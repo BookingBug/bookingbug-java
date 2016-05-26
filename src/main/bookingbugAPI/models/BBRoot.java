@@ -5,17 +5,18 @@ import com.damnhandy.uri.template.UriTemplate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import com.theoryinpractise.halbuilder.api.Link;
 import com.theoryinpractise.halbuilder.api.RepresentationException;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 import helpers.Config;
 import helpers.HttpServiceResponse;
+import org.joda.time.DateTime;
 
 import java.io.*;
 import java.net.URL;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON;
@@ -26,7 +27,7 @@ import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON
  * Child classes should implement getters for relevant parts from the response.
  */
 @JsonIgnoreProperties({
-    "rep", "auth_token", "id", "data", "links"
+        "rep", "auth_token", "id", "data", "links"
 })
 public class BBRoot {
 
@@ -46,7 +47,7 @@ public class BBRoot {
     }
 
 
-    public BBRoot(String auth_token){
+    public BBRoot(String auth_token) {
         this.auth_token = auth_token;
     }
 
@@ -62,13 +63,13 @@ public class BBRoot {
 
 
     public BBRoot getLoginSchema() throws IOException {
-        URL url = new URL (UriTemplate.fromTemplate(response.getRep().getLinkByRel("new_login").getHref()).expand());
+        URL url = new URL(UriTemplate.fromTemplate(response.getRep().getLinkByRel("new_login").getHref()).expand());
         HttpServiceResponse response = HttpService.api_GET(url);
         return new BBRoot(response);
     }
 
 
-    public Login auth(Map<String,String> params) throws IOException{
+    public Login auth(Map<String, String> params) throws IOException {
         HttpServiceResponse resp;
         try {
             URL url = new URL(UriTemplate.fromTemplate(new Config().serverUrl + "/login").expand());
@@ -92,18 +93,18 @@ public class BBRoot {
     }
 
 
-    public Login auth(Map<String,String> params, Link link) throws IOException{
-        URL url = new URL (link.getHref());
+    public Login auth(Map<String, String> params, Link link) throws IOException {
+        URL url = new URL(link.getHref());
         HttpServiceResponse resp = HttpService.api_POST(url, params);
         auth_token = (String) resp.getRep().getValue("auth_token");
         return new Login(resp);
     }
 
 
-    public String get(String key){
+    public String get(String key) {
         String val = null;
-        try{
-            val = (String)response.getRep().getValue(key);
+        try {
+            val = (String) response.getRep().getValue(key);
         } catch (RepresentationException e) {
             //e.printStackTrace();
         }
@@ -112,16 +113,19 @@ public class BBRoot {
 
     public boolean getBoolean(String key, boolean defaultValue) {
         String val = this.get(key);
-        if(val != null) return Boolean.parseBoolean(val);
+        if (val != null) return Boolean.parseBoolean(val);
         return defaultValue;
     }
 
     public int getInteger(String key, int defaultValue) {
         String val = this.get(key);
-        if(val != null) return Integer.parseInt(val);
+        if (val != null) return Integer.parseInt(val);
         return defaultValue;
     }
 
+    public DateTime getDate(String key) {
+        return new DateTime(get(key));
+    }
 
     public String getAuth_token() {
         return auth_token;
@@ -171,7 +175,7 @@ public class BBRoot {
 
 
     public String getSelf() {
-        if(response.getRep().getResourceLink() != null)
+        if (response.getRep().getResourceLink() != null)
             return response.getRep().getResourceLink().getHref();
         return "";
     }
