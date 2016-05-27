@@ -1,0 +1,21 @@
+{
+  "id": 32352,
+  "address1": "add test",
+  "address2": "add 2 test",
+  "address3": "add 3 test",
+  "address4": "add 3 test",
+  "address5": "",
+  "postcode": "me19 9gj",
+  "country": "United Kingdom",
+  "lat": 55.378051,
+  "long": -3.435973,
+  "map_url": "",
+  "map_marker": "United+Kingdom",
+  "phone": "+1 2032879111",
+  "homephone": "2032879111",
+  "_links": {
+    "self": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/addresses/32352"
+    }
+  }
+}

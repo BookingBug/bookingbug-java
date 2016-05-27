@@ -46,6 +46,7 @@ public class BBRoot {
     public String id;
     public Map<String, String> data;
     public int INTEGER_DEFAULT_VALUE = 0;
+    public double DOUBLE_DEFAULT_VALUE = 0.0;
     public boolean BOOLEAN_DEFAULT_VALUE = false;
 
     protected String curl = "N/A";
@@ -133,7 +134,7 @@ public class BBRoot {
         return defaultValue;
     }
 
-    public double getDouble(String key, int defaultValue) {
+    public double getDouble(String key, double defaultValue) {
         String val = this.get(key);
         if (val != null) return Double.parseDouble(val);
         return defaultValue;
