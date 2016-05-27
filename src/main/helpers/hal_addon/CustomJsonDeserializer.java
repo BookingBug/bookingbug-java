@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -37,5 +38,14 @@ public class CustomJsonDeserializer extends UntypedObjectDeserializer {
     @Override
     public Object getNullValue() {
         return "";
+    }
+
+    public static ObjectMapper getMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+
+        SimpleModule simpleModule = new SimpleModule();
+        simpleModule.addDeserializer(Object.class, new CustomJsonDeserializer());
+        mapper.registerModule(simpleModule);
+        return mapper;
     }
 }

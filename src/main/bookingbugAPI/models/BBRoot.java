@@ -3,20 +3,28 @@ package bookingbugAPI.models;
 import bookingbugAPI.services.HttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import com.theoryinpractise.halbuilder.api.Link;
+import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
 import com.theoryinpractise.halbuilder.api.RepresentationException;
+import com.theoryinpractise.halbuilder.impl.representations.ContentBasedRepresentation;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 import helpers.Config;
 import helpers.HttpServiceResponse;
+import helpers.Utils;
+import helpers.hal_addon.CustomJsonDeserializer;
 import org.joda.time.DateTime;
+import org.json.simple.JSONObject;
 
 import java.io.*;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON;
@@ -37,6 +45,8 @@ public class BBRoot {
     protected String auth_token = null;
     public String id;
     public Map<String, String> data;
+    public int INTEGER_DEFAULT_VALUE = 0;
+    public boolean BOOLEAN_DEFAULT_VALUE = false;
 
     protected String curl = "N/A";
 
@@ -123,8 +133,66 @@ public class BBRoot {
         return defaultValue;
     }
 
+    public double getDouble(String key, int defaultValue) {
+        String val = this.get(key);
+        if (val != null) return Double.parseDouble(val);
+        return defaultValue;
+    }
+
     public DateTime getDate(String key) {
         return new DateTime(get(key));
+    }
+
+    public List<String> getArray(String key) {
+        List<String> val = null;
+        try {
+            val = (List<String>) (response.getRep().getValue(key));
+        } catch (RepresentationException e) {
+            e.printStackTrace();
+        }
+        return val;
+    }
+
+    //TODO: improve this
+    public <T> T getObject(String key, Class<T> type) {
+
+        try {
+            ObjectMapper mapper = CustomJsonDeserializer.getMapper();
+            String json_obj = mapper.writeValueAsString(response.getRep().getValue(key));
+            return mapper.readValue(json_obj, type);
+        } catch (RepresentationException | IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public <T> List<T> getObjects(String key, Class<T> type) {
+        List<T> val = null;
+
+        try {
+            ObjectMapper mapper = CustomJsonDeserializer.getMapper();
+            String json_obj = mapper.writeValueAsString(response.getRep().getValue(key));
+            val = mapper.readValue(json_obj, new TypeReference<List<T>>(){});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return val;
+    }
+
+    //TODO: fix this
+    public ContentRepresentation getResource(String key) {
+        try {
+            List<? extends ReadableRepresentation> entries = response.getRep().getResourcesByRel(key);
+
+            for (ReadableRepresentation item : entries) {
+                if(item instanceof ContentBasedRepresentation)
+                    return (ContentRepresentation) item;
+            }
+        } catch (RepresentationException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String getAuth_token() {

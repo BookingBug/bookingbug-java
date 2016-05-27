@@ -1,0 +1,57 @@
+{
+	"id": 4868338,
+	"value": "",
+	"price": 0.0,
+	"question_id": 15571,
+	"admin_only": false,
+	"important": false,
+	"_embedded": {
+		"question": {
+			"id": 15571,
+			"name": "What type of pet?",
+			"required": true,
+			"important": false,
+			"admin_only": false,
+			"applies_to": 0,
+			"ask_member": true,
+			"detail_type": "select-price",
+			"options": [{
+				"name": "Dog",
+				"price": -1000,
+				"is_default": false,
+				"id": 27946
+			}, {
+				"name": "Cat",
+				"price": 0,
+				"is_default": false,
+				"id": 27947
+			}, {
+				"name": "Rabbit",
+				"price": 0,
+				"is_default": false,
+				"id": 27948
+			}],
+			"settings": {},
+			"price": 0,
+			"price_per_booking": false,
+			"outcome": false,
+			"_links": {
+				"self": {
+					"href": "https://uk.bookingbug.com/api/v1/37901/questions/15571"
+				}
+			}
+		}
+	},
+	"question_text": "What type of pet?",
+	"outcome": false,
+	"company_id": 37901,
+	"_links": {
+		"self": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/answers/4868338"
+		},
+		"question": {
+			"title": "What type of pet?",
+			"href": "https://uk.bookingbug.com/api/v1/37901/questions/15571"
+		}
+	}
+}
