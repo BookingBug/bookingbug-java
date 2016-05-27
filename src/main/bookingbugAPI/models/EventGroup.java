@@ -1,11 +1,6 @@
 package bookingbugAPI.models;
 
-import bookingbugAPI.api.PublicURLS;
-import bookingbugAPI.services.HttpService;
 import helpers.HttpServiceResponse;
-
-import java.io.IOException;
-import java.net.URL;
 
 
 public class EventGroup extends BBRoot {
@@ -23,4 +18,39 @@ public class EventGroup extends BBRoot {
 
     public EventGroup() {}
 
+    /**
+     * Returns the id
+     *
+     * @return The id associated with the current EventGroup object
+     */
+    public Integer getId() {
+        return getInteger("id", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the name.
+     *
+     * @return The name associated with the current EventGroup object
+     */
+    public String getName() {
+        return get("name");
+    }
+
+    /**
+     * Returns the description.
+     *
+     * @return The description associated with the current EventGroup object
+     */
+    public String getDescription() {
+        return get("description");
+    }
+
+    /**
+     * Returns the imagesLink.
+     *
+     * @return The imagesLink associated with the current EventGroup object
+     */
+    public String getImagesLink() {
+        return getLink("images");
+    }
 }
