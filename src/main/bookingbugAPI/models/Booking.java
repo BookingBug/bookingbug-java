@@ -11,51 +11,18 @@ import helpers.HttpServiceResponse;
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.Logger;
+
+import org.joda.time.DateTime;
+
+import java.util.List;
+import java.util.Map;
+
 
 
 public class Booking extends BBRoot {
-
-    /*
-    private String updated_at;
-    private String company_id;
-    private String session_id;
-    private String settings;
-    private String questions;
-    private String on_waitlist;
-    private String duration;
-    private String client_email;
-    private String id;
-    private String slot_id;
-    private String is_cancelled;
-    private String client_name;
-    private String client_mobile;
-    private String attended;
-    private String full_describe;
-    private String channel;
-    private String notes;
-    private String service_id;
-    private String client_id;
-    private String service_name;
-    private String status;
-    private String multi_status;
-    private String created_at;
-    private String price;
-    private String datetime;
-    private String resource_name;
-    private String slot_settings;
-    private String quantity;
-    private String booking_updated;
-    private String client_phone;
-    private String resource_id;
-    private String purchase_id;
-    private String member_id;
-    private String paid;
-    private String purchase_ref;
-    */
 
     public Booking(HttpServiceResponse httpServiceResponse, String auth_token) {
         super(httpServiceResponse, auth_token);
@@ -65,6 +32,7 @@ public class Booking extends BBRoot {
         super(response);
     }
 
+    public Booking(){}
 
     public BBRoot getSchema() throws IOException {
         String link = getRep().getLinkByRel("edit").getHref();
@@ -90,45 +58,16 @@ public class Booking extends BBRoot {
      */
     public Booking bookingCancel_Admin(BookingCancelParams bcParams) throws IOException {
         URL url = new URL(AdminURLS.Bookings.bookingCancel().set("companyId", getCompany_id()).set("id", this.id).expand());
-        return new Booking(HttpService.api_DELETE(url, HttpService.jsonContentType, bcParams.getParams(),  auth_token), auth_token);
+        return new Booking(HttpService.api_DELETE(url, HttpService.jsonContentType, bcParams.getParams(), auth_token), auth_token);
     }
 
-
-    public String getFirstName() {
-        return get("first_name");
-    }
-
-    public String getLastName() {
-        return get("last_name");
-    }
-
-    public String getEmail() {
-        return get("email");
-    }
-
-    public String getAddress1() {
-        return get("address1");
-    }
-
-    public String getAddress2() {
-        return get("address2");
-    }
-
-    public String getAddress3() {
-        return get("address3");
-    }
-
-    public String getAddress4() {
-        return get("address4");
-    }
-
-    public String getPostCode() {
-        return get("postcode");
-    }
-
-
-    public String getDuration() {
-        return get("duration");
+    /**
+     * Returns the duration.
+     *
+     * @return The duration associated with the current Booking object.
+     */
+    public Integer getDuration() {
+        return getInteger("duration", INTEGER_DEFAULT_VALUE);
     }
 
     public String getUpdated_at() {
@@ -139,12 +78,13 @@ public class Booking extends BBRoot {
         return get("company_id");
     }
 
-    public String getSession_id() {
-        return get("session_id");
-    }
 
-    public String getSettings() {
-        return get("settings");
+    /**
+     * Returns the settings. Settings consists of an obfuscated id.
+     * @return The settings associated with the current Booking object.
+     */
+    public Map getSettings() {
+        return getObject("settings", Map.class);
     }
 
     public String getQuestions() {
@@ -179,10 +119,20 @@ public class Booking extends BBRoot {
         return get("client_mobile");
     }
 
-    public String getAttended() {
-        return get("attended");
+    /**
+     * Returns true if it's attended, false otherwise.
+     *
+     * @return The attended attribute associated with the current Booking object.
+     */
+    public Boolean getAttended() {
+        return getBoolean("attended", BOOLEAN_DEFAULT_VALUE);
     }
 
+    /**
+     * Returns the full_describe of the booking.
+     *
+     * @return The full_describe associated with the current Booking object.
+     */
     public String getFull_describe() {
         return get("full_describe");
     }
@@ -191,8 +141,13 @@ public class Booking extends BBRoot {
         return get("channel");
     }
 
-    public String getNotes() {
-        return get("notes");
+    /**
+     * Returns the notes map.
+     *
+     * @return The notes associated with the current Booking object.
+     */
+    public Notes getNotes() {
+        return getObject("notes", Notes.class);
     }
 
     public String getService_id() {
@@ -211,8 +166,13 @@ public class Booking extends BBRoot {
         return get("status");
     }
 
-    public String getMulti_status() {
-        return get("multi_status");
+    /**
+     * Returns the multi-status map.
+     *
+     * @return The multi-status map associated with the current Booking object.
+     */
+    public Map getMulti_status() {
+        return getObject("multi_status", Map.class);
     }
 
     public String getCreated_at() {
@@ -244,7 +204,7 @@ public class Booking extends BBRoot {
         try {
             Calendar cal = Calendar.getInstance();
             cal.setTime(startDateTime);
-            cal.add(Calendar.MINUTE, Integer.parseInt(getDuration()));
+            cal.add(Calendar.MINUTE, getDuration());
             endDateTime = cal.getTime();
         }catch (Exception e){
             log.warning("Cannot get booking end datetime: " + e.toString());
@@ -256,8 +216,13 @@ public class Booking extends BBRoot {
         return get("resource_name");
     }
 
-    public String getSlot_settings() {
-        return get("slot_settings");
+    /**
+     * Returns the slot settings.
+     *
+     * @return The slot settings associated with the current Booking object.
+     */
+    public Map getSlot_settings() {
+        return getObject("slot_settings", Map.class);
     }
 
     public String getQuantity() {
@@ -291,4 +256,123 @@ public class Booking extends BBRoot {
     public String getPurchase_ref() {
         return get("purchase_ref");
     }
+
+    /**
+     * Returns the client link.
+     *
+     * @return The client link associated with the current Booking object.
+     */
+    public String getClientLink() {
+        return getLink("client");
+    }
+
+    /**
+     * Returns the check in link.
+     *
+     * @return The check in link associated with the current Booking object.
+     */
+    public String getCheckInLink() {
+        return getLink("check_in");
+    }
+
+    /**
+     * Returns the questions link.
+     *
+     * @return The questions link associated with the current Booking object.
+     */
+    public String getQuestionsLink() {
+        return getLink("questions");
+    }
+
+    /**
+     * Returns the edit link.
+     *
+     * @return The edit link associated with the current Booking object.
+     */
+    public String getEditLink() {
+        return getLink("edit");
+    }
+
+    /**
+     * Returns the event groups link.
+     *
+     * @return The event groups link associated with the current Booking object.
+     */
+    public String getEventGroupsLink() {
+        return getLink("event_groups");
+    }
+
+    /**
+     * Returns the event chain link.
+     *
+     * @return The event chain link associated with the current Booking object.
+     */
+    public String getEventChainLink() {
+        return getLink("event_chain");
+    }
+
+    /**
+     * Returns the cancel link.
+     *
+     * @return The cancel link associated with the current Booking object.
+     */
+    public String getCancelLink() {
+        return getLink("cancel");
+    }
+
+    /**
+     * Returns the address link.
+     *
+     * @return The address link associated with the current Booking object.
+     */
+    public String getAddressLink() {
+        return getLink("address");
+    }
+
+    /**
+     * Returns the event chain id.
+     *
+     * @return The event chain id associated with the current Booking object.
+     */
+    public Integer getEventChainId() {
+        return getInteger("event_chain_id", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the client resource.
+     *
+     * @return The client resource associated with the current Booking object.
+     */
+    public Client getClient() {
+        return new Client(new HttpServiceResponse(getResource("client")));
+    }
+
+    /**
+     * Returns the answer array resource.
+     *
+     * @return The answers resource associated with the current Booking object.
+     */
+    public BBCollection<Answer> getAnswers() {
+        return new BBCollection<>(new HttpServiceResponse(getResource("answers")), auth_token, Answer.class);
+    }
+
+
+    /**
+     * Returns the survey answers summary resource.
+     *
+     * @return The survey answers summary resource associated with the current Booking object.
+     */
+    public List<String> getSurveyAnswersSummary() {
+        return getArray("survey_answers_summary");
+    }
+
+    /**
+     * Returns the minimum date and time of the booking cancel, with {@link DateTime DateTime()} as date format.
+     *
+     * @return The minimum date and time of the booking cancel associated with the current Booking object.
+     */
+    public DateTime getMinCancellationTime() {
+        return getDate("min_cancellation_time");
+    }
+
 }

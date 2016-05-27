@@ -1,0 +1,241 @@
+{
+	"id": 2336940,
+	"full_describe": "Nutrition Consulting with Barry - Consultation Room 1",
+	"resource_name": "Consultation Room 1",
+	"person_name": "Barry",
+	"service_name": "Nutrition Consulting",
+	"resource_id": 23352,
+	"member_id": 900649,
+	"client_name": "Conor McCafferson",
+	"client_email": "conor.cafferkey@gmail.com",
+	"client_phone": "",
+	"client_mobile": "+44 (0)7472 391991",
+	"service_id": 52718,
+	"datetime": "2013-12-03T15:00:00+02:00",
+	"duration": 45,
+	"on_waitlist": false,
+	"company_id": 37901,
+	"attended": true,
+	"booking_updated": "2013-12-04T01:22:25Z",
+	"updated_at": "2013-12-03T14:34:07Z",
+	"created_at": "2013-12-03T14:34:07Z",
+	"client_id": 900649,
+	"person_id": 16246,
+	"price": 0,
+	"paid": 0,
+	"quantity": 1,
+	"is_cancelled": false,
+	"multi_status": {"here":"here"},
+	"purchase_id": 1941779,
+	"purchase_ref": "6DJzrNwXnHXbMK1pMTk0MTc3OQ%3D%3D",
+	"event_chain_id": 3,
+	"notes": {
+		"public": [],
+		"private": []
+	},
+	"channel": "Client",
+	"status": 2,
+	"_embedded": {
+		"client": {
+			"first_name": "Conor",
+			"last_name": "McCafferson",
+			"email": "conor.cafferkey@gmail.com",
+			"address1": "",
+			"address2": "",
+			"address3": "",
+			"address4": "",
+			"postcode": "",
+			"country": "United Kingdom",
+			"phone": "",
+			"mobile": "7472391991",
+			"id": 900649,
+			"member_type": 1,
+			"reference": "",
+			"files": [],
+			"answers": [{
+				"question_id": 17353,
+				"name": "Private Notes",
+				"answer": "123"
+			}],
+			"deleted": false,
+			"phone_prefix": "44",
+			"mobile_prefix": "44",
+			"q": {
+				"17353": {
+					"answer": "123"
+				}
+			},
+			"_links": {
+				"self": {
+					"href": "https://uk.bookingbug.com/api/v1/admin/37901/client/900649"
+				},
+				"bookings": {
+					"href": "https://uk.bookingbug.com/api/v1/admin/37901/bookings{/id}?client_id=900649{&start_date,end_date,page,per_page,include_cancelled,modified_since,slot_id,event_id,resource_id,service_id,person_id}",
+					"templated": true
+				},
+				"pre_paid_bookings": {
+					"href": "https://uk.bookingbug.com/api/v1/37901/members/900649/pre_paid_bookings{?include_invalid,event_id}",
+					"templated": true
+				},
+				"questions": {
+					"href": "https://uk.bookingbug.com/api/v1/37901/client_details"
+				},
+				"edit": {
+					"href": "https://uk.bookingbug.com/api/v1/admin/37901/client/900649/edit"
+				}
+			}
+		},
+		"answers": [{
+			"id": 3696983,
+			"value": "whatever",
+			"price": 0.0,
+			"question_id": 15574,
+			"admin_only": false,
+			"important": false,
+			"_embedded": {
+				"question": {
+					"id": 15574,
+					"name": "What does your pet usually eat?",
+					"required": false,
+					"important": false,
+					"admin_only": false,
+					"applies_to": 0,
+					"ask_member": true,
+					"detail_type": "text_field",
+					"settings": {},
+					"price": 0,
+					"price_per_booking": false,
+					"outcome": false,
+					"_links": {
+						"self": {
+							"href": "https://uk.bookingbug.com/api/v1/37901/questions/15574"
+						}
+					}
+				}
+			},
+			"question_text": "What does your pet usually eat?",
+			"outcome": false,
+			"company_id": 37901,
+			"_links": {
+				"self": {
+					"href": "https://uk.bookingbug.com/api/v1/37901/answers/3696983"
+				},
+				"question": {
+					"title": "What does your pet usually eat?",
+					"href": "https://uk.bookingbug.com/api/v1/37901/questions/15574"
+				}
+			}
+		}, {
+			"id": 3696984,
+			"value": "Dog",
+			"price": 0.0,
+			"question_id": 15571,
+			"admin_only": false,
+			"important": false,
+			"_embedded": {
+				"question": {
+					"id": 15571,
+					"name": "What type of pet?",
+					"required": true,
+					"important": false,
+					"admin_only": false,
+					"applies_to": 0,
+					"ask_member": true,
+					"detail_type": "select-price",
+					"options": [{
+						"name": "Dog",
+						"price": -1000,
+						"is_default": false,
+						"id": 27946
+					}, {
+						"name": "Cat",
+						"price": 0,
+						"is_default": false,
+						"id": 27947
+					}, {
+						"name": "Rabbit",
+						"price": 0,
+						"is_default": false,
+						"id": 27948
+					}],
+					"settings": {},
+					"price": 0,
+					"price_per_booking": false,
+					"outcome": false,
+					"_links": {
+						"self": {
+							"href": "https://uk.bookingbug.com/api/v1/37901/questions/15571"
+						}
+					}
+				}
+			},
+			"question_text": "What type of pet?",
+			"outcome": false,
+			"company_id": 37901,
+			"_links": {
+				"self": {
+					"href": "https://uk.bookingbug.com/api/v1/37901/answers/3696984"
+				},
+				"question": {
+					"title": "What type of pet?",
+					"href": "https://uk.bookingbug.com/api/v1/37901/questions/15571"
+				}
+			}
+		}]
+	},
+	"slot_id": 5452882,
+	"settings": {},
+	"slot_settings": {},
+	"answers_summary": [{
+		"question_id": 15574,
+		"name": "What does your pet usually eat?",
+		"answer": "whatever"
+	}, {
+		"question_id": 15571,
+		"name": "What type of pet?",
+		"answer": "Dog"
+	}],
+	"survey_answers_summary": ["test1","test2"],
+	"questions": {
+		"15574": {
+			"answer": "whatever"
+		},
+		"15571": {
+			"answer": "Dog"
+		}
+	},
+	"min_cancellation_time": "2015-12-08T00:00:00+00:00",
+	"_links": {
+		"self": {
+			"href": "https://uk.bookingbug.com/api/v1/admin/37901/bookings/2336940"
+		},
+		"client": {
+			"href": "https://uk.bookingbug.com/api/v1/admin/37901/client/900649"
+		},
+		"check_in": {
+			"href": "https://uk.bookingbug.com/api/v1/bookings/2336940/check_in"
+		},
+		"questions": {
+			"href": "https://uk.bookingbug.com/api/v1/admin/37901/questions?detail_group_id=19492"
+		},
+		"event_groups": {
+			"title": "Our Events Group",
+			"href": "https://assist-dev.bookingbug.com/api/v1/37018/event_groups/48320"
+		},
+		"event_chain": {
+			"title": "My Recurring Event 1",
+			"href": "https://assist-dev.bookingbug.com/api/v1/37018/event_chains/3{?member_level_id}",
+			"templated": true
+		},
+		"edit": {
+			"href": "https://uk.bookingbug.com/api/v1/admin/37901/bookings/2336940/edit"
+		},
+		"cancel": {
+			"href": "https://uk.bookingbug.com/api/v1/admin/37901/bookings/2336940/cancel{?notify,cancel_reason}",
+			"templated": true
+		},
+		"address": {
+			"href": "https://assist-dev.bookingbug.com/api/v1/37018/addresses/30185"
+		}
+	}
+}
