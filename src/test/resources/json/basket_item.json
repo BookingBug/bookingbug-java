@@ -1,0 +1,52 @@
+{
+  "event_id": 26,
+  "person_id": 15288,
+  "service_id": 48322,
+  "price": 0,
+  "num_book": 1,
+  "person_name": "Staff 1",
+  "service_name": "Initial Consultation",
+  "status": 4,
+  "id": "ef08cc44e3e140b8",
+  "date": "2016-04-21",
+  "time": 540,
+  "questions": [
+    {
+      "id": 4
+    },
+    {
+      "id": 6
+    },
+    {
+      "id": 8
+    }
+  ],
+  "duration": 75,
+  "settings": {
+    "resource": -1,
+    "person": -1,
+    "earliest_time": "2016-04-20T14:15:00.000Z"
+  },
+  "total_price": 0,
+  "_embedded": {},
+  "_links": {
+    "self": {
+      "href": "https://tucker-allen-dev.bookingbug.com/api/v1/37003/basket/ef08cc44e3e140b8"
+    },
+    "attachment": {
+      "href": "https://tucker-allen-dev.bookingbug.com/api/v1/37003/basket/ef08cc44e3e140b8/attach/"
+    },
+    "add_attachment": {
+      "href": "https://tucker-allen-dev.bookingbug.com/api/v1/37003/basket/ef08cc44e3e140b8/attach"
+    },
+    "person": {
+      "href": "https://tucker-allen-dev.bookingbug.com/api/v1/37003/people/15288"
+    },
+    "service": {
+      "href": "https://tucker-allen-dev.bookingbug.com/api/v1/37003/services/48322"
+    },
+    "company": {
+      "href": "https://tucker-allen-dev.bookingbug.com/api/v1/company/37003"
+    }
+  }
+}

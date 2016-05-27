@@ -27,7 +27,7 @@ public class Option extends BBRoot{
      *
      * @return The is default attribute associated with the current Option object.
      */
-    public Boolean getIs_default() {
+    public Boolean getIsDefault() {
         return getBoolean("is_default", BOOLEAN_DEFAULT_VALUE);
     }
 
