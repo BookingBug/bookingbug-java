@@ -1,70 +1,55 @@
 package bookingbugAPI.models;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import helpers.HttpServiceResponse;
 import helpers.Utils;
 import org.joda.time.DateTime;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.io.*;
 
 import static org.junit.Assert.assertTrue;
 
 public class EventTest extends ModelTest {
 
-    private JSONObject jsonObject;
+    private JsonNode jsonNode;
 
     @Override
     @Before
     public void setUp() {
-        ClassLoader classLoader = getClass().getClassLoader();
-        String fileName = null;
-        try {
-            fileName = classLoader.getResource("json/event.json").getFile();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-
-        JSONParser parser = new JSONParser();
-        try {
-             jsonObject = (JSONObject) parser.parse(new FileReader(fileName));
-        } catch (ParseException | IOException e) {
-            e.printStackTrace();
-        }
+        jsonNode = getJSON("json/event.json");
     }
 
     @Override
     @Test
     public void modelInit() throws java.text.ParseException {
-        Event event = new Event(new HttpServiceResponse(Utils.stringToContentRep(jsonObject.toString())));
-        JSONObject jsonLinks = (JSONObject) jsonObject.get("_links");
-        assertTrue(event.getId().toString().equals(jsonObject.get("id").toString()));
-        assertTrue(event.getDatetime().equals(new DateTime(jsonObject.get("datetime").toString())));
-        assertTrue(event.getDescription().equals(jsonObject.get("description").toString()));
-        assertTrue(event.getStatus().toString().equals(jsonObject.get("status").toString()));
-        assertTrue(event.getSpacesHeld().toString().equals(jsonObject.get("spaces_held").toString()));
-        assertTrue(event.getSpacesBooked().toString().equals(jsonObject.get("spaces_booked").toString()));
-        assertTrue(event.getSpacesReserved().toString().equals(jsonObject.get("spaces_reserved").toString()));
-        assertTrue(event.getSpacesBlocked().toString().equals(jsonObject.get("spaces_blocked").toString()));
-        assertTrue(event.getNumSpaces().toString().equals(jsonObject.get("num_spaces").toString()));
-        assertTrue(event.getSpacesWait().toString().equals(jsonObject.get("spaces_wait").toString()));
-        assertTrue(event.getEventChainId().toString().equals(jsonObject.get("event_chain_id").toString()));
-        assertTrue(event.getServiceId().toString().equals(jsonObject.get("service_id").toString()));
-        assertTrue(event.getDuration().toString().equals(jsonObject.get("duration").toString()));
-        assertTrue(event.getPrice().toString().equals(jsonObject.get("price").toString()));
-        assertTrue(event.getEventGroupsLink().equals(((JSONObject) jsonLinks.get("event_groups")).get("href")));
-        assertTrue(event.getEventChainsLink().equals(((JSONObject) jsonLinks.get("event_chains")).get("href")));
-        assertTrue(event.getBookLink().equals(((JSONObject) jsonLinks.get("book")).get("href")));
+        Event event = new Event(new HttpServiceResponse(Utils.stringToContentRep(jsonNode.toString())));
+        JsonNode jsonLinks = jsonNode.get("_links");
+
+        assertTrue(event.getId().equals(jsonNode.get("id").intValue()));
+        assertTrue(event.getDatetime().equals(new DateTime(jsonNode.get("datetime").textValue())));
+        assertTrue(event.getDescription().equals(jsonNode.get("description").textValue()));
+        assertTrue(event.getStatus().equals(jsonNode.get("status").intValue()));
+        assertTrue(event.getSpacesHeld().equals(jsonNode.get("spaces_held").intValue()));
+        assertTrue(event.getSpacesBooked().equals(jsonNode.get("spaces_booked").intValue()));
+        assertTrue(event.getSpacesReserved().equals(jsonNode.get("spaces_reserved").intValue()));
+        assertTrue(event.getSpacesBlocked().equals(jsonNode.get("spaces_blocked").intValue()));
+        assertTrue(event.getNumSpaces().equals(jsonNode.get("num_spaces").intValue()));
+        assertTrue(event.getSpacesWait().equals(jsonNode.get("spaces_wait").intValue()));
+        assertTrue(event.getEventChainId().equals(jsonNode.get("event_chain_id").intValue()));
+        assertTrue(event.getServiceId().equals(jsonNode.get("service_id").intValue()));
+        assertTrue(event.getDuration().equals(jsonNode.get("duration").intValue()));
+        assertTrue(event.getPrice().equals(jsonNode.get("price").intValue()));
+        assertTrue(event.getEventGroupsLink().equals((jsonLinks.get("event_groups")).get("href").textValue()));
+        assertTrue(event.getEventChainsLink().equals((jsonLinks.get("event_chains")).get("href").textValue()));
+        assertTrue(event.getBookLink().equals((jsonLinks.get("book")).get("href").textValue()));
+        // TODO: 01.06.2016 Implement and Test getTicketSpaces()
     }
 
     @Override
     @After
     public void tearDown() {
-        jsonObject = null;
+        jsonNode = null;
     }
 
 }

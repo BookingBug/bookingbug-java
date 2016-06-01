@@ -1,8 +1,8 @@
 package bookingbugAPI.models;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import helpers.HttpServiceResponse;
 import helpers.Utils;
-import org.json.simple.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,37 +12,37 @@ import java.text.ParseException;
 import static org.junit.Assert.assertTrue;
 
 
-public class AdminTest extends ModelTest{
-    private JSONObject jsonObject;
+public class AdminTest extends ModelTest {
+    private JsonNode jsonNode;
 
     @Override
     @Before
     public void setUp() {
-        jsonObject = getJSON("json/admin.json");
+        jsonNode = getJSON("json/admin.json");
     }
 
     @Override
     @Test
     public void modelInit() throws ParseException {
-        Administrator admin = new Administrator(new HttpServiceResponse(Utils.stringToContentRep(jsonObject.toString())));
-        JSONObject jsonLinks = (JSONObject) jsonObject.get("_links");
+        Administrator admin = new Administrator(new HttpServiceResponse(Utils.stringToContentRep(jsonNode.toString())));
+        JsonNode jsonLinks = jsonNode.get("_links");
 
-        assertTrue(admin.getName().equals(jsonObject.get("name")));
-        assertTrue(admin.getEmail().equals(jsonObject.get("email")));
-        assertTrue(admin.getRole().equals(jsonObject.get("role")));
-        assertTrue(admin.getCompanyName().equals(jsonObject.get("company_name")));
-        assertTrue(admin.getCompanyId().toString().equals(jsonObject.get("company_id").toString()));
-        assertTrue(admin.getPersonId().toString().equals(jsonObject.get("person_id").toString()));
-        assertTrue(admin.getEditLink().equals(((JSONObject) jsonLinks.get("edit")).get("href")));
-        assertTrue(admin.getCompanyLink().equals(((JSONObject) jsonLinks.get("company")).get("href")));
-        assertTrue(admin.getPersonLink().equals(((JSONObject) jsonLinks.get("person")).get("href")));
-        assertTrue(admin.getLoginLink().equals(((JSONObject) jsonLinks.get("login")).get("href")));
-        assertTrue(admin.getBaseLoginLink().equals(((JSONObject) jsonLinks.get("base_login")).get("href")));
+        assertTrue(admin.getName().equals(jsonNode.get("name").textValue()));
+        assertTrue(admin.getEmail().equals(jsonNode.get("email").textValue()));
+        assertTrue(admin.getRole().equals(jsonNode.get("role").textValue()));
+        assertTrue(admin.getCompanyName().equals(jsonNode.get("company_name").textValue()));
+        assertTrue(admin.getCompanyId().equals(jsonNode.get("company_id").intValue()));
+        assertTrue(admin.getPersonId().equals(jsonNode.get("person_id").intValue()));
+        assertTrue(admin.getEditLink().equals((jsonLinks.get("edit")).get("href").textValue()));
+        assertTrue(admin.getCompanyLink().equals((jsonLinks.get("company")).get("href").textValue()));
+        assertTrue(admin.getPersonLink().equals((jsonLinks.get("person")).get("href").textValue()));
+        assertTrue(admin.getLoginLink().equals((jsonLinks.get("login")).get("href").textValue()));
+        assertTrue(admin.getBaseLoginLink().equals((jsonLinks.get("base_login")).get("href").textValue()));
     }
 
     @Override
     @After
     public void tearDown() {
-        jsonObject = null;
+        jsonNode = null;
     }
 }

@@ -1,10 +1,8 @@
 package bookingbugAPI.models;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import helpers.HttpServiceResponse;
 import helpers.Utils;
-import helpers.hal_addon.CustomJsonDeserializer;
-import org.json.simple.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,40 +13,36 @@ import static org.junit.Assert.assertTrue;
 
 
 public class AnswerTest extends ModelTest {
-    private JSONObject jsonObject;
+    private JsonNode jsonNode;
 
     @Override
     @Before
     public void setUp() {
-        jsonObject = getJSON("json/answer.json");
+        jsonNode = getJSON("json/answer.json");
     }
 
     @Override
     @Test
     public void modelInit() throws ParseException {
-        Answer answer = new Answer(new HttpServiceResponse(Utils.stringToContentRep(jsonObject.toString())));
-        JSONObject jsonLinks = (JSONObject) jsonObject.get("_links");
-        JSONObject jsonEmbedded = (JSONObject) jsonObject.get("_embedded");
-        CustomJsonDeserializer jsonDeserializer = new CustomJsonDeserializer();
+        Answer answer = new Answer(new HttpServiceResponse(Utils.stringToContentRep(jsonNode.toString())));
+        JsonNode jsonLinks = jsonNode.get("_links");
 
-        assertTrue(answer.getId().toString().equals(jsonObject.get("id").toString()));
-        assertTrue(answer.getValue().equals(jsonObject.get("value")));
-        assertTrue(answer.getPrice().toString().equals(jsonObject.get("price").toString()));
-        assertTrue(answer.getQuestionId().toString().equals(jsonObject.get("question_id").toString()));
-        assertTrue(answer.getAdminOnly().toString().equals(jsonObject.get("admin_only").toString()));
-        assertTrue(answer.getImportant().toString().equals(jsonObject.get("important").toString()));
-
-        assertTrue(answer.getQuestion().id.equals("15571"));
-
-        assertTrue(answer.getQuestionText().equals(jsonObject.get("question_text")));
-        assertTrue(answer.getOutcome().toString().equals(jsonObject.get("outcome").toString()));
-        assertTrue(answer.getCompanyId().toString().equals(jsonObject.get("company_id").toString()));
-        assertTrue(answer.getQuestionLink().equals(((JSONObject) jsonLinks.get("question")).get("href")));
+        assertTrue(answer.getId().equals(jsonNode.get("id").intValue()));
+        assertTrue(answer.getValue().equals(jsonNode.get("value").textValue()));
+        assertTrue(answer.getPrice().equals(jsonNode.get("price").doubleValue()));
+        assertTrue(answer.getQuestionId().equals(jsonNode.get("question_id").intValue()));
+        assertTrue(answer.getAdminOnly().equals(jsonNode.get("admin_only").booleanValue()));
+        assertTrue(answer.getImportant().equals(jsonNode.get("important").booleanValue()));
+        assertTrue(answer.getQuestionText().equals(jsonNode.get("question_text").textValue()));
+        assertTrue(answer.getOutcome().equals(jsonNode.get("outcome").booleanValue()));
+        assertTrue(answer.getCompanyId().equals(jsonNode.get("company_id").intValue()));
+        assertTrue(answer.getQuestionLink().equals((jsonLinks.get("question")).get("href").textValue()));
+        // TODO: 01.06.2016 Test getQuestion()
     }
 
     @Override
     @After
     public void tearDown() {
-        jsonObject = null;
+        jsonNode = null;
     }
 }

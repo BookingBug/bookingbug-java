@@ -3,12 +3,9 @@ package bookingbugAPI.models;
 import bookingbugAPI.services.HttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import com.theoryinpractise.halbuilder.api.Link;
 import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
@@ -17,14 +14,13 @@ import com.theoryinpractise.halbuilder.impl.representations.ContentBasedRepresen
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 import helpers.Config;
 import helpers.HttpServiceResponse;
-import helpers.Utils;
 import helpers.hal_addon.CustomJsonDeserializer;
 import org.joda.time.DateTime;
-import org.json.simple.JSONObject;
 
 import java.io.*;
 import java.net.URL;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON;
@@ -70,7 +66,8 @@ public class BBRoot {
     }
 
 
-    public BBRoot() {}
+    public BBRoot() {
+    }
 
 
     public BBRoot getLoginSchema() throws IOException {
@@ -173,7 +170,8 @@ public class BBRoot {
         try {
             ObjectMapper mapper = CustomJsonDeserializer.getMapper();
             String json_obj = mapper.writeValueAsString(response.getRep().getValue(key));
-            val = mapper.readValue(json_obj, new TypeReference<List<T>>(){});
+            val = mapper.readValue(json_obj, new TypeReference<List<T>>() {
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -187,7 +185,7 @@ public class BBRoot {
             List<? extends ReadableRepresentation> entries = response.getRep().getResourcesByRel(key);
 
             for (ReadableRepresentation item : entries) {
-                if(item instanceof ContentBasedRepresentation)
+                if (item instanceof ContentBasedRepresentation)
                     return (ContentRepresentation) item;
             }
         } catch (RepresentationException e) {

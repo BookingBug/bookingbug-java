@@ -1,13 +1,14 @@
 package bookingbugAPI.models;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.FileReader;
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 
@@ -27,15 +28,14 @@ public abstract class ModelTest {
     @After
     public abstract void tearDown();
 
-    public JSONObject getJSON(String jsonFile) {
+    public JsonNode getJSON(String jsonFile) {
         ClassLoader classLoader = getClass().getClassLoader();
         String fileName;
         try {
             fileName = classLoader.getResource(jsonFile).getFile();
-
-            JSONParser parser = new JSONParser();
-            return  (JSONObject) parser.parse(new FileReader(fileName));
-        } catch (org.json.simple.parser.ParseException | IOException | NullPointerException e) {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readTree(new File(fileName));
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

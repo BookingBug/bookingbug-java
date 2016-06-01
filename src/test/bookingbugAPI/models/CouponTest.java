@@ -1,9 +1,9 @@
 package bookingbugAPI.models;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import helpers.HttpServiceResponse;
 import helpers.Utils;
 import org.joda.time.DateTime;
-import org.json.simple.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,38 +14,38 @@ import static org.junit.Assert.assertTrue;
 
 
 public class CouponTest extends ModelTest {
-    private JSONObject jsonObject;
+    private JsonNode jsonNode;
 
     @Override
     @Before
     public void setUp() {
-        jsonObject = getJSON("json/coupon.json");
+        jsonNode = getJSON("json/coupon.json");
     }
 
     @Override
     @Test
     public void modelInit() throws ParseException {
-        Coupon coupon = new Coupon(new HttpServiceResponse(Utils.stringToContentRep(jsonObject.toString())));
+        Coupon coupon = new Coupon(new HttpServiceResponse(Utils.stringToContentRep(jsonNode.toString())));
 
-        assertTrue(coupon.getId().toString().equals(jsonObject.get("id").toString()));
-        assertTrue(coupon.getCode().equals(jsonObject.get("code")));
-        assertTrue(coupon.getTitle().equals(jsonObject.get("title")));
-        assertTrue(coupon.getCompanyId().toString().equals(jsonObject.get("company_id").toString()));
-        assertTrue(coupon.getValidFrom().equals(new DateTime(jsonObject.get("valid_from"))));
-        assertTrue(coupon.getTimesUsed().toString().equals(jsonObject.get("times_used").toString()));
-        assertTrue(coupon.getPublic().toString().equals(jsonObject.get("public").toString()));
-        assertTrue(coupon.getPrice().toString().equals(jsonObject.get("price").toString()));
-        assertTrue(coupon.getPercentage().toString().equals(jsonObject.get("percentage").toString()));
-        assertTrue(coupon.getCouponType().toString().equals(jsonObject.get("coupon_type").toString()));
-        assertTrue(coupon.getBuy().toString().equals(jsonObject.get("buy").toString()));
-        assertTrue(coupon.getFree().toString().equals(jsonObject.get("free").toString()));
-        assertTrue(coupon.getApplyToQuestions().toString().equals(jsonObject.get("apply_to_questions").toString()));
-        assertTrue(coupon.getMaxPerPerson().toString().equals(jsonObject.get("max_per_person").toString()));
+        assertTrue(coupon.getId().equals(jsonNode.get("id").intValue()));
+        assertTrue(coupon.getCode().equals(jsonNode.get("code").textValue()));
+        assertTrue(coupon.getTitle().equals(jsonNode.get("title").textValue()));
+        assertTrue(coupon.getCompanyId().equals(jsonNode.get("company_id").intValue()));
+        assertTrue(coupon.getValidFrom().equals(new DateTime(jsonNode.get("valid_from").textValue())));
+        assertTrue(coupon.getTimesUsed().equals(jsonNode.get("times_used").intValue()));
+        assertTrue(coupon.getPublic().equals(jsonNode.get("public").booleanValue()));
+        assertTrue(coupon.getPrice().equals(jsonNode.get("price").doubleValue()));
+        assertTrue(coupon.getPercentage().equals(jsonNode.get("percentage").doubleValue()));
+        assertTrue(coupon.getCouponType().equals(jsonNode.get("coupon_type").intValue()));
+        assertTrue(coupon.getBuy().equals(jsonNode.get("buy").intValue()));
+        assertTrue(coupon.getFree().equals(jsonNode.get("free").intValue()));
+        assertTrue(coupon.getApplyToQuestions().equals(jsonNode.get("apply_to_questions").booleanValue()));
+        assertTrue(coupon.getMaxPerPerson().equals(jsonNode.get("max_per_person").intValue()));
     }
 
     @Override
     @After
     public void tearDown() {
-        jsonObject = null;
+        jsonNode = null;
     }
 }

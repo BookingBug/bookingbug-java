@@ -1,56 +1,59 @@
 package bookingbugAPI.models;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import helpers.HttpServiceResponse;
 import helpers.Utils;
 import org.joda.time.DateTime;
-import org.json.simple.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.text.ParseException;
 
 import static org.junit.Assert.assertTrue;
 
 
 public class BasketItemTest extends ModelTest {
-    private JSONObject jsonObject;
+    private JsonNode jsonNode;
 
     @Override
     @Before
     public void setUp() {
-        jsonObject = getJSON("json/basket_item.json");
+        jsonNode = getJSON("json/basket_item.json");
     }
 
     @Override
     @Test
     public void modelInit() throws ParseException {
-        BasketItem basketItem = new BasketItem(new HttpServiceResponse(Utils.stringToContentRep(jsonObject.toString())));
-        JSONObject jsonLinks = (JSONObject) jsonObject.get("_links");
+        BasketItem basketItem = new BasketItem(new HttpServiceResponse(Utils.stringToContentRep(jsonNode.toString())));
+        JsonNode jsonLinks =  jsonNode.get("_links");
 
-        assertTrue(basketItem.getEventId().toString().equals(jsonObject.get("event_id").toString()));
-        assertTrue(basketItem.getPersonId().toString().equals(jsonObject.get("person_id").toString()));
-        assertTrue(basketItem.getServiceId().toString().equals(jsonObject.get("service_id").toString()));
-        assertTrue(basketItem.getPrice().toString().equals(jsonObject.get("price").toString()));
-        assertTrue(basketItem.getNumBook().toString().equals(jsonObject.get("num_book").toString()));
-        assertTrue(basketItem.getPersonName().equals(jsonObject.get("person_name")));
-        assertTrue(basketItem.getServiceName().equals(jsonObject.get("service_name")));
-        assertTrue(basketItem.getStatus().toString().equals(jsonObject.get("status").toString()));
-        assertTrue(basketItem.getId().equals(jsonObject.get("id")));
-        assertTrue(basketItem.getDate().equals(new DateTime(jsonObject.get("date"))));
-        assertTrue(basketItem.getTime().toString().equals(jsonObject.get("time").toString()));
-        assertTrue(basketItem.getDuration().toString().equals(jsonObject.get("duration").toString()));
-        assertTrue(basketItem.getTotalPrice().toString().equals(jsonObject.get("total_price").toString()));
-        assertTrue(basketItem.getAttachmentLink().equals(((JSONObject) jsonLinks.get("attachment")).get("href")));
-        assertTrue(basketItem.getAddAtachmentLink().equals(((JSONObject) jsonLinks.get("add_attachment")).get("href")));
-        assertTrue(basketItem.getPersonLink().equals(((JSONObject) jsonLinks.get("person")).get("href")));
-        assertTrue(basketItem.getServiceLink().equals(((JSONObject) jsonLinks.get("service")).get("href")));
-        assertTrue(basketItem.getCompanyLink().equals(((JSONObject) jsonLinks.get("company")).get("href")));
+        assertTrue(basketItem.getEventId().equals(jsonNode.get("event_id").intValue()));
+        assertTrue(basketItem.getPersonId().equals(jsonNode.get("person_id").intValue()));
+        assertTrue(basketItem.getServiceId().equals(jsonNode.get("service_id").intValue()));
+        assertTrue(basketItem.getPrice().equals(jsonNode.get("price").intValue()));
+        assertTrue(basketItem.getNumBook().equals(jsonNode.get("num_book").intValue()));
+        assertTrue(basketItem.getPersonName().equals(jsonNode.get("person_name").textValue()));
+        assertTrue(basketItem.getServiceName().equals(jsonNode.get("service_name").textValue()));
+        assertTrue(basketItem.getStatus().equals(jsonNode.get("status").intValue()));
+        assertTrue(basketItem.getId().equals(jsonNode.get("id").textValue()));
+        assertTrue(basketItem.getDate().equals(new DateTime(jsonNode.get("date").textValue())));
+        assertTrue(basketItem.getTime().equals(jsonNode.get("time").intValue()));
+        assertTrue(basketItem.getDuration().equals(jsonNode.get("duration").intValue()));
+        assertTrue(basketItem.getTotalPrice().equals(jsonNode.get("total_price").intValue()));
+        assertTrue(basketItem.getAttachmentLink().equals((jsonLinks.get("attachment")).get("href").textValue()));
+        assertTrue(basketItem.getAddAtachmentLink().equals((jsonLinks.get("add_attachment")).get("href").textValue()));
+        assertTrue(basketItem.getPersonLink().equals((jsonLinks.get("person")).get("href").textValue()));
+        assertTrue(basketItem.getServiceLink().equals((jsonLinks.get("service")).get("href").textValue()));
+        assertTrue(basketItem.getCompanyLink().equals((jsonLinks.get("company")).get("href").textValue()));
+        // TODO: 01.06.2016 Implement and Test getQuestions()
+        // TODO: 01.06.2016 Test getSettings()
     }
 
     @Override
     @After
     public void tearDown() {
-        jsonObject = null;
+        jsonNode = null;
     }
 }

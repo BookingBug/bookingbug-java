@@ -2,19 +2,21 @@ package bookingbugAPI.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
 
-public class Notes {
+
+public class Notes extends BBRoot {
     @JsonProperty("private")
-    private String[] privateNotes;
+    private List<Note> privateNotes;
     @JsonProperty("public")
-    private String[] publicNotes;
+    private List<Note> publicNotes;
 
     /**
      * Returns public notes.
      *
      * @return The private notes associated with the Note Object
      */
-    public String[] getPublicNotes() {
+    public List<Note> getPublicNotes() {
         return publicNotes;
     }
 
@@ -23,7 +25,7 @@ public class Notes {
      *
      * @return The private notes associated with the Note Object
      */
-    public String[] getPrivateNotes() {
+    public List<Note> getPrivateNotes() {
         return privateNotes;
     }
 }

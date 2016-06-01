@@ -236,4 +236,13 @@ public class EventChain extends BBRoot {
         return getLink("questions");
     }
 
+    /**
+     * Returns the child event chains.
+     *
+     * @return The child event chains assoiciated with the currnet EventChain object
+     */
+    public BBCollection<EventChain> getChildEventChains() {
+        return new BBCollection<>(new HttpServiceResponse(getResource("child_event_chains")), auth_token, EventChain.class);
+    }
+
 }

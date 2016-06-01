@@ -1,8 +1,13 @@
 package bookingbugAPI.models;
 
+import bookingbugAPI.api.PublicURLS;
+import bookingbugAPI.services.HttpService;
+import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import helpers.HttpServiceResponse;
 import org.joda.time.DateTime;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -136,8 +141,12 @@ public class BasketItem extends BBRoot {
      *
      * @return The settings associated with the current BasketItemsTwo object
      */
-    public Map getSettings() {
-        return getObject("settings", Map.class);
+    public BasketItemSettings getSettings() throws IOException{
+        if(getRep().getResourcesByRel("settings").size() > 0) {
+            return new BasketItemSettings(new HttpServiceResponse((ContentRepresentation) getRep().getResourcesByRel("settings").get(0)));
+        }
+
+        return null;
     }
 
     /**

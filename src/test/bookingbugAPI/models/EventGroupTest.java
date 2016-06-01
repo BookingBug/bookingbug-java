@@ -1,8 +1,8 @@
 package bookingbugAPI.models;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import helpers.HttpServiceResponse;
 import helpers.Utils;
-import org.json.simple.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,29 +13,30 @@ import static org.junit.Assert.assertTrue;
 
 
 public class EventGroupTest extends ModelTest{
-    private JSONObject jsonObject;
+    private JsonNode jsonNode;
 
     @Override
     @Before
     public void setUp() {
-        jsonObject = getJSON("json/event_group.json");
+        jsonNode = getJSON("json/event_group.json");
     }
 
     @Override
     @Test
     public void modelInit() throws ParseException {
-        EventGroup eventGroup = new EventGroup(new HttpServiceResponse(Utils.stringToContentRep(jsonObject.toString())));
-        JSONObject jsonLinks = (JSONObject) jsonObject.get("_links");
+        EventGroup eventGroup = new EventGroup(new HttpServiceResponse(Utils.stringToContentRep(jsonNode.toString())));
+        JsonNode jsonLinks = jsonNode.get("_links");
 
-        assertTrue(eventGroup.getId().toString().equals(jsonObject.get("id").toString()));
-        assertTrue(eventGroup.getName().equals(jsonObject.get("name")));
-        assertTrue(eventGroup.getDescription().equals(jsonObject.get("description")));
-        assertTrue(eventGroup.getImagesLink().equals(((JSONObject) jsonLinks.get("images")).get("href")));
+        assertTrue(eventGroup.getId().equals(jsonNode.get("id").intValue()));
+        assertTrue(eventGroup.getName().equals(jsonNode.get("name").textValue()));
+        assertTrue(eventGroup.getDescription().equals(jsonNode.get("description").textValue()));
+        assertTrue(eventGroup.getImagesLink().equals((jsonLinks.get("images")).get("href").textValue()));
+        // TODO: 01.06.2016 Implement and Test getExtra()
     }
 
     @Override
     @After
     public void tearDown() {
-        jsonObject = null;
+        jsonNode = null;
     }
 }

@@ -1,8 +1,8 @@
 package bookingbugAPI.models;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import helpers.HttpServiceResponse;
 import helpers.Utils;
-import org.json.simple.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,26 +13,26 @@ import static org.junit.Assert.assertTrue;
 
 
 public class NoteTest extends ModelTest {
-    private JSONObject jsonObject;
+    private JsonNode jsonNode;
 
     @Override
     @Before
     public void setUp() {
-        jsonObject = getJSON("json/note.json");
+        jsonNode = getJSON("json/note.json");
     }
 
     @Override
     @Test
     public void modelInit() throws ParseException {
-        Note note = new Note(new HttpServiceResponse(Utils.stringToContentRep(jsonObject.toString())));
+        Note note = new Note(new HttpServiceResponse(Utils.stringToContentRep(jsonNode.toString())));
 
-        assertTrue(note.getId().toString().equals(jsonObject.get("id").toString()));
-        assertTrue(note.getNote().equals(jsonObject.get("note")));
+        assertTrue(note.getId().equals(jsonNode.get("id").intValue()));
+        assertTrue(note.getNote().equals(jsonNode.get("note").textValue()));
     }
 
     @Override
     @After
     public void tearDown() {
-        jsonObject = null;
+        jsonNode = null;
     }
 }

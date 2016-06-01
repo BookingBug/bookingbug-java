@@ -5,10 +5,7 @@ import bookingbugAPI.services.HttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import com.theoryinpractise.halbuilder.api.Link;
-import helpers.Config;
 import helpers.HttpServiceResponse;
-import helpers.TokenGenerator;
-import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -41,7 +38,7 @@ public class Login extends BBRoot {
     }
 
 
-    public Login login(Map<String,String> params) throws  IOException {
+    public Login login(Map<String, String> params) throws IOException {
         return auth(params, response.getRep().getLinkByRel("login"));
     }
 
@@ -65,20 +62,20 @@ public class Login extends BBRoot {
 
 
     public Administrator getAdministrator() throws IOException {
-        if(administrator == null){
+        if (administrator == null) {
             List<ContentRepresentation> admin_reps =
                     (List<ContentRepresentation>) response.getRep().getResourcesByRel("administrators");
             Link getAdministratorLink = response.getRep().getLinkByRel("administrator");
 
             if (admin_reps.size() > 0) {
                 //search matching link
-                for(ContentRepresentation representation : admin_reps) {
-                    if(representation.getLinkByRel("self").getHref().equals(getAdministratorLink.getHref()))
+                for (ContentRepresentation representation : admin_reps) {
+                    if (representation.getLinkByRel("self").getHref().equals(getAdministratorLink.getHref()))
                         administrator = new Administrator(new HttpServiceResponse(representation), auth_token);
                 }
             }
             //If not found
-            if(admin_reps.size() == 0 || administrator == null){
+            if (admin_reps.size() == 0 || administrator == null) {
                 String link = getRep().getLinkByRel("administrator").getHref();
                 URL url = new URL(UriTemplate.fromTemplate(link).expand());
                 administrator = new Administrator(HttpService.api_GET(url, auth_token), auth_token);
@@ -97,7 +94,7 @@ public class Login extends BBRoot {
     public ArrayList<Administrator> getAdministrators() {
         ArrayList<Administrator> admins = new ArrayList<Administrator>();
         List<ContentRepresentation> admin_reps = (List<ContentRepresentation>) getRep().getResourcesByRel("administrators");
-        for(ContentRepresentation representation : admin_reps) {
+        for (ContentRepresentation representation : admin_reps) {
             //admins.add(new Administrator(response, auth_token));
             admins.add(new Administrator(new HttpServiceResponse(representation), auth_token));
         }
@@ -107,7 +104,7 @@ public class Login extends BBRoot {
 
     public Administrator createAdministrator(Map<String, String> data) throws HttpException, MalformedURLException {
         String uri = AdminURLS.Administrator.administratorCreate().set("companyId", get("company_id")).expand();
-        URL url = new URL (uri);
+        URL url = new URL(uri);
         return new Administrator(HttpService.api_POST(url, data, auth_token), auth_token);
     }
 

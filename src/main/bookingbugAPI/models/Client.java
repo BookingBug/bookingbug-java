@@ -20,7 +20,7 @@ public class Client extends BBRoot {
     }
 
     /**
-     * Returns the client's first name.
+     * Returns the client first name.
      *
      * @return The first name associated with the current Client object.
      */
@@ -29,7 +29,7 @@ public class Client extends BBRoot {
     }
 
     /**
-     * Returns the client's last name.
+     * Returns the client last name.
      *
      * @return The last name associated with the current Client object.
      */
@@ -38,7 +38,7 @@ public class Client extends BBRoot {
     }
 
     /**
-     * Returns the client's email.
+     * Returns the client email.
      *
      * @return The last name associated with the current Client object.
      */
@@ -110,7 +110,7 @@ public class Client extends BBRoot {
     }
 
     /**
-     * Returns the client's phone.
+     * Returns the client phone.
      *
      * @return The phone associated with the current Client object.
      */
@@ -119,7 +119,7 @@ public class Client extends BBRoot {
     }
 
     /**
-     * Returns the client's mobile.
+     * Returns the client mobile.
      *
      * @return The mobile associated with the current Client object.
      */
@@ -129,7 +129,7 @@ public class Client extends BBRoot {
 
 
     /**
-     * Returns the client's id.
+     * Returns the client id.
      *
      * @return The id associated with the current Client object.
      */
@@ -183,7 +183,7 @@ public class Client extends BBRoot {
     }
 
     /**
-     * Returns the client's phone prefix.
+     * Returns the client phone prefix.
      *
      * @return The phone prefix associated with the current Client object.
      */
@@ -201,7 +201,7 @@ public class Client extends BBRoot {
     }
 
     /**
-     * Returns the client's .
+     * Returns the client .
      *
      * @return The  associated with the current Client object.
      */

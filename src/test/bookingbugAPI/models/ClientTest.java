@@ -1,9 +1,8 @@
 package bookingbugAPI.models;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import helpers.HttpServiceResponse;
 import helpers.Utils;
-import helpers.hal_addon.CustomJsonDeserializer;
-import org.json.simple.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,52 +13,46 @@ import static org.junit.Assert.assertTrue;
 
 
 public class ClientTest extends ModelTest{
-    private JSONObject jsonObject;
+    private JsonNode jsonNode;
 
     @Override
     @Before
     public void setUp() {
-        jsonObject = getJSON("json/client.json");
+        jsonNode = getJSON("json/client.json");
     }
 
     @Override
     @Test
     public void modelInit() throws ParseException {
-        Client client =new Client(new HttpServiceResponse(Utils.stringToContentRep(jsonObject.toString())));
-        JSONObject jsonLinks = (JSONObject) jsonObject.get("_links");
-        CustomJsonDeserializer jsonDeserializer = new CustomJsonDeserializer();
+        Client client =new Client(new HttpServiceResponse(Utils.stringToContentRep(jsonNode.toString())));
+        JsonNode jsonLinks = jsonNode.get("_links");
 
-        assertTrue(client.getFirstName().equals(jsonObject.get("first_name")));
-        assertTrue(client.getLastName().equals(jsonObject.get("last_name")));
-        assertTrue(client.getEmail().equals(jsonObject.get("email")));
-        assertTrue(client.getAddress1().equals(jsonObject.get("address1")));
-        assertTrue(client.getAddress2().equals(jsonObject.get("address2")));
-        assertTrue(client.getAddress3().equals(jsonObject.get("address3")));
-        assertTrue(client.getAddress4().equals(jsonObject.get("address4")));
-        assertTrue(client.getCountry().equals(jsonObject.get("country")));
-        assertTrue(client.getId().toString().equals(jsonObject.get("id").toString()));
-        assertTrue(client.getMemberType().toString().equals(jsonObject.get("member_type").toString()));
-        assertTrue(client.getReference().equals(jsonObject.get("reference")));
-        assertTrue(client.getFiles().equals(jsonObject.get("files")));
-        assertTrue(client.getDeleted().toString().equals(jsonObject.get("deleted").toString()));
-        assertTrue(client.getPhonePrefix().equals(jsonObject.get("phone_prefix")));
-        assertTrue(client.getMobilePrefix().equals(jsonObject.get("mobile_prefix")));
-        assertTrue(client.getBookingsLink().equals(((JSONObject) jsonLinks.get("bookings")).get("href")));
-        assertTrue(client.getPrePaidBookingsLink().equals(((JSONObject) jsonLinks.get("pre_paid_bookings")).get("href")));
-        assertTrue(client.getQuestionsLink().equals(((JSONObject) jsonLinks.get("questions")).get("href")));
-        assertTrue(client.getEditLink().equals(((JSONObject) jsonLinks.get("edit")).get("href")));
-/*
-        try {
-            assertTrue((jsonDeserializer.getMapper().writeValueAsString(client.getAnswers())).equals(jsonObject.get("answers").toString()));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-*/
+        assertTrue(client.getFirstName().equals(jsonNode.get("first_name").textValue()));
+        assertTrue(client.getLastName().equals(jsonNode.get("last_name").textValue()));
+        assertTrue(client.getEmail().equals(jsonNode.get("email").textValue()));
+        assertTrue(client.getAddress1().equals(jsonNode.get("address1").textValue()));
+        assertTrue(client.getAddress2().equals(jsonNode.get("address2").textValue()));
+        assertTrue(client.getAddress3().equals(jsonNode.get("address3").textValue()));
+        assertTrue(client.getAddress4().equals(jsonNode.get("address4").textValue()));
+        assertTrue(client.getCountry().equals(jsonNode.get("country").textValue()));
+        assertTrue(client.getId().equals(jsonNode.get("id").intValue()));
+        assertTrue(client.getMemberType().equals(jsonNode.get("member_type").intValue()));
+        assertTrue(client.getReference().equals(jsonNode.get("reference").textValue()));
+        assertTrue(client.getDeleted().equals(jsonNode.get("deleted").booleanValue()));
+        assertTrue(client.getPhonePrefix().equals(jsonNode.get("phone_prefix").textValue()));
+        assertTrue(client.getMobilePrefix().equals(jsonNode.get("mobile_prefix").textValue()));
+        assertTrue(client.getBookingsLink().equals((jsonLinks.get("bookings")).get("href").textValue()));
+        assertTrue(client.getPrePaidBookingsLink().equals((jsonLinks.get("pre_paid_bookings")).get("href").textValue()));
+        assertTrue(client.getQuestionsLink().equals((jsonLinks.get("questions")).get("href").textValue()));
+        assertTrue(client.getEditLink().equals((jsonLinks.get("edit")).get("href").textValue()));
+        // TODO: 01.06.2016 Implement and Test getFiles()
+        // TODO: 01.06.2016 Test getAnswers()
+        // TODO: 01.06.2016 Implement and Test getQ()
     }
 
     @Override
     @After
     public void tearDown() {
-        jsonObject = null;
+        jsonNode = null;
     }
 }
