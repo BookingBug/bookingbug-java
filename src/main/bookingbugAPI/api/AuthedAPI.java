@@ -1,12 +1,13 @@
 package bookingbugAPI.api;
 
 /**
- * Created by sebi on 5/30/15.
+ * Created by sebi on 19.05.2016.
  */
-public abstract class AuthedAPI {
+public class AuthedAPI {
+
     String auth_token;
 
-    public AuthedAPI(String token){
-        auth_token = token;
+    public AuthedAPI(String auth_token) {
+        this.auth_token = auth_token;
     }
 }

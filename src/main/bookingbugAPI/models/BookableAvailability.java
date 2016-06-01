@@ -50,20 +50,36 @@ public class BookableAvailability extends BBRoot {
         return datetime;
     }
 
-    public boolean isAvailable(Date datetime){
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(datetime);
-        int hour_to_check = calendar.get(Calendar.HOUR_OF_DAY);
+    public ArrayList<AvailTime> getAvailTimes(){
 
-        ArrayList<ReadableRepresentation> times = new ArrayList<>(getRep().getResourcesByRel("times"));
-        for (ReadableRepresentation rep : times) {
-            int time_min = Integer.parseInt((String) rep.getValue("time"));
-            int avail = Integer.parseInt((String) rep.getValue("avail"));
+        ArrayList<ReadableRepresentation> times_reps = new ArrayList<>(getRep().getResourcesByRel("times"));
+        ArrayList<AvailTime> times = new ArrayList<>();
 
-            int hour = time_min / 60;
-            if(hour_to_check >= hour && hour_to_check < hour + 1 && avail == 1)
-                return true;
+        for (ReadableRepresentation rep : times_reps) {
+            AvailTime timeObj = new AvailTime();
+            timeObj.time_minutes = Integer.parseInt((String) rep.getValue("time"));
+            timeObj.avail = Integer.parseInt((String) rep.getValue("avail")) == 1 ? true : false;
+            timeObj.price = Integer.parseInt((String) rep.getValue("price"));
+            times.add(timeObj);
         }
-        return false;
+        return times;
+    }
+
+    public static class AvailTime {
+        int time_minutes;
+        boolean avail;
+        int price;
+
+        public int getTime_minutes() {
+            return time_minutes;
+        }
+
+        public boolean isAvail() {
+            return avail;
+        }
+
+        public int getPrice() {
+            return price;
+        }
     }
 }

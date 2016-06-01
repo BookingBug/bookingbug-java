@@ -30,11 +30,7 @@ public class CustomJsonRepresentationReader implements RepresentationReader {
 
     public CustomJsonRepresentationReader(AbstractRepresentationFactory representationFactory) {
         this.representationFactory = representationFactory;
-        this.mapper = new ObjectMapper();
-
-        SimpleModule simpleModule = new SimpleModule();
-        simpleModule.addDeserializer(Object.class, new CustomJsonDeserializer());
-        this.mapper.registerModule(simpleModule);
+        this.mapper = CustomJsonDeserializer.getMapper();
     }
 
     public ContentRepresentation read(Reader reader) {

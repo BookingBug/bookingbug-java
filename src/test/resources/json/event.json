@@ -1,0 +1,38 @@
+{
+  "id": 12680457,
+  "datetime": "2016-04-26T09:00:00+02:00",
+  "description": "My Recurring Event",
+  "status": 4,
+  "spaces_booked": 0,
+  "spaces_reserved": 0,
+  "spaces_blocked": 0,
+  "spaces_held": 0,
+  "num_spaces": 21,
+  "spaces_wait": 0,
+  "event_chain_id": 97149,
+  "service_id": 59377,
+  "duration": 60,
+  "price": 0,
+  "ticket_spaces": {
+    "10394": {
+      "name": "",
+      "left": 21
+    }
+  },
+  "_links": {
+    "self": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/events/12680457{?embed}"
+    },
+    "event_groups": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/event_groups/59377"
+    },
+    "event_chains": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/event_chains/97149{?member_level_id}",
+      "templated": true
+    },
+    "book": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/basket/add_item?event_id=12680457&event_chain_id=97149{&member_id,service_id,product_id,attachment_id,deal_id,package_id,bulk_purchase_id}",
+      "templated": true
+    }
+  }
+}

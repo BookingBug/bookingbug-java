@@ -3,16 +3,24 @@ package bookingbugAPI.models;
 import bookingbugAPI.services.HttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import com.theoryinpractise.halbuilder.api.Link;
+import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
 import com.theoryinpractise.halbuilder.api.RepresentationException;
+import com.theoryinpractise.halbuilder.impl.representations.ContentBasedRepresentation;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 import helpers.Config;
 import helpers.HttpServiceResponse;
+import helpers.hal_addon.CustomJsonDeserializer;
+import org.joda.time.DateTime;
 
 import java.io.*;
 import java.net.URL;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON;
@@ -23,7 +31,7 @@ import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON
  * Child classes should implement getters for relevant parts from the response.
  */
 @JsonIgnoreProperties({
-    "rep", "auth_token", "id", "data", "links"
+        "rep", "auth_token", "id", "data", "links"
 })
 public class BBRoot {
 
@@ -33,6 +41,9 @@ public class BBRoot {
     protected String auth_token = null;
     public String id;
     public Map<String, String> data;
+    public int INTEGER_DEFAULT_VALUE = 0;
+    public double DOUBLE_DEFAULT_VALUE = 0.0;
+    public boolean BOOLEAN_DEFAULT_VALUE = false;
 
     protected String curl = "N/A";
 
@@ -43,7 +54,7 @@ public class BBRoot {
     }
 
 
-    public BBRoot(String auth_token){
+    public BBRoot(String auth_token) {
         this.auth_token = auth_token;
     }
 
@@ -55,17 +66,18 @@ public class BBRoot {
     }
 
 
-    public BBRoot() {}
+    public BBRoot() {
+    }
 
 
     public BBRoot getLoginSchema() throws IOException {
-        URL url = new URL (UriTemplate.fromTemplate(response.getRep().getLinkByRel("new_login").getHref()).expand());
+        URL url = new URL(UriTemplate.fromTemplate(response.getRep().getLinkByRel("new_login").getHref()).expand());
         HttpServiceResponse response = HttpService.api_GET(url);
         return new BBRoot(response);
     }
 
 
-    public Login auth(Map<String,String> params) throws IOException{
+    public Login auth(Map<String, String> params) throws IOException {
         HttpServiceResponse resp;
         try {
             URL url = new URL(UriTemplate.fromTemplate(new Config().serverUrl + "/login").expand());
@@ -89,24 +101,98 @@ public class BBRoot {
     }
 
 
-    public Login auth(Map<String,String> params, Link link) throws IOException{
-        URL url = new URL (link.getHref());
+    public Login auth(Map<String, String> params, Link link) throws IOException {
+        URL url = new URL(link.getHref());
         HttpServiceResponse resp = HttpService.api_POST(url, params);
         auth_token = (String) resp.getRep().getValue("auth_token");
         return new Login(resp);
     }
 
 
-    public String get(String key){
+    public String get(String key) {
         String val = null;
-        try{
-            val = (String)response.getRep().getValue(key);
+        try {
+            val = (String) response.getRep().getValue(key);
         } catch (RepresentationException e) {
             //e.printStackTrace();
         }
         return val;
     }
 
+    public boolean getBoolean(String key, boolean defaultValue) {
+        String val = this.get(key);
+        if (val != null) return Boolean.parseBoolean(val);
+        return defaultValue;
+    }
+
+    public int getInteger(String key, int defaultValue) {
+        String val = this.get(key);
+        if (val != null) return Integer.parseInt(val);
+        return defaultValue;
+    }
+
+    public double getDouble(String key, double defaultValue) {
+        String val = this.get(key);
+        if (val != null) return Double.parseDouble(val);
+        return defaultValue;
+    }
+
+    public DateTime getDate(String key) {
+        return new DateTime(get(key));
+    }
+
+    public List<String> getArray(String key) {
+        List<String> val = null;
+        try {
+            val = (List<String>) (response.getRep().getValue(key));
+        } catch (RepresentationException e) {
+            e.printStackTrace();
+        }
+        return val;
+    }
+
+    //TODO: improve this
+    public <T> T getObject(String key, Class<T> type) {
+
+        try {
+            ObjectMapper mapper = CustomJsonDeserializer.getMapper();
+            String json_obj = mapper.writeValueAsString(response.getRep().getValue(key));
+            return mapper.readValue(json_obj, type);
+        } catch (RepresentationException | IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public <T> List<T> getObjects(String key, Class<T> type) {
+        List<T> val = null;
+
+        try {
+            ObjectMapper mapper = CustomJsonDeserializer.getMapper();
+            String json_obj = mapper.writeValueAsString(response.getRep().getValue(key));
+            val = mapper.readValue(json_obj, new TypeReference<List<T>>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return val;
+    }
+
+    //TODO: fix this
+    public ContentRepresentation getResource(String key) {
+        try {
+            List<? extends ReadableRepresentation> entries = response.getRep().getResourcesByRel(key);
+
+            for (ReadableRepresentation item : entries) {
+                if (item instanceof ContentBasedRepresentation)
+                    return (ContentRepresentation) item;
+            }
+        } catch (RepresentationException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public String getAuth_token() {
         return auth_token;
@@ -138,6 +224,16 @@ public class BBRoot {
         return response.getRep().getContent();
     }
 
+    public String toPrettyString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(response.getRep());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return toString();
+        }
+    }
+
 
     public String getCurl() {
         curl = "curl \"" + getSelf() + "\" " + response.getParamsStr() + " -X " + response.getMethod();
@@ -146,7 +242,7 @@ public class BBRoot {
 
 
     public String getSelf() {
-        if(response.getRep().getResourceLink() != null)
+        if (response.getRep().getResourceLink() != null)
             return response.getRep().getResourceLink().getHref();
         return "";
     }

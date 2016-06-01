@@ -1,0 +1,18 @@
+{
+  "id": 2772,
+  "name": "Test",
+  "num": 1,
+  "service_id": 52718,
+  "created_at": "2014-01-20T11:52:01Z",
+  "redemption": 1,
+  "total_codes": 195,
+  "used_codes": 3,
+  "vendor": "Import & Match",
+  "allow_mixed_bookings": true,
+  "widget_show": true,
+  "_links": {
+    "self": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/deals/ref/"
+    }
+  }
+}

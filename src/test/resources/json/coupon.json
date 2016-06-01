@@ -1,0 +1,16 @@
+{
+  "id": 4930,
+  "code": "BOGOF",
+  "title": "BOGOF Med Consultation",
+  "company_id": 37901,
+  "valid_from": "2014-01-20T00:00:00Z",
+  "times_used": 3,
+  "public": true,
+  "price": 0.0,
+  "percentage": 0.0,
+  "coupon_type": 4,
+  "buy": 1,
+  "free": 100,
+  "apply_to_questions": false,
+  "max_per_person": 10
+}

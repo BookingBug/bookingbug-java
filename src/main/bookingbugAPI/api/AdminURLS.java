@@ -11,6 +11,7 @@ public class AdminURLS {
         public static UriTemplate company() {
             return UriTemplate.buildFromTemplate(new Config().serverUrl)
                     .literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId"))
                     .literal("/company")
                     .build();
         }
@@ -85,6 +86,7 @@ public class AdminURLS {
                     .literal("/admin")
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/services")
+                    .query(UriTemplateBuilder.var("page"), UriTemplateBuilder.var("per_page"))
                     .build();
         }
 
@@ -94,6 +96,16 @@ public class AdminURLS {
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/services")
                     .path(UriTemplateBuilder.var("serviceId"))
+                    .build();
+        }
+
+        public static UriTemplate serviceNewBooking() {
+            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+                    .literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .literal("/services")
+                    .path(UriTemplateBuilder.var("serviceId"))
+                    .literal("/new_booking")
                     .build();
         }
     }
@@ -269,6 +281,7 @@ public class AdminURLS {
                     .literal("/admin")
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/bookings")
+                    .query(UriTemplateBuilder.var("page"), UriTemplateBuilder.var("per_page"))
                     .build();
         }
 
@@ -623,6 +636,16 @@ public class AdminURLS {
                     .literal("/event_chains")
                     .literal("/find_by_ref")
                     .path(UriTemplateBuilder.var("refId"))
+                    .build();
+        }
+
+        public static UriTemplate eventChainEventsList() {
+            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+                    .literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .literal("/event_chains")
+                    .path(UriTemplateBuilder.var("eventChainId"))
+                    .literal("/events")
                     .build();
         }
     }

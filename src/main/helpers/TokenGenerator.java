@@ -1,30 +1,27 @@
 package helpers;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Date;
-import java.text.SimpleDateFormat;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.codec.net.URLCodec;
+import org.apache.commons.lang3.time.DateUtils;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.net.URLCodec;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.json.simple.JSONObject;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -48,7 +45,7 @@ public class TokenGenerator {
     public static TokenGenerator getInstance(String company_id, String secure_key) {
         //no need for singleton pattern since this will block future login attempts
         //if (INSTANCE == null) {
-            INSTANCE = new TokenGenerator(company_id, secure_key);
+        INSTANCE = new TokenGenerator(company_id, secure_key);
         //}
 
         return INSTANCE;
@@ -94,9 +91,10 @@ public class TokenGenerator {
     }
 
 
-    public String create(JSONObject json) throws Exception {
+    public String create(JsonNode json) throws Exception {
         Date expires = DateUtils.addHours(new Date(), 1);
-        json.put("expires", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(expires));
+        ((ObjectNode)json).put("expires", new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(expires));
+        
         byte[] data = json.toString().getBytes();
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -113,7 +111,7 @@ public class TokenGenerator {
 /*
     public static void main(String[] args) {
         try {
-            JSONObject jsonObj = new JSONObject();
+            JsonNode jsonObj = new JsonNode();
             jsonObj.put("first_name", "John");
             jsonObj.put("last_name", "Smith");
             jsonObj.put("email", "smith@example.com");

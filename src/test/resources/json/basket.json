@@ -1,0 +1,74 @@
+{
+  "company_id": "37003",
+  "total_price": 0,
+  "total_due_price": 0,
+  "_embedded": {
+    "items": [{
+      "event_id": 26,
+      "person_id": 15288,
+      "service_id": 48322,
+      "price": 0,
+      "num_book": 1,
+      "person_name": "Staff 1",
+      "service_name": "Initial Consultation",
+      "status": 4,
+      "id": "ef08cc44e3e140b8",
+      "date": "2016-04-21",
+      "time": 540,
+      "questions": [{
+        "id": 4
+      }, {
+        "id": 6
+      }, {
+        "id": 8
+      }],
+      "duration": 75,
+      "settings": {
+        "resource": -1,
+        "person": -1,
+        "earliest_time": "2016-04-20T14:15:00.000Z"
+      },
+      "total_price": 0,
+      "_embedded": {},
+      "_links": {
+        "self": {
+          "href": "https://tucker-allen-dev.bookingbug.com/api/v1/37003/basket/ef08cc44e3e140b8"
+        },
+        "attachment": {
+          "href": "https://tucker-allen-dev.bookingbug.com/api/v1/37003/basket/ef08cc44e3e140b8/attach/"
+        },
+        "add_attachment": {
+          "href": "https://tucker-allen-dev.bookingbug.com/api/v1/37003/basket/ef08cc44e3e140b8/attach"
+        },
+        "person": {
+          "href": "https://tucker-allen-dev.bookingbug.com/api/v1/37003/people/15288"
+        },
+        "service": {
+          "href": "https://tucker-allen-dev.bookingbug.com/api/v1/37003/services/48322"
+        },
+        "company": {
+          "href": "https://tucker-allen-dev.bookingbug.com/api/v1/company/37003"
+        }
+      }
+    }]
+  },
+  "_links": {
+    "self": {
+      "href": "https://tucker-allen-dev.bookingbug.com/api/v1/37003/basket"
+    },
+    "checkout": {
+      "href": "https://tucker-allen-dev.bookingbug.com/api/v1/37003/basket/checkout{?member_id,take_from_wallet}",
+      "templated": true
+    },
+    "items": {
+      "href": "https://tucker-allen-dev.bookingbug.com/api/v1/37003/basket{?id}",
+      "templated": true
+    },
+    "add_item": {
+      "href": "https://tucker-allen-dev.bookingbug.com/api/v1/37003/basket/add_item{?event_id,member_id,event_chain_id,service_id,product_id,attachment_id,deal_id,package_id,bulk_purchase_id}"
+    },
+    "deal": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/basket/deal"
+    }
+  }
+}

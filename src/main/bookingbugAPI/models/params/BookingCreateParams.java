@@ -17,36 +17,8 @@ public class BookingCreateParams extends Params{
     public BookingCreateParams(){}
 
 
-    public BookingCreateParams(Map<String, String[]> args){
-        if (args==null || args.isEmpty()) {
-            return;
-        }
-
-        String strValue;
-
-        for (Map.Entry<String, String[]> entry : args.entrySet()) {
-            final String[] value = entry.getValue();
-            if (value[0]!=null && !value[0].trim().isEmpty()) {
-                strValue = null;
-            } else {
-                strValue = value[0];
-            }
-
-            switch(entry.getKey()) {
-                case "datetime": datetime = strValue;
-                    break;
-                case "service_id": service_id = strValue;
-                    break;
-                case "person_id": person_id = strValue;
-                    break;
-                case "resource_id": resource_id = strValue;
-                    break;
-                case "member_id": member_id = strValue;
-                    break;
-                case "notifications": notifications = strValue;
-                    break;
-            }
-        }
+    public BookingCreateParams(Map<String, String> args){
+        super(args);
     }
 
     public String getDatetime() {
