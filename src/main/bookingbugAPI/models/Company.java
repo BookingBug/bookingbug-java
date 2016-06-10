@@ -107,6 +107,10 @@ public class Company extends BBRoot{
         return getLink("resources");
     }
 
+    public String get_newServiceLik() {
+        return getLink("new_service");
+    }
+
     public String get_servicesLink() {
         return getLink("services");
     }

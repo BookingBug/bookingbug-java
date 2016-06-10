@@ -8,19 +8,11 @@ import helpers.Config;
 public class AdminURLS {
 
     public static class Company {
-        public static UriTemplate company() {
+        public static UriTemplate companyRead() {
             return UriTemplate.buildFromTemplate(new Config().serverUrl)
                     .literal("/admin")
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/company")
-                    .build();
-        }
-
-        public static UriTemplate companyList() {
-            return UriTemplate.buildFromTemplate(new Config().serverUrl)
-                    .literal("/admin")
-                    .literal("/company")
-                    .path(UriTemplateBuilder.var("companyId"))
                     .build();
         }
 

@@ -68,6 +68,15 @@ public class Utils {
         return template;
     }
 
+    public static UriTemplate TemplateWithPagination(String fromTemplate, Params params){
+        UriTemplate template = paginatedUriTemplate(fromTemplate);
+        if(params != null){
+            template.set("page", params.getPage());
+            template.set("per_page", params.getPer_page());
+        }
+        return template;
+    }
+
     /**
      * @param content
      * @return

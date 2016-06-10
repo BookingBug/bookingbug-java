@@ -148,6 +148,9 @@ public class OkHttpService {
             return new HttpServiceResponse(Utils.stringToContentRep(cache.getResp()), method, contentType, params, config.auth_token);
         }
 
+        //http://stackoverflow.com/questions/7615645/ssl-handshake-alert-unrecognized-name-error-since-upgrade-to-java-1-7-0
+        System.setProperty("jsse.enableSNIExtension", "false");
+
         Request.Builder builder = new Request.Builder()
                 .header("User-Agent", config.userAgent)
                 .header("App-Id", config.appId)

@@ -1,31 +1,32 @@
-package bookingbugAPI.api;
+package bookingbugAPI.api.admin;
 
-import bookingbugAPI.models.*;
+import bookingbugAPI.api.API;
+import bookingbugAPI.api.AdminURLS;
+import bookingbugAPI.models.Company;
+import bookingbugAPI.models.Currency;
+import bookingbugAPI.models.SchemaForm;
+import bookingbugAPI.services.CacheService;
 import bookingbugAPI.services.HttpService;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
- * Created by sebi on 31.03.2016.
+ * Created by sebi on 09.06.2016.
  */
+public class CompanyAPITest {
 
-@Ignore
-public class CompanyTest {
-
-    private static final String  companyId = "37028";
-    private static final String token = "7gcmPMDS-G2gpNiPSUQA4A";
+    private static final String companyId = "37025";
+    private static final String token = "x2_5PcI15mq7sEWm70JazA";
 
     @Test
     public void companySettings(){
         Company company = null;
         try {
-            URL url = new URL(AdminURLS.Company.company().set("companyId", companyId).expand());
+            URL url = new URL(AdminURLS.Company.companyRead().set("companyId", companyId).expand());
             company = new Company(HttpService.api_GET(url, token), token);
             assertNotNull(company);
             assertNotNull(company.getSettings());
@@ -40,7 +41,7 @@ public class CompanyTest {
         Company company = null;
         SchemaForm schemaForm = null;
         try {
-            URL url = new URL(AdminURLS.Company.company().set("companyId", companyId).expand());
+            URL url = new URL(AdminURLS.Company.companyRead().set("companyId", companyId).expand());
             company = new Company(HttpService.api_GET(url, token), token);
             assertNotNull(company);
 
@@ -50,5 +51,19 @@ public class CompanyTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void getCompany() {
+        Company company = null;
+        API.APIBuilder builder = new API.APIBuilder().withCache(CacheService.MOCK()).withAuthToken(token);
+        API api = builder.build();
+
+        try {
+            company = api.admin().company().companyRead(companyId);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        assertNotNull(company);
     }
 }

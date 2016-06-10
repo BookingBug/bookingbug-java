@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class BookingListParams extends Params {
+public class BookingListParams extends Params<BookingListParams> {
 
     String start_date;
     String end_date;

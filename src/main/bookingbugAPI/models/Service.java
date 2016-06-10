@@ -31,6 +31,13 @@ public class Service extends BBRoot {
     public Service() {
     }
 
+    public String get_editServiceLik() {
+        return getLink("edit");
+    }
+    public String get_newBookingLik() {
+        return getLink("new_booking");
+    }
+
     public SchemaForm getNewBookingSchema() throws IOException {
         if(getLink("new_booking") != null) {
             String link = getLink("new_booking");
