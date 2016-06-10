@@ -1079,12 +1079,6 @@ public class Company extends BBRoot{
         return new Resource(HttpService.api_DELETE(url), auth_token);
     }
 
-    public SchemaForm getNewBookingSchema() throws IOException {
-        String link = getRep().getLinkByRel("new_booking").getHref();
-        URL url = new URL(UriTemplate.fromTemplate(link).expand());
-        return new SchemaForm(HttpService.api_GET(url, auth_token));
-    }
-
     public Booking bookingCreate_Admin(BookingCreateParams bCParams) throws IOException {
         String urlStr = AdminURLS.Bookings.bookingCreate().set("companyId", this.id).expand();
         URL url = new URL (urlStr);
