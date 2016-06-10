@@ -5,21 +5,14 @@ import bookingbugAPI.models.params.BookingCancelParams;
 import bookingbugAPI.models.params.BookingUpdateParams;
 import bookingbugAPI.services.HttpService;
 import com.damnhandy.uri.template.UriTemplate;
-import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
+import com.j256.ormlite.stmt.query.In;
 import helpers.HttpServiceResponse;
+import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.ParseException;
-
-import java.util.Calendar;
-import java.util.Date;
-
-import org.joda.time.DateTime;
-
 import java.util.List;
 import java.util.Map;
-
 
 
 public class Booking extends BBRoot {
@@ -32,7 +25,8 @@ public class Booking extends BBRoot {
         super(response);
     }
 
-    public Booking(){}
+    public Booking() {
+    }
 
     public BBRoot getSchema() throws IOException {
         String link = getRep().getLinkByRel("edit").getHref();
@@ -42,27 +36,155 @@ public class Booking extends BBRoot {
 
     /**
      * Returns a new Booking - update the current booking with provided params
+     *
      * @param bParams
      * @throws IOException
      */
     public Booking bookingUpdate_Admin(BookingUpdateParams bParams) throws IOException {
-        URL url = new URL (AdminURLS.Bookings.bookingUpdate().set("companyId", getCompany_id()).set("id", this.id).expand());
+        URL url = new URL(AdminURLS.Bookings.bookingUpdate().set("companyId", getCompanyId()).set("id", this.id).expand());
         return new Booking(HttpService.api_PUT(url, bParams.getParams(), auth_token), auth_token);
     }
 
     /**
      * Deletes the booking
+     *
      * @param bcParams
      * @return
      * @throws IOException
      */
     public Booking bookingCancel_Admin(BookingCancelParams bcParams) throws IOException {
-        URL url = new URL(AdminURLS.Bookings.bookingCancel().set("companyId", getCompany_id()).set("id", this.id).expand());
+        URL url = new URL(AdminURLS.Bookings.bookingCancel().set("companyId", getCompanyId()).set("id", this.id).expand());
         return new Booking(HttpService.api_DELETE(url, HttpService.jsonContentType, bcParams.getParams(), auth_token), auth_token);
     }
 
     /**
-     * Returns the duration.
+     * Returns the booking id.
+     *
+     * @return The id associated with the current Booking object.
+     */
+    public Integer getId() {
+        return getInteger("id", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the the full_describe of the booking.
+     *
+     * @return The full_describe associated with the current Booking object.
+     */
+    public String getFullDescribe() {
+        return get("full_describe");
+    }
+
+    /**
+     * Returns the resource name.
+     *
+     * @return The resource name associated with the current Booking object.
+     */
+    public String getResourceName() {
+        return get("resource_name");
+    }
+
+    /**
+     * Returns the person name.
+     *
+     * @return The person name associated with the current Booking object.
+     */
+    public String getPersonName() {
+        return get("person_name");
+    }
+
+    /**
+     * Returns the service name.
+     *
+     * @return The service name associated with the current Booking object.
+     */
+    public String getServiceName() {
+        return get("service_name");
+    }
+
+    /**
+     * Returns the resource id.
+     *
+     * @return The resource id associated with the current Booking object.
+     */
+    public Integer getResourceId() {
+        return getInteger("resource_id", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the member id.
+     *
+     * @return The member id associated with the current Booking object.
+     */
+    public Integer getMemberId() {
+        return getInteger("member_id", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the client name.
+     *
+     * @return The client name associated with the current Booking object.
+     */
+    public String getClientName() {
+        return get("client_name");
+    }
+
+    /**
+     * Returns the client email.
+     *
+     * @return The client email associated with the current Booking object.
+     */
+    public String getClientEmail() {
+        return get("client_email");
+    }
+
+    /**
+     * Returns the client phone.
+     *
+     * @return The client phone associated with the current Booking object.
+     */
+    public String getClientPhone() {
+        return get("client_phone");
+    }
+
+    /**
+     * Returns the client mobile.
+     *
+     * @return The client mobile associated with the current Booking object.
+     */
+    public String getClientMobile() {
+        return get("client_mobile");
+    }
+
+    /**
+     * Returns the service id.
+     *
+     * @return The service id associated with the current Booking object.
+     */
+    public Integer getServiceId() {
+        return getInteger("service_id", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the date and time when the booking starts, with {@link  DateTime DateTime()} as format.
+     *
+     * @return The starting date and time associated with the current Booking object.
+     */
+    public DateTime getStartDatetime() {
+        return getDate("datetime");
+    }
+
+    /**
+     * Returns the date and time when the booking ends, with {@link  DateTime DateTime()} as format.
+     *
+     * @return The ending date and time associated with the current Booking object.
+     */
+    public DateTime getEndDateTime() {
+        return getStartDatetime().plusMinutes(getDuration());
+    }
+
+    /**
+     * Returns the duration of the booking.
      *
      * @return The duration associated with the current Booking object.
      */
@@ -70,53 +192,22 @@ public class Booking extends BBRoot {
         return getInteger("duration", INTEGER_DEFAULT_VALUE);
     }
 
-    public String getUpdated_at() {
-        return get("updated_at");
+    /**
+     * Returns true if it's on the wait list, false otherwise.
+     *
+     * @return The on wait list attribute associated with the current Booking object.
+     */
+    public Boolean getOnWaitlist() {
+        return getBoolean("on_waitlist", BOOLEAN_DEFAULT_VALUE);
     }
-
-    public String getCompany_id() {
-        return get("company_id");
-    }
-
 
     /**
-     * Returns the settings. Settings consists of an obfuscated id.
-     * @return The settings associated with the current Booking object.
+     * Returns the company id.
+     *
+     * @return The company id associated with the current Booking object.
      */
-    public Map getSettings() {
-        return getObject("settings", Map.class);
-    }
-
-    public String getQuestions() {
-        return get("questions");
-    }
-
-    public String getOn_waitlist() {
-        return get("on_waitlist");
-    }
-
-    public String getClient_email() {
-        return get("client_email");
-    }
-
-    public String getId() {
-        return get("id");
-    }
-
-    public String getSlot_id() {
-        return get("slot_id");
-    }
-
-    public String getIs_cancelled() {
-        return get("is_cancelled");
-    }
-
-    public String getClient_name() {
-        return get("client_name");
-    }
-
-    public String getClient_mobile() {
-        return get("client_mobile");
+    public Integer getCompanyId() {
+        return getInteger("company_id", INTEGER_DEFAULT_VALUE);
     }
 
     /**
@@ -129,20 +220,116 @@ public class Booking extends BBRoot {
     }
 
     /**
-     * Returns the full_describe of the booking.
+     * Returns the new date and time of the updated booking, with {@link DateTime DateTime()} as format.
      *
-     * @return The full_describe associated with the current Booking object.
+     * @return new date and time of the updated booking, associated with current Booking object
      */
-    public String getFull_describe() {
-        return get("full_describe");
-    }
-
-    public String getChannel() {
-        return get("channel");
+    public DateTime getBookingUpdated() {
+        return getDate("booking_updated");
     }
 
     /**
-     * Returns the notes map.
+     * Returns the date and time when the booking was updated at, with {@link DateTime DateTime()} as format.
+     *
+     * @return date and time when the booking was updated at, associated with current Booking object
+     */
+    public DateTime getUpdatedAt() {
+        return getDate("updated_at");
+    }
+
+    /**
+     * Returns the date and time when the booking was created at, with {@link DateTime DateTime()} as format.
+     *
+     * @return date and time when the booking was created at, associated with current Booking object
+     */
+    public DateTime getCreatedAt() {
+        return getDate("created_at");
+    }
+
+    /**
+     * Returns the client id.
+     *
+     * @return The client id associated with the current Booking object.
+     */
+    public Integer getClientId() {
+        return getInteger("client_id", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the person id.
+     *
+     * @return The person id associated with the current Booking object.
+     */
+    public Integer getPersonId() {
+        return getInteger("person_id", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the price of the booking.
+     *
+     * @return The price of the booking associated with the current Booking object.
+     */
+    public Integer getPrice() {
+        return getInteger("price", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the paid attribute.
+     *
+     * @return The paid attribute associated with the current Booking object.
+     */
+    public Integer getPaid() {
+        return getInteger("paid", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the quantity.
+     *
+     * @return The quantity associated with the current Booking object.
+     */
+    public Integer getQuantity() {
+        return getInteger("quantity", INTEGER_DEFAULT_VALUE);
+    }
+
+
+    /**
+     * Returns true if the booking is cancelled, false otherwise.
+     *
+     * @return The is canceled attribute associated with the current Booking object.
+     */
+    public Boolean getIsCancelled() {
+        return getBoolean("is_cancelled", BOOLEAN_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the multi-status.
+     *
+     * @return The multi-status associated with the current Booking object.
+     */
+    public MultiStatus getMultiStatus() {
+        return getObject("multi_status", MultiStatus.class);
+    }
+
+    /**
+     * Returns purchase id.
+     *
+     * @return The purchase id associated with the current Booking object.
+     */
+    public Integer getPurchaseId() {
+        return getInteger("purchase_id", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns purchase reference.
+     *
+     * @return The purchase reference associated with the current Booking object.
+     */
+    public String getPurchaseRef() {
+        return get("purchase_ref");
+    }
+
+    /**
+     * Returns the notes.
      *
      * @return The notes associated with the current Booking object.
      */
@@ -150,70 +337,58 @@ public class Booking extends BBRoot {
         return getObject("notes", Notes.class);
     }
 
-    public String getService_id() {
-        return get("service_id");
-    }
-
-    public String getClient_id() {
-        return get("client_id");
-    }
-
-    public String getService_name() {
-        return get("service_name");
-    }
-
-    public String getStatus() {
-        return get("status");
+    /**
+     * Returns channel.
+     *
+     * @return The channel associated with the current Booking object.
+     */
+    public String getChannel() {
+        return get("channel");
     }
 
     /**
-     * Returns the multi-status map.
+     * Returns status of the booking.
      *
-     * @return The multi-status map associated with the current Booking object.
+     * @return The status associated with the current Booking object.
      */
-    public Map getMulti_status() {
-        return getObject("multi_status", Map.class);
+    public Integer getStatus() {
+        return getInteger("status", INTEGER_DEFAULT_VALUE);
     }
 
-    public String getCreated_at() {
-        return get("created_at");
+    /**
+     * Returns the client.
+     *
+     * @return The client associated with the current Booking object.
+     */
+    public Client getClient() {
+        return new Client(new HttpServiceResponse(getResource("client")));
     }
 
-    public String getPrice() {
-        return get("price");
+    /**
+     * Returns the answers array.
+     *
+     * @return The answers associated with the current Booking object.
+     */
+    public BBCollection<Answer> getAnswers() {
+        return new BBCollection<>(new HttpServiceResponse(getResource("answers")), auth_token, Answer.class);
     }
 
-    public String getDatetime() {
-        return get("datetime");
+    /**
+     * Returns slot id.
+     *
+     * @return The slot id associated with the current Booking object.
+     */
+    public Integer getSlotId() {
+        return getInteger("slot_id", INTEGER_DEFAULT_VALUE);
     }
 
-    public Date getDateTimeObj(){
-        Date datetime = null;
-        try {
-            datetime = new ISO8601DateFormat().parse(get("datetime"));
-        } catch (ParseException | NullPointerException e) {
-            //e.printStackTrace();
-            log.warning("Cannot parse datetime format: " + e.toString());
-        }
-        return datetime;
-    }
-
-    public Date getEndDateTimeObj(){
-        Date endDateTime = null;
-        Date startDateTime = getDateTimeObj();
-        try {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(startDateTime);
-            cal.add(Calendar.MINUTE, getDuration());
-            endDateTime = cal.getTime();
-        }catch (Exception e){
-            log.warning("Cannot get booking end datetime: " + e.toString());
-        }
-        return endDateTime;
-    }
-
-    public String getResource_name() {
-        return get("resource_name");
+    /**
+     * Returns the settings. Settings consists of an obfuscated id.
+     *
+     * @return The settings associated with the current Booking object.
+     */
+    public Map getSettings() {
+        return getObject("settings", Map.class);
     }
 
     /**
@@ -221,40 +396,8 @@ public class Booking extends BBRoot {
      *
      * @return The slot settings associated with the current Booking object.
      */
-    public Map getSlot_settings() {
+    public Map getSlotSettings() {
         return getObject("slot_settings", Map.class);
-    }
-
-    public String getQuantity() {
-        return get("quantity");
-    }
-
-    public String getBooking_updated() {
-        return get("booking_updated");
-    }
-
-    public String getClient_phone() {
-        return get("client_phone");
-    }
-
-    public String getResource_id() {
-        return get("resource_id");
-    }
-
-    public String getPurchase_id() {
-        return get("purchase_id");
-    }
-
-    public String getMember_id() {
-        return get("member_id");
-    }
-
-    public String getPaid() {
-        return get("paid");
-    }
-
-    public String getPurchase_ref() {
-        return get("purchase_ref");
     }
 
     /**
@@ -336,34 +479,6 @@ public class Booking extends BBRoot {
      */
     public Integer getEventChainId() {
         return getInteger("event_chain_id", INTEGER_DEFAULT_VALUE);
-    }
-
-    /**
-     * Returns the client resource.
-     *
-     * @return The client resource associated with the current Booking object.
-     */
-    public Client getClient() {
-        return new Client(new HttpServiceResponse(getResource("client")));
-    }
-
-    /**
-     * Returns the answer array resource.
-     *
-     * @return The answers resource associated with the current Booking object.
-     */
-    public BBCollection<Answer> getAnswers() {
-        return new BBCollection<>(new HttpServiceResponse(getResource("answers")), auth_token, Answer.class);
-    }
-
-
-    /**
-     * Returns the survey answers summary resource.
-     *
-     * @return The survey answers summary resource associated with the current Booking object.
-     */
-    public List<String> getSurveyAnswersSummary() {
-        return getArray("survey_answers_summary");
     }
 
     /**

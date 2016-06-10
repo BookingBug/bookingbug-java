@@ -3,7 +3,6 @@ package bookingbugAPI.models;
 import com.fasterxml.jackson.databind.JsonNode;
 import helpers.HttpServiceResponse;
 import helpers.Utils;
-import helpers.hal_addon.CustomJsonDeserializer;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
@@ -26,77 +25,52 @@ public class BookingTest extends ModelTest {
     @Test
     public void modelInit() throws java.text.ParseException {
         Booking booking = new Booking(new HttpServiceResponse(Utils.stringToContentRep(jsonNode.toString())));
-        JsonNode jsonLinks = (JsonNode) jsonNode.get("_links");
-        JsonNode jsonEmbedded = (JsonNode) jsonNode.get("_embedded");
-        CustomJsonDeserializer jsonDeserializer = new CustomJsonDeserializer();
+        JsonNode jsonLinks = jsonNode.get("_links");
 
-        assertTrue(booking.getId().toString().equals(jsonNode.get("id").asText()));
-        assertTrue(booking.getFull_describe().equals(jsonNode.get("full_describe").asText()));
-        assertTrue(booking.getResource_name().equals(jsonNode.get("resource_name").asText()));
-        assertTrue(booking.getService_name().equals(jsonNode.get("service_name").asText()));
-        assertTrue(booking.getResource_id().toString().equals(jsonNode.get("resource_id").asText()));
-        assertTrue(booking.getMember_id().toString().equals(jsonNode.get("member_id").asText()));
-        assertTrue(booking.getClient_name().equals(jsonNode.get("client_name").asText()));
-        assertTrue(booking.getClient_email().equals(jsonNode.get("client_email").asText()));
-        assertTrue(booking.getClient_phone().equals(jsonNode.get("client_phone").asText()));
-        assertTrue(booking.getClient_mobile().equals(jsonNode.get("client_mobile").asText()));
-        assertTrue(booking.getService_id().equals(jsonNode.get("service_id").asText()));
-
-        //TODO: fix datetime with Joda and java.util.Date. Also find way to compare dates (not strings)
-        //assertTrue(booking.getDatetime().equals(new DateTime(jsonNode.get("datetime").toString())));
-
-
-        assertTrue(booking.getDuration().toString().equals(jsonNode.get("duration").asText()));
-        assertTrue(booking.getOn_waitlist().toString().equals(jsonNode.get("on_waitlist").asText()));
-        assertTrue(booking.getCompany_id().toString().equals(jsonNode.get("company_id").asText()));
-        assertTrue(booking.getEventChainId().toString().equals(jsonNode.get("event_chain_id").asText()));
-        assertTrue(booking.getAttended().toString().equals(jsonNode.get("attended").asText()));
-
-        //TODO: fix datetime with Joda and java.util.Date. Also find way to compare dates (not strings)
-        //assertTrue(booking.getBooking_updated().equals(new DateTime(jsonNode.get("booking_updated"))));
-        //assertTrue(booking.getUpdated_at().equals(new DateTime(jsonNode.get("updated_at"))));
-        //assertTrue(booking.getCreated_at().equals(new DateTime(jsonNode.get("created_at"))));
-
-        assertTrue(booking.getClient_id().toString().equals(jsonNode.get("client_id").asText()));
-        assertTrue(booking.getPrice().toString().equals(jsonNode.get("price").asText()));
-        assertTrue(booking.getPaid().toString().equals(jsonNode.get("paid").asText()));
-        assertTrue(booking.getQuantity().toString().equals(jsonNode.get("quantity").asText()));
-        assertTrue(booking.getIs_cancelled().toString().equals(jsonNode.get("is_cancelled").asText()));
-
-        //TODO: find way to compare maps
-        //assertTrue(booking.getMulti_status().equals(jsonNode.get("multi_status").asText()));
-
-        assertTrue(booking.getPurchase_id().toString().equals(jsonNode.get("purchase_id").asText()));
-        assertTrue(booking.getPurchase_ref().equals(jsonNode.get("purchase_ref").asText()));
-        assertTrue(booking.getChannel().equals(jsonNode.get("channel").asText()));
-        assertTrue(booking.getStatus().toString().equals(jsonNode.get("status").asText()));
-        assertTrue(booking.getSlot_id().toString().equals(jsonNode.get("slot_id").asText()));
-        assertTrue(booking.getClientLink().equals(((JsonNode) jsonLinks.get("client")).get("href").asText()));
-        assertTrue(booking.getCheckInLink().equals(((JsonNode) jsonLinks.get("check_in")).get("href").asText()));
-        assertTrue(booking.getQuestionsLink().equals(((JsonNode) jsonLinks.get("questions")).get("href").asText()));
-        assertTrue(booking.getEventGroupsLink().equals(((JsonNode) jsonLinks.get("event_groups")).get("href").asText()));
-        assertTrue(booking.getEventChainLink().equals(((JsonNode) jsonLinks.get("event_chain")).get("href").asText()));
-        assertTrue(booking.getEditLink().equals(((JsonNode) jsonLinks.get("edit")).get("href").asText()));
-        assertTrue(booking.getCancelLink().equals(((JsonNode) jsonLinks.get("cancel")).get("href").asText()));
-        assertTrue(booking.getAddressLink().equals(((JsonNode) jsonLinks.get("address")).get("href").asText()));
-
-
-        //TODO: find way to compare maps
-        //assertTrue(booking.getSettings().equals(jsonNode.get("settings")));
-        //assertTrue(booking.getSlot_settings().equals(jsonNode.get("slot_settings")));
-
-        //TODO: find way to compare arrays
-        //assertTrue(booking.getSurveyAnswersSummary().equals(jsonNode.get("survey_answers_summary").asText()));
-
-        assertTrue(booking.getMinCancellationTime().equals(new DateTime(jsonNode.get("min_cancellation_time").asText())));
-
-        /*try {
-            assertTrue((jsonDeserializer.getMapper().writeValueAsString(booking.getNotes())).equals(jsonNode.get("notes").toString()));
-//            assertTrue((jsonDeserializer.getMapper().writeValueAsString(booking.getClient())).equals(jsonEmbedded.get("client").toString()));
-//            assertTrue((jsonDeserializer.getMapper().writeValueAsString(booking.getAnswers())).equals(jsonEmbedded.get("answers").toString()));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }*/
+        assertTrue(booking.getId().equals(jsonNode.get("id").intValue()));
+        assertTrue(booking.getFullDescribe().equals(jsonNode.get("full_describe").textValue()));
+        assertTrue(booking.getResourceName().equals(jsonNode.get("resource_name").textValue()));
+        assertTrue(booking.getServiceName().equals(jsonNode.get("service_name").textValue()));
+        assertTrue(booking.getResourceId().equals(jsonNode.get("resource_id").intValue()));
+        assertTrue(booking.getMemberId().equals(jsonNode.get("member_id").intValue()));
+        assertTrue(booking.getClientName().equals(jsonNode.get("client_name").textValue()));
+        assertTrue(booking.getClientEmail().equals(jsonNode.get("client_email").textValue()));
+        assertTrue(booking.getClientPhone().equals(jsonNode.get("client_phone").textValue()));
+        assertTrue(booking.getClientMobile().equals(jsonNode.get("client_mobile").textValue()));
+        assertTrue(booking.getServiceId().equals(jsonNode.get("service_id").intValue()));
+        assertTrue(booking.getStartDatetime().equals(new DateTime(jsonNode.get("datetime").textValue())));
+        assertTrue(booking.getDuration().equals(jsonNode.get("duration").intValue()));
+        assertTrue(booking.getOnWaitlist().equals(jsonNode.get("on_waitlist").booleanValue()));
+        assertTrue(booking.getCompanyId().equals(jsonNode.get("company_id").intValue()));
+        assertTrue(booking.getEventChainId().equals(jsonNode.get("event_chain_id").intValue()));
+        assertTrue(booking.getAttended().equals(jsonNode.get("attended").booleanValue()));
+        assertTrue(booking.getBookingUpdated().equals(new DateTime(jsonNode.get("booking_updated").textValue())));
+        assertTrue(booking.getUpdatedAt().equals(new DateTime(jsonNode.get("updated_at").textValue())));
+        assertTrue(booking.getCreatedAt().equals(new DateTime(jsonNode.get("created_at").textValue())));
+        assertTrue(booking.getClientId().equals(jsonNode.get("client_id").intValue()));
+        assertTrue(booking.getPrice().equals(jsonNode.get("price").intValue()));
+        assertTrue(booking.getPaid().equals(jsonNode.get("paid").intValue()));
+        assertTrue(booking.getQuantity().equals(jsonNode.get("quantity").intValue()));
+        assertTrue(booking.getIsCancelled().equals(jsonNode.get("is_cancelled").booleanValue()));
+        assertTrue(booking.getMultiStatus().getHere().equals(jsonNode.get("multi_status").get("here").textValue()));
+        assertTrue(booking.getPurchaseId().equals(jsonNode.get("purchase_id").intValue()));
+        assertTrue(booking.getPurchaseRef().equals(jsonNode.get("purchase_ref").textValue()));
+        assertTrue(booking.getChannel().equals(jsonNode.get("channel").textValue()));
+        assertTrue(booking.getStatus().equals(jsonNode.get("status").intValue()));
+        assertTrue(booking.getSlotId().equals(jsonNode.get("slot_id").intValue()));
+        assertTrue(booking.getClientLink().equals(((jsonLinks.get("client")).get("href")).textValue()));
+        assertTrue(booking.getCheckInLink().equals(((jsonLinks.get("check_in")).get("href").textValue())));
+        assertTrue(booking.getQuestionsLink().equals(((jsonLinks.get("questions")).get("href").textValue())));
+        assertTrue(booking.getEventGroupsLink().equals(((jsonLinks.get("event_groups")).get("href").textValue())));
+        assertTrue(booking.getEventChainLink().equals(((jsonLinks.get("event_chain")).get("href").textValue())));
+        assertTrue(booking.getEditLink().equals(((jsonLinks.get("edit")).get("href").textValue())));
+        assertTrue(booking.getCancelLink().equals(((jsonLinks.get("cancel")).get("href").textValue())));
+        assertTrue(booking.getAddressLink().equals(((jsonLinks.get("address")).get("href").textValue())));
+        assertTrue(booking.getMinCancellationTime().equals(new DateTime(jsonNode.get("min_cancellation_time").textValue())));
+        // TODO: Test notes, client, answers
+        // TODO: Implement and Test answers_summary, survey_answers_summary
+        // TODO: Implement and Test settings and slot_settings
+        // TODO: Implement and Test questions
     }
 
     @Override
