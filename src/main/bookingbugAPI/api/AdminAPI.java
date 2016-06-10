@@ -34,13 +34,13 @@ public class AdminAPI extends AbstractAPI {
 
         /**
          * Get a list of admin bookings for a company
-         * @param company The owning company for bookings
+         * @param company The owning company for bookin
          * @param bLParams The parameters for this call
          * @return Collection of bookings
          * @throws IOException
          */
         public BBCollection<Booking> bookingList(Company company, BookingListParams bLParams) throws IOException {
-            URL url = new URL(Utils.inflateLink(company.get_bookingsLink(), bLParams.getParams()));
+            URL url = new URL(Utils.inflateLink(company.getBookingsLink(), bLParams.getParams()));
             BBCollection<Booking> bookings = new BBCollection<Booking>(httpService.api_GET(url), getAuthToken(), "bookings", Booking.class);
             //BBCollection<Booking> bookings = new BBCollection<Booking>(HttpService.api_GET(url, getAuthToken()), getAuthToken(), "bookings", Booking.class);
             return bookings;
@@ -125,7 +125,7 @@ public class AdminAPI extends AbstractAPI {
          * @throws IOException
          */
         public BBCollection<Service> serviceList(Company company, ServiceListParams slParams) throws IOException {
-            UriTemplate template = Utils.TemplateWithPagination(company.get_servicesLink(), slParams);
+            UriTemplate template = Utils.TemplateWithPagination(company.getServicesLink(), slParams);
             URL url = new URL(template.expand());
 
             BBCollection<Service> services = new BBCollection<Service>(httpService.api_GET(url), httpService.getConfig().auth_token,  "services", Service.class);
@@ -154,7 +154,7 @@ public class AdminAPI extends AbstractAPI {
          * @throws IOException
          */
         public SchemaForm getNewServiceSchema(Company company) throws IOException {
-            URL url = new URL(UriTemplate.fromTemplate(company.get_newServiceLik()).expand());
+            URL url = new URL(UriTemplate.fromTemplate(company.getNewServiceLink()).expand());
             return new SchemaForm(HttpService.api_GET(url, httpService.getConfig().auth_token));
         }
 

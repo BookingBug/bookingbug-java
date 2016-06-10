@@ -1,0 +1,203 @@
+{
+	"id": 37901,
+	"name": "Conor's Pet Store",
+	"description": "",
+	"address_id": 32352,
+	"website": "",
+	"numeric_widget_id": 2075622,
+	"currency_code": "USD",
+	"timezone": "Africa/Cairo",
+	"country_code": "gb",
+	"live": true,
+	"_embedded": {
+		"settings": {
+			"has_coupons": true,
+			"use_shopping_basket": true,
+			"has_deals": true,
+			"has_vouchers": true,
+			"has_products": true,
+			"has_services": true,
+			"has_events": true,
+			"has_classes": true,
+			"has_waitlists": true,
+			"payment_tax": 8.25,
+			"currency": "USD",
+			"requires_login": false,
+			"has_wallets": false,
+			"_links": {
+				"self": {
+					"href": "https://uk.bookingbug.com/api/v1/37901/settings"
+				}
+			}
+		}
+	},
+	"_links": {
+		"self": {
+			"href": "https://uk.bookingbug.com/api/v1/company/37901"
+		},
+		"settings": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/settings"
+		},
+		"services": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/services"
+		},
+		"categories": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/categories{/id}",
+			"templated": true
+		},
+		"address": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/addresses/32352"
+		},
+		"addresses": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/addresses"
+		},
+		"book": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/basket/add_item{?event_id,member_id,event_chain_id,service_id,product_id,attachment_id,deal_id,package_id,bulk_purchase_id}",
+			"templated": true
+		},
+		"named_categories": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/named_categories"
+		},
+		"resources": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/resources"
+		},
+		"people": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/people"
+		},
+		"clinics": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/clinics/{/id}{?start_time,end_time,address_id,availability,start_date,end_date}",
+			"templated": true
+		},
+		"events": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/events{?start_date,end_date,page,per_page,resource_id,person_id,event_group_id,event_chain_id,summary,member_level_id,embed}",
+			"templated": true
+		},
+		"event_chains": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/event_chains{/id}{?start_date,end_date,page,per_page,member_level_id}",
+			"templated": true
+		},
+		"event_groups": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/event_groups"
+		},
+		"client_details": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/client_details"
+		},
+		"packages": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/packages"
+		},
+		"bulk_purchases": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/bulk_purchases"
+		},
+		"checkout": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/basket/checkout{?member_id,take_from_wallet}"
+		},
+		"total": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/purchase_totals/{total_id}",
+			"templated": true
+		},
+		"login": {
+			"href": "https://uk.bookingbug.com/api/v1/login/37901"
+		},
+		"client": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/client"
+		},
+		"client_by_email": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/client/find_by_email/{email}",
+			"templated": true
+		},
+		"booking_text": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/booking_text"
+		},
+		"basket": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/basket"
+		},
+		"days": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/day_data{?month,week,date,edate,location,service_id,event_id,person_id,resource_id}",
+			"templated": true
+		},
+		"times": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/time_data{?service_id,event_id,date,end_date,location,person_id,resource_id,duration,single,num_resources,group_id,resource_ids}",
+			"templated": true
+		},
+		"coupon": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/basket/coupon"
+		},
+		"company_questions": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/company_questions"
+		},
+		"email_password_reset": {
+			"href": "https://uk.bookingbug.com/api/v1/login/37901/email_password_reset"
+		},
+		"deals": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/deals"
+		},
+		"service_groups": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/service_groups"
+		},
+		"member_levels": {
+			"href": "https://uk.bookingbug.com/api/v1/37901/membership_levels"
+		},
+		"space_statuses": {
+			"href": "https://assist-dev.bookingbug.com/api/v1/37025/space_statuses"
+		},
+		"new_person": {
+			"href": "https://assist-dev.bookingbug.com/api/v1/admin/37025/people/new{?signup}",
+			"templated": true
+		},
+		"new_resource": {
+			"href": "https://assist-dev.bookingbug.com/api/v1/admin/37025/resources/new",
+			"templated": true
+		},
+		"schedules": {
+			"href": "https://assist-dev.bookingbug.com/api/v1/admin/37025/schedules{?start_date,end_date,page,per_page}",
+			"templated": true
+		},
+		"new_schedule": {
+			"href": "https://assist-dev.bookingbug.com/api/v1/admin/37025/schedules/new",
+			"templated": true
+		},
+		"administrators": {
+			"href": "https://assist-dev.bookingbug.com/api/v1/admin/37025/administrators"
+		},
+		"new_administrator": {
+			"href": "https://assist-dev.bookingbug.com/api/v1/admin/37025/administrators/new",
+			"templated": true
+		},
+		"slots": {
+			"href": "https://assist-dev.bookingbug.com/api/v1/admin/37025/slots{?start_date,end_date,date,resource_id,service_id,person_id,page,per_page}",
+			"templated": true
+		},
+		"calendar_events": {
+			"href": "https://assist-dev.bookingbug.com/api/v1/admin/37025/calendar_events{/id}{?start_time,end_time,address_id,availability,start_date,end_date,resource_id}",
+			"templated": true
+		},
+		"new_service": {
+			"href": "https://assist-dev.bookingbug.com/api/v1/admin/37025/services/new",
+			"templated": true
+		},
+		"bookings": {
+			"href": "https://assist-dev.bookingbug.com/api/v1/admin/37025/bookings{/id}{?start_date,end_date,page,per_page,include_cancelled,modified_since,slot_id,event_id,resource_id,service_id,person_id,client_id,filter_by_fields,order_by,order_by_reverse}",
+			"templated": true
+		},
+		"queuers": {
+			"href": "https://assist-dev.bookingbug.com/api/v1/admin/37025/queuers{?client_queue_ids}",
+			"templated": true
+		},
+		"client_queues": {
+			"href": "https://assist-dev.bookingbug.com/api/v1/admin/37025/client_queues"
+		},
+		"new_queuer": {
+			"href": "https://assist-dev.bookingbug.com/api/v1/admin/37025/queuers/new",
+			"templated": true
+		},
+		"pusher": {
+			"href": "https://assist-dev.bookingbug.com/api/v1/push/37025/pusher.json"
+		},
+		"external_bookings": {
+			"href": "https://assist-dev.bookingbug.com/api/v1/admin/37025/external_bookings"
+		},
+		"facebook_login": {
+			"href": "https://uk.bookingbug.com/api/v1/login/37901/facebook"
+		}
+	}
+}

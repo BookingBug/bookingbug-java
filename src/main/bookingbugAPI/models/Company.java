@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.factories.SchemaFactoryWrapper;
+import com.j256.ormlite.stmt.query.In;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import bookingbugAPI.services.HttpService;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
@@ -43,81 +44,6 @@ public class Company extends BBRoot{
 
     public Company() {}
 
-    public String get_companyID() {
-        return get("id");
-    }
-
-    public String get_numericWidgetID() {
-        return get("numeric_widget_id");
-    }
-
-    public String get_addressID() {
-        return get("address_id");
-    }
-
-    public String get_name() {
-        return get("name");
-    }
-
-    public String get_currencyCode() {
-        return get("currency_code");
-    }
-
-    public String get_timezone() {
-        return get("timezone");
-    }
-
-    public String get_multiStatus() {
-        return get("multi_status");
-    }
-
-    public String get_website() {
-        return get("website");
-    }
-
-    public String get_description() {
-        return get("description");
-    }
-
-    public String get_countryCode() {
-        return get("country_code");
-    }
-
-    public String get_live() {
-        return get("live");
-    }
-
-    public String get_addressLink() {
-        return getLink("addresses");
-    }
-
-    public String get_peopleLink() {
-        return getLink("people");
-    }
-
-    public String get_categoriesLink() {
-        return getLink("categories");
-    }
-
-    public String get_eventsLinks() {
-        return getLink("events");
-    }
-
-    public String get_resourcesLink() {
-        return getLink("resources");
-    }
-
-    public String get_newServiceLik() {
-        return getLink("new_service");
-    }
-
-    public String get_servicesLink() {
-        return getLink("services");
-    }
-
-    public String get_bookingsLink() {
-        return getLink("bookings");
-    }
 
 /*
     //TODO temp. until get the purchase from the content representation
@@ -1320,7 +1246,11 @@ public class Company extends BBRoot{
         return purchases.getObjectAtIndex(0);
     }
 
-
+    /**
+     * Get the Client Schema
+     * @return BBRoot
+     * @throws IOException
+     */
     public BBRoot getClientSchema() throws IOException {
 /*        String link = rep.getLinkByRel("client_details").getHref();
         URL url = new URL(UriTemplate.fromTemplate(link).expand());
@@ -1349,24 +1279,51 @@ public class Company extends BBRoot{
         return new BBRoot(httpServiceResponse, auth_token);
     }
 
+    /**
+     * Create a new Client
+     * @param data
+     * @return BBRoot
+     * @throws HttpException
+     * @throws MalformedURLException
+     */
     public BBRoot createClient(Map<String, String> data) throws HttpException, MalformedURLException {
         String link = response.getRep().getLinkByRel("client").getHref();
         URL url = new URL (link);
         return new BBRoot(HttpService.api_POST(url, data, auth_token), auth_token);
     }
 
+    /**
+     * Create a new Person
+     * @param data
+     * @return BBRoot
+     * @throws HttpException
+     * @throws MalformedURLException
+     */
     public BBRoot createPerson(Map<String, String> data) throws HttpException, MalformedURLException {
         String uri = AdminURLS.Person.personCreate().set("companyId", get("id")).expand();
         URL url = new URL (uri);
         return new BBRoot(HttpService.api_POST(url, data, auth_token), auth_token);
     }
 
+    /**
+     * Update a person
+     * @param person
+     * @param data
+     * @return BBRoot
+     * @throws HttpException
+     * @throws MalformedURLException
+     */
     public BBRoot updatePerson(People person, Map<String, String> data) throws HttpException, MalformedURLException {
         String uri = AdminURLS.Person.personUpdate().set("companyId", get("id")).set("personId", person.get("id")).expand();
         URL url = new URL (uri);
         return new BBRoot(HttpService.api_PUT(url, HttpService.jsonContentType, data, auth_token), auth_token);
     }
 
+    /**
+     * Get the administrators
+     * @return Administrator
+     * @throws IOException
+     */
     public Administrator getAdministrators() throws IOException {
         if(administratorList == null) {
             String link = response.getRep().getLinkByRel("administrators").getHref();
@@ -1377,6 +1334,11 @@ public class Company extends BBRoot{
         return administratorList;
     }
 
+    /**
+     * Get the administrator schema
+     * @return BBRoot
+     * @throws IOException
+     */
     public BBRoot getAdministratorSchema() throws IOException {
         if(administratorSchema == null) {
             String link = response.getRep().getLinkByRel("new_administrator").getHref();
@@ -1387,16 +1349,552 @@ public class Company extends BBRoot{
         return administratorSchema;
     }
 
+    /**
+     * Create a new administrator
+     * @param data
+     * @return Administrator
+     * @throws HttpException
+     * @throws MalformedURLException
+     */
     public Administrator createAdministrator(Map<String, String> data) throws HttpException, MalformedURLException {
         String uri = AdminURLS.Administrator.administratorCreate().set("companyId", get("id")).expand();
         URL url = new URL (uri);
         return new Administrator(HttpService.api_POST(url, data, auth_token), auth_token);
     }
 
+    /**
+     * Update a person
+     * @param data
+     * @return BBRoot
+     * @throws HttpException
+     * @throws MalformedURLException
+     */
     public BBRoot updatePerson(Map<String, String> data) throws HttpException, MalformedURLException {
         String uri = AdminURLS.Person.personCreate().set("companyId", get("id")).expand();
         URL url = new URL (uri);
         return new BBRoot(HttpService.api_POST(url, data, auth_token), auth_token);
+    }
+
+    /**
+     * Returns the company id.
+     *
+     * @return The company id associated with the current Company object
+     */
+    public Integer getId() {
+        return getInteger("id", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the company name.
+     *
+     * @return The company name associated with the current Company object
+     */
+    public String getName() {
+        return get("name");
+    }
+
+    /**
+     * Returns the company description.
+     *
+     * @return The company description associated with the current Company object
+     */
+    public String getDescription() {
+        return get("description");
+    }
+
+    /**
+     * Returns the company id address.
+     *
+     * @return The company id address associated with the current Company object
+     */
+    public Integer getAddressId() {
+        return getInteger("address_id", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the company website.
+     *
+     * @return The company website associated with the current Company object
+     */
+    public String getWebsite() {
+        return get("website");
+    }
+
+    /**
+     * Returns the numeric widget id.
+     *
+     * @return The numeric widget id associated with the current Company object
+     */
+    public Integer getNumericWidgetId() {
+        return getInteger("numeric_widget_id", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the company currency code.
+     *
+     * @return The company currency code associated with the current Company object
+     */
+    public String getCurrencyCode() {
+        return get("currency_code");
+    }
+
+    /**
+     * Returns the time zone.
+     *
+     * @return The time zone associated with the current Company object
+     */
+    public String getTimezone() {
+        return get("timezone");
+    }
+
+    /**
+     * Returns the country code.
+     *
+     * @return The country code associated with the current Company object
+     */
+    public String getCountryCode() {
+        return get("country_code");
+    }
+
+    /**
+     * Returns true if it is live, fasle otherwise.
+     *
+     * @return The live attribute associated with the current Company object
+     */
+    public Boolean getLive() {
+        return getBoolean("live", BOOLEAN_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the settings link.
+     *
+     * @return The settings link associated with the current Company object
+     */
+    public String getSettingsLink() {
+        return getLink("settings");
+    }
+
+    /**
+     * Returns the services link.
+     *
+     * @return The services link associated with the current Company object
+     */
+    public String getServicesLink() {
+        return getLink("services");
+    }
+
+    /**
+     * Returns the categories link.
+     *
+     * @return The categories link associated with the current Company object
+     */
+    public String getCategoriesLink() {
+        return getLink("categories");
+    }
+
+    /**
+     * Returns the address link.
+     *
+     * @return The address link associated with the current Company object
+     */
+    public String getAddressLink() {
+        return getLink("address");
+    }
+
+    /**
+     * Returns the addresses link.
+     *
+     * @return The addresses link associated with the current Company object
+     */
+    public String getAddressesLink() {
+        return getLink("addresses");
+    }
+
+    /**
+     * Returns the book link.
+     *
+     * @return The book link associated with the current Company object
+     */
+    public String getBookLink() {
+        return getLink("book");
+    }
+
+    /**
+     * Returns the named categories link.
+     *
+     * @return The named categories link associated with the current Company object
+     */
+    public String getNamedCategoriesLink() {
+        return getLink("named_categories");
+    }
+
+    /**
+     * Returns the resources link.
+     *
+     * @return The resources link associated with the current Company object
+     */
+    public String getResourcesLink() {
+        return getLink("resources");
+    }
+
+    /**
+     * Returns the people link.
+     *
+     * @return The people link associated with the current Company object
+     */
+    public String getPeopleLink() {
+        return getLink("people");
+    }
+
+    /**
+     * Returns the clinics link.
+     *
+     * @return The clinics link associated with the current Company object
+     */
+    public String getClinicsLink() {
+        return getLink("clinics");
+    }
+
+    /**
+     * Returns the events link.
+     *
+     * @return The events link associated with the current Company object
+     */
+    public String getEventsLink() {
+        return getLink("events");
+    }
+
+    /**
+     * Returns the event chains link.
+     *
+     * @return The event chains link associated with the current Company object
+     */
+    public String getEventChainsLink() {
+        return getLink("event_chains");
+    }
+
+    /**
+     * Returns the event groups link.
+     *
+     * @return The event groups link associated with the current Company object
+     */
+    public String getEventGroupsLink() {
+        return getLink("event_groups");
+    }
+
+    /**
+     * Returns the client details link.
+     *
+     * @return The client details link associated with the current Company object
+     */
+    public String getClientDetailsLink() {
+        return getLink("client_details");
+    }
+
+    /**
+     * Returns the packages link.
+     *
+     * @return The packages link associated with the current Company object
+     */
+    public String getPackagesLink() {
+        return getLink("packages");
+    }
+
+    /**
+     * Returns the bulk purchases link.
+     *
+     * @return The bulk purchases link associated with the current Company object
+     */
+    public String getBulkPurchasesLink() {
+        return getLink("bulk_purchases");
+    }
+
+    /**
+     * Returns the checkout link.
+     *
+     * @return The checkout link associated with the current Company object
+     */
+    public String getCheckoutLink() {
+        return getLink("checkout");
+    }
+
+    /**
+     * Returns the total link.
+     *
+     * @return The total link associated with the current Company object
+     */
+    public String getTotalLink() {
+        return getLink("total");
+    }
+
+    /**
+     * Returns the login link.
+     *
+     * @return The login link associated with the current Company object
+     */
+    public String getLoginLink() {
+        return getLink("login");
+    }
+
+    /**
+     * Returns the client link.
+     *
+     * @return The client link associated with the current Company object
+     */
+    public String getClientLink() {
+        return getLink("client");
+    }
+
+    /**
+     * Returns the client by email link.
+     *
+     * @return The client by email link associated with the current Company object
+     */
+    public String getClientByEmailLink() {
+        return getLink("client_by_email");
+    }
+
+    /**
+     * Returns the booking text link.
+     *
+     * @return The booking text link associated with the current Company object
+     */
+    public String getBookingTextLink() {
+        return getLink("booking_text");
+    }
+
+    /**
+     * Returns the basket link.
+     *
+     * @return The basket link associated with the current Company object
+     */
+    public String getBasketLink() {
+        return getLink("basket");
+    }
+
+    /**
+     * Returns the days link.
+     *
+     * @return The days link associated with the current Company object
+     */
+    public String getDaysLink() {
+        return getLink("days");
+    }
+
+    /**
+     * Returns the times link.
+     *
+     * @return The times link associated with the current Company object
+     */
+    public String getTimesLink() {
+        return getLink("times");
+    }
+
+    /**
+     * Returns the coupon link.
+     *
+     * @return The coupon link associated with the current Company object
+     */
+    public String getCouponLink() {
+        return getLink("coupon");
+    }
+
+    /**
+     * Returns the company questions link.
+     *
+     * @return The company questions link associated with the current Company object
+     */
+    public String getCompanyQuestionsLink() {
+        return getLink("company_questions");
+    }
+
+    /**
+     * Returns the email password reset link.
+     *
+     * @return The email password reset link associated with the current Company object
+     */
+    public String getEmailPasswordResetLink() {
+        return getLink("email_password_reset");
+    }
+
+    /**
+     * Returns the deals link.
+     *
+     * @return The deals link associated with the current Company object
+     */
+    public String getDealsLink() {
+        return getLink("deals");
+    }
+
+    /**
+     * Returns the service groups link.
+     *
+     * @return The service groups link associated with the current Company object
+     */
+    public String getServiceGroupsLink() {
+        return getLink("service_groups");
+    }
+
+    /**
+     * Returns the member levels link.
+     *
+     * @return The member levels link associated with the current Company object
+     */
+    public String getMemberLevelsLink() {
+        return getLink("member_levels");
+    }
+
+    /**
+     * Returns the facebook login link.
+     *
+     * @return The facebook login link associated with the current Company object
+     */
+    public String getFacebookLoginLink() {
+        return getLink("facebook_login");
+    }
+
+    /**
+     * Returns the space statuses link.
+     *
+     * @return The space statuses link associated with the current Company object
+     */
+    public String getSpaceStatusesLink() {
+        return getLink("space_statuses");
+    }
+
+    /**
+     * Returns the new person link.
+     *
+     * @return The new person link associated with the current Company object
+     */
+    public String getNewPersonLink() {
+        return getLink("new_person");
+    }
+
+    /**
+     * Returns the new resource link.
+     *
+     * @return The new resource link associated with the current Company object
+     */
+    public String getNewResourceLink() {
+        return getLink("new_resource");
+    }
+
+    /**
+     * Returns the schedules link.
+     *
+     * @return The schedules link associated with the current Company object
+     */
+    public String getSchedules() {
+        return getLink("schedules");
+    }
+
+    /**
+     * Returns the new schedule link.
+     *
+     * @return The new schedule link associated with the current Company object
+     */
+    public String getNewScheduleLink() {
+        return getLink("new_schedule");
+    }
+
+    /**
+     * Returns the administrators link.
+     *
+     * @return The administrators link associated with the current Company object
+     */
+    public String getAdministratorsLink() {
+        return getLink("administrators");
+    }
+
+    /**
+     * Returns the new person link.
+     *
+     * @return The new person link associated with the current Company object
+     */
+    public String getNewAdministratorLink() {
+        return getLink("new_administrator");
+    }
+
+    /**
+     * Returns the slots link.
+     *
+     * @return The slots link associated with the current Company object
+     */
+    public String getSlotsLink() {
+        return getLink("slots");
+    }
+
+    /**
+     * Returns the calendar events link.
+     *
+     * @return The calendar events link associated with the current Company object
+     */
+    public String getCalendarEventsLink() {
+        return getLink("calendar_events");
+    }
+
+    /**
+     * Returns the new service link.
+     *
+     * @return The new service link associated with the current Company object
+     */
+    public String getNewServiceLink() {
+        return getLink("new_service");
+    }
+
+    /**
+     * Returns the bookings link.
+     *
+     * @return The bookings link associated with the current Company object
+     */
+    public String getBookingsLink() {
+        return getLink("bookings");
+    }
+
+    /**
+     * Returns the queuers link.
+     *
+     * @return The queuers link associated with the current Company object
+     */
+    public String getQueuersLink() {
+        return getLink("queuers");
+    }
+
+    /**
+     * Returns the client queues link.
+     *
+     * @return The client queues link associated with the current Company object
+     */
+    public String getClientQueuesLink() {
+        return getLink("client_queues");
+    }
+
+    /**
+     * Returns the new queuer link.
+     *
+     * @return The new queuer link associated with the current Company object
+     */
+    public String getNewQueuerLink() {
+        return getLink("new_queuer");
+    }
+
+    /**
+     * Returns the pusher link.
+     *
+     * @return The pusher link associated with the current Company object
+     */
+    public String getPusherLink() {
+        return getLink("pusher");
+    }
+
+    /**
+     * Returns the external bookings link.
+     *
+     * @return The external bookings link associated with the current Company object
+     */
+    public String getExternalBookings() {
+        return getLink("external_bookings");
     }
 
 }
