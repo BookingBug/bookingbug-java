@@ -225,9 +225,20 @@ public class BBRoot {
         return link;
     }
 
+    public List<String> getLinks(String rel) {
+        List<String> vals = null;
 
-    public List<Link> getLinks() {
-        return response.getRep().getLinks();
+        try {
+            List<Link> links = response.getRep().getLinksByRel(rel);
+            vals = new ArrayList<>();
+            for (Link link : links) {
+                vals.add(link.getHref());
+            }
+        } catch (RepresentationException e) {
+            e.printStackTrace();
+        }
+
+        return vals;
     }
 
 
