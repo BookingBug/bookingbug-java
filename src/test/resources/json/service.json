@@ -1,0 +1,61 @@
+{
+  "id": 55600,
+  "name": "Flex time service",
+  "durations": [
+    60,
+    90,
+    120
+  ],
+  "prices": [
+    2000,
+    4000,
+    6000
+  ],
+  "detail_group_id": 20465,
+  "extra": {},
+  "booking_time_step": 30,
+  "is_event_group": false,
+  "type": "service",
+  "deleted": false,
+  "company_id": 37901,
+  "min_advance_period": 0,
+  "max_advance_period": 5184000,
+  "min_cancel_period": 86400,
+  "booking_type_public": "booking",
+  "booking_type_member": "booking",
+  "min_bookings": 1,
+  "max_bookings": 1,
+  "groups": [
+    "",
+    "",
+    ""
+  ],
+  "order": 55600,
+  "child_level_service": true,
+  "_links": {
+    "self": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/services/55600"
+    },
+    "items": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/items?service_id=55600"
+    },
+    "questions": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/questions?detail_group_id=20465"
+    },
+    "days": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/day_data?service_id=55600{&month,week,date,edate,location,event_id,person_id,resource_id}",
+      "templated": true
+    },
+    "times": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/time_data?service_id=55600{&event_id,date,end_date,location,person_id,resource_id,duration,single,num_resources,group_id,resource_ids}",
+      "templated": true
+    },
+    "book": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/basket/add_item?service_id=55600{&event_id,member_id,event_chain_id,product_id,attachment_id,deal_id,package_id,bulk_purchase_id}",
+      "templated": true
+    },
+    "all_children": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/services/55600/all_children"
+    }
+  }
+}

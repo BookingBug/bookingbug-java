@@ -11,6 +11,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * Abstract ModelTest class. Must be inherited by all tests for bb models
@@ -40,5 +41,29 @@ public abstract class ModelTest {
         }
 
         return null;
+    }
+
+    public <T> boolean compareLists(List<T> list, String json, String key) {
+        try {
+            JsonNode jsonArray = new ObjectMapper().readTree(json).get(key);
+            if (jsonArray.isArray()) {
+                for (JsonNode objNode : jsonArray) {
+                    boolean eq = false;
+                    for (T item : list) {
+                        if (objNode.asText().equals(item.toString())) {
+                            eq = true;
+                            break;
+                        }
+                    }
+                    if (!eq) {
+                        return false;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }

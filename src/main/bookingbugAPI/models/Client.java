@@ -1,6 +1,5 @@
 package bookingbugAPI.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import helpers.HttpServiceResponse;
 
 import java.util.List;
@@ -161,7 +160,7 @@ public class Client extends BBRoot {
      * @return The files associated with the current Client object.
      */
     public List<String> getFiles() {
-        return getArray("files");
+        return getStringArray("files");
     }
 
     /**
