@@ -1,0 +1,54 @@
+{
+  "id": 900649,
+  "name": "Conor McCafferson",
+  "first_name": "Conor",
+  "last_name": "McCafferson",
+  "client_type": "Member",
+  "email": "conor.cafferkey@gmail.com",
+  "address1": "",
+  "address2": "",
+  "address3": "",
+  "address4": "",
+  "postcode": "",
+  "country": "United Kingdom",
+  "phone": "",
+  "phone_prefix": "44",
+  "mobile": "7472391991",
+  "mobile_prefix": "44",
+  "auth_token": "R3t3wcP8XEmSpK6j93XFoA",
+  "path": "https://uk.bookingbug.com/api/v1",
+  "company_id": 37901,
+  "has_active_wallet": false,
+  "has_wallet": false,
+  "dt17353": "123",
+  "_links": {
+    "self": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/members/900649{?embed}",
+      "templated": true
+    },
+    "bookings": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/members/900649/bookings{?start_date,end_date,include_cancelled,page,per_page}",
+      "templated": true
+    },
+    "pre_paid_bookings": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/members/900649/pre_paid_bookings{?include_invalid,event_id}",
+      "templated": true
+    },
+    "purchase_totals": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/members/900649/purchase_totals{?start_date,end_date,page,per_page}",
+      "templated": true
+    },
+    "edit_member": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/members/900649/edit"
+    },
+    "company": {
+      "href": "https://uk.bookingbug.com/api/v1/company/37901"
+    },
+    "update_password": {
+      "href": "https://uk.bookingbug.com/api/v1/login/37901/update_password/900649"
+    },
+    "send_welcome_email": {
+      "href": "https://uk.bookingbug.com/api/v1/37901/members/900649/send_welcome_email"
+    }
+  }
+}
