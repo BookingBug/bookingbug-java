@@ -1,0 +1,48 @@
+{
+  "email": "conor+user@bookingbug.com",
+  "auth_token": "zQtLxL-NIWQ8-mCKE2fh9g",
+  "company_id": 37901,
+  "path": "https://uk.bookingbug.com/api/v1",
+  "_embedded": {
+    "members": [],
+    "administrators": [
+      {
+        "name": "Conor",
+        "email": "conor+user@bookingbug.com",
+        "role": "user",
+        "company_id": 37901,
+        "company_name": "Conor's Pet Store",
+        "person_id": 16246,
+        "_links": {
+          "self": {
+            "href": "https://uk.bookingbug.com/api/v1/admin/37901/administrators/25928"
+          },
+          "edit": {
+            "href": "https://uk.bookingbug.com/api/v1/admin/37901/administrators/25928/edit"
+          },
+          "company": {
+            "href": "https://uk.bookingbug.com/api/v1/admin/37901/company"
+          },
+          "person": {
+            "href": "https://uk.bookingbug.com/api/v1/admin/37901/people/16246"
+          },
+          "login": {
+            "href": "https://uk.bookingbug.com/api/v1/login/admin/37901"
+          },
+          "base_login": {
+            "href": "https://uk.bookingbug.com/api/v1/login/admin"
+          }
+        }
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "https://uk.bookingbug.com/api/v1/login/37901"
+    },
+    "administrator": {
+      "href": "https://uk.bookingbug.com/api/v1/admin/37901/administrators/25928",
+      "templated": true
+    }
+  }
+}
