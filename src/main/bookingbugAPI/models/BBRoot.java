@@ -19,6 +19,8 @@ import org.joda.time.DateTime;
 
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -141,12 +143,26 @@ public class BBRoot {
         return new DateTime(get(key));
     }
 
-    public List<String> getArray(String key) {
-        List<String> val = null;
-        try {
-            val = (List<String>) (response.getRep().getValue(key));
-        } catch (RepresentationException e) {
-            e.printStackTrace();
+    public List<String> getStringArray(String key) {
+        List<String> val = new ArrayList<>();
+
+        Object obj = getRep().getValue(key);
+        if (obj instanceof Collection<?>) {
+            for (Object rep : (Collection) obj) {
+                val.add(rep.toString());
+            }
+        }
+        return val;
+    }
+
+    public List<Integer> getIntegerArray(String key) {
+        List<Integer> val = new ArrayList<>();
+
+        Object obj = getRep().getValue(key);
+        if (obj instanceof Collection<?>) {
+            for (Object rep : (Collection) obj) {
+                val.add(Integer.parseInt(rep.toString()));
+            }
         }
         return val;
     }
@@ -209,9 +225,20 @@ public class BBRoot {
         return link;
     }
 
+    public List<String> getLinks(String rel) {
+        List<String> vals = null;
 
-    public List<Link> getLinks() {
-        return response.getRep().getLinks();
+        try {
+            List<Link> links = response.getRep().getLinksByRel(rel);
+            vals = new ArrayList<>();
+            for (Link link : links) {
+                vals.add(link.getHref());
+            }
+        } catch (RepresentationException e) {
+            e.printStackTrace();
+        }
+
+        return vals;
     }
 
 

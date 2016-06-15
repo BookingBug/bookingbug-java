@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Params {
+public class Params<T extends Params> {
 
 	private int page = 1;
     private int per_page = 100;
@@ -120,14 +120,14 @@ public class Params {
         return per_page;
     }
 
-	public Params setPerPage(int per_page) {
+	public T setPerPage(int per_page) {
 		this.per_page = per_page;
-		return this;
+		return (T)this;
 	}
 
-	public Params setPage(int page) {
+	public T setPage(int page) {
 		this.page = page;
-		return this;
+		return (T)this;
 	}
 
 	@Override

@@ -1,0 +1,77 @@
+{
+  "id": 16246,
+  "name": "Barry",
+  "description": "",
+  "type": "person",
+  "deleted": false,
+  "disabled": false,
+  "company_id": 37901,
+  "order": 16246,
+  "_links": {
+    "self": {
+      "href": "https://uk.bookingbug.com/api/v1/admin/37901/people/16246"
+    },
+    "items": {
+      "href": "https://uk.bookingbug.com/api/v1/admin/37901/items?person_id=16246"
+    },
+    "enabled_services": [
+      {
+        "title": "Nutrition Consulting",
+        "href": "https://uk.bookingbug.com/api/v1/admin/37901/services/52718"
+      },
+      {
+        "title": "Pet Grooming",
+        "href": "https://uk.bookingbug.com/api/v1/admin/37901/services/52720"
+      },
+      {
+        "title": "Microchipping",
+        "href": "https://uk.bookingbug.com/api/v1/admin/37901/services/52721"
+      },
+      {
+        "title": "Medical Consultation",
+        "href": "https://uk.bookingbug.com/api/v1/admin/37901/services/52722"
+      },
+      {
+        "title": "Flex time service",
+        "href": "https://uk.bookingbug.com/api/v1/admin/37901/services/55600"
+      },
+      {
+        "title": "test",
+        "href": "https://uk.bookingbug.com/api/v1/admin/37901/services/56224"
+      }
+    ],
+    "edit": {
+      "href": "https://uk.bookingbug.com/api/v1/admin/37901/people/16246/edit"
+    },
+    "attendance": {
+      "href": "https://uk.bookingbug.com/api/v1/admin/37901/people/16246/attendance"
+    },
+    "block": {
+      "href": "https://uk.bookingbug.com/api/v1/admin/37901/people/16246/block"
+    },
+    "cal": {
+      "href": "http://uk.bookingbug.com/ical/person/16246?calid=4783880105"
+    },
+    "overlay_cal": {
+      "href": "https://uk.bookingbug.com/api/v1/admin/37901/cal/4267"
+    },
+    "schedule": {
+      "href": "https://uk.bookingbug.com/api/v1/admin/37901/schedules/62876{?start_date,end_date}",
+      "templated": true
+    },
+    "enabled_resources": [
+      {
+        "title": "Consultation Room 1",
+        "href": "https://uk.bookingbug.com/api/v1/admin/37901/resources/23352"
+      },
+      {
+        "title": "Consultation Room 2",
+        "href": "https://uk.bookingbug.com/api/v1/admin/37901/resources/23353"
+      }
+    ]
+  },
+  "_embedded": {},
+  "email": "conor+barrystaff@bookingbug.com",
+  "mobile": "",
+  "queuing_disabled": true
+}

@@ -3,20 +3,15 @@ package bookingbugAPI.models;
 import bookingbugAPI.services.HttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import com.theoryinpractise.halbuilder.api.Link;
-import com.theoryinpractise.halbuilder.api.ReadableRepresentation;
 import helpers.HttpServiceResponse;
 import helpers.Utils;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 
 public class Service extends BBRoot {
-
-    private ArrayList<Integer> durations;
-    private ArrayList<Integer> prices;
 
     public Service(HttpServiceResponse httpServiceResponse) {
         super(httpServiceResponse);
@@ -29,6 +24,13 @@ public class Service extends BBRoot {
 
 
     public Service() {
+    }
+
+    public String get_editServiceLik() {
+        return getLink("edit");
+    }
+    public String get_newBookingLik() {
+        return getLink("new_booking");
     }
 
     public SchemaForm getNewBookingSchema() throws IOException {
@@ -48,31 +50,238 @@ public class Service extends BBRoot {
         return service;
     }
 
-    public ArrayList<Integer> getDurations() {
-        if(durations == null) {
-            durations = new ArrayList<>();
-            Object duration_reps = getRep().getValue("durations");
-            if(duration_reps instanceof Collection<?>) {
-                for (Object rep : (Collection) duration_reps) {
-                    durations.add(Integer.parseInt(rep.toString()));
-                }
-            }
-        }
-        return durations;
+    /**
+     * Returns the service id.
+     *
+     * @return the service id associated with the current Service object.
+     */
+    public Integer getId(){
+        return getInteger("id", INTEGER_DEFAULT_VALUE);
     }
 
-    public ArrayList<Integer> getPrices() {
-        if(prices == null) {
-            prices = new ArrayList<>();
-            Object prices_reps = getRep().getValue("prices");
-            if(prices_reps instanceof Collection<?>) {
-                for (Object rep : (Collection) prices_reps) {
-                    prices.add(Integer.parseInt(rep.toString()));
-                }
-            }
-        }
-        return prices;
+    /**
+     * Returns the service name.
+     *
+     * @return the service name associated with the current Service object.
+     */
+    public String getName(){
+        return get("name");
     }
 
+    /**
+     * Returns the service durations.
+     *
+     * @return the service durations associated with the current Service object.
+     */
+    public List<Integer> getDurations(){
+        return getObjects("durations", Integer.class);
+    }
+
+    /**
+     * Returns the service prices.
+     *
+     * @return the service prices associated with the current Service object.
+     */
+    public List<Integer> getPrices(){
+        return getIntegerArray("prices");
+    }
+
+    /**
+     * Returns the detail group id.
+     *
+     * @return the detail group id associated with the current Service object.
+     */
+    public Integer getDetailGroupId(){
+        return getInteger("detail_group_id", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the booking time step.
+     *
+     * @return the booking time step associated with the current Service object.
+     */
+    public Integer getBookingTimeStep(){
+        return getInteger("booking_time_step", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns true if it is event group, false otherwise.
+     *
+     * @return the is event group attribute associated with the current Service object.
+     */
+    public Boolean getIsEventGroup(){
+        return getBoolean("is_event_group", BOOLEAN_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the service type.
+     *
+     * @return the service type associated with the current Service object.
+     */
+    public String getType(){
+        return get("type");
+    }
+
+    /**
+     * Returns true if service get deleted, false otherwise.
+     *
+     * @return the get deleted attribute associated with the current Service object.
+     */
+    public Boolean getDeleted(){
+        return getBoolean("deleted", BOOLEAN_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the company id.
+     *
+     * @return the company id associated with the current Service object.
+     */
+    public Integer getCompanyId(){
+        return getInteger("company_id", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the minimum advance period.
+     *
+     * @return the minimum advance period associated with the current Service object.
+     */
+    public Integer getMinAdvancePeriod(){
+        return getInteger("min_advance_period", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the maximum advance period.
+     *
+     * @return the maximum advance period associated with the current Service object.
+     */
+    public Integer getMaxAdvancePeriod(){
+        return getInteger("max_advance_period", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the minimum cancel period.
+     *
+     * @return the minimum cancel period associated with the current Service object.
+     */
+    public Integer getMinCancelPeriod(){
+        return getInteger("min_cancel_period", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the booking type public.
+     *
+     * @return the booking type public associated with the current Service object.
+     */
+    public String getBookingTypePublic(){
+        return get("booking_type_public");
+    }
+
+    /**
+     * Returns the booking type member.
+     *
+     * @return the booking type member associated with the current Service object.
+     */
+    public String getBookingTypeMember(){
+        return get("booking_type_member");
+    }
+
+    /**
+     * Returns the minimum number of bookings.
+     *
+     * @return the minimum number of bookings associated with the current Service object.
+     */
+    public Integer getMinBookings(){
+        return getInteger("min_bookings", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the maximum number of booking.
+     *
+     * @return the maximum number of booking associated with the current Service object.
+     */
+    public Integer getMaxBookings(){
+        return getInteger("max_bookings", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the service groups.
+     *
+     * @return the service groups associated with the current Service object.
+     */
+    public List<String> getGroups(){
+        return getStringArray("groups");
+    }
+
+    /**
+     * Returns the service order.
+     *
+     * @return the service order associated with the current Service object.
+     */
+    public Integer getOrder(){
+        return getInteger("order", INTEGER_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns true if is child level service, false otherwise.
+     *
+     * @return the child level service attribute associated with the current Service object.
+     */
+    public Boolean getChildLevelService(){
+        return getBoolean("child_level_service", BOOLEAN_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the items link.
+     *
+     * @return the items link associated with the current Service object.
+     */
+    public String getItemsLink(){
+        return getLink("items");
+    }
+
+    /**
+     * Returns the questions link.
+     *
+     * @return the questions link associated with the current Service object.
+     */
+    public String getQuestionsLink(){
+        return getLink("questions");
+    }
+
+    /**
+     * Returns the days link.
+     *
+     * @return the days link associated with the current Service object.
+     */
+    public String getDaysLink(){
+        return getLink("days");
+    }
+
+    /**
+     * Returns the times link.
+     *
+     * @return the times link associated with the current Service object.
+     */
+    public String getTimesLink(){
+        return getLink("times");
+    }
+
+    /**
+     * Returns the book link.
+     *
+     * @return the book link associated with the current Service object.
+     */
+    public String getBookLink(){
+        return getLink("book");
+    }
+
+    /**
+     * Returns the children link.
+     *
+     * @return the children link associated with the current Service object.
+     */
+    public String getAllChildrenLink(){
+        return getLink("all_children");
+    }
 }
 
