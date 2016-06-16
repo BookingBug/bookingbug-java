@@ -1,6 +1,6 @@
 package helpers;
 
-import bookingbugAPI.services.HttpService;
+import bookingbugAPI.services.PlainHttpService;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 
 import java.util.Map;
@@ -11,7 +11,7 @@ public class HttpServiceResponse {
     protected ContentRepresentation rep;
 
     protected String method;
-    protected String contentType = HttpService.jsonContentType;
+    protected String contentType = PlainHttpService.jsonContentType;
     protected Map params;
     protected String authToken;
 

@@ -1,6 +1,6 @@
 package bookingbugAPI.models;
 
-import bookingbugAPI.services.HttpService;
+import bookingbugAPI.services.PlainHttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -74,7 +74,7 @@ public class BBRoot {
 
     public BBRoot getLoginSchema() throws IOException {
         URL url = new URL(UriTemplate.fromTemplate(response.getRep().getLinkByRel("new_login").getHref()).expand());
-        HttpServiceResponse response = HttpService.api_GET(url);
+        HttpServiceResponse response = PlainHttpService.api_GET(url);
         return new BBRoot(response);
     }
 
@@ -83,7 +83,7 @@ public class BBRoot {
         HttpServiceResponse resp;
         try {
             URL url = new URL(UriTemplate.fromTemplate(new Config().serverUrl + "/login").expand());
-            resp = HttpService.api_POST(url, params);
+            resp = PlainHttpService.api_POST(url, params);
             auth_token = (String) resp.getRep().getValue("auth_token");
         } catch (HttpException e) {
             //e.printStackTrace();
@@ -105,7 +105,7 @@ public class BBRoot {
 
     public Login auth(Map<String, String> params, Link link) throws IOException {
         URL url = new URL(link.getHref());
-        HttpServiceResponse resp = HttpService.api_POST(url, params);
+        HttpServiceResponse resp = PlainHttpService.api_POST(url, params);
         auth_token = (String) resp.getRep().getValue("auth_token");
         return new Login(resp);
     }

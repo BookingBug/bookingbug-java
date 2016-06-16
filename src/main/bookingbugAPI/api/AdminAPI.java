@@ -3,8 +3,8 @@ package bookingbugAPI.api;
 import bookingbugAPI.models.*;
 import bookingbugAPI.models.params.BookingListParams;
 import bookingbugAPI.models.params.ServiceListParams;
-import bookingbugAPI.services.HttpService;
-import bookingbugAPI.services.OkHttpService;
+import bookingbugAPI.models.params.ServiceParams;
+import bookingbugAPI.services.AbstractHttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import helpers.Utils;
 
@@ -14,8 +14,8 @@ import java.net.URL;
 
 public class AdminAPI extends AbstractAPI {
 
-    AdminAPI(ApiConfig builder) {
-        super(builder);
+    AdminAPI(AbstractHttpService httpService, ApiConfig builder) {
+        super(httpService, builder);
     }
 
     /**
@@ -23,13 +23,13 @@ public class AdminAPI extends AbstractAPI {
      * @return BookingAPI instance
      */
     public BookingAPI booking() {
-        return new BookingAPI(newConfig());
+        return new BookingAPI(httpService, newConfig());
     }
 
     public class BookingAPI extends AbstractAPI {
 
-        BookingAPI(ApiConfig config) {
-            super(config);
+        BookingAPI(AbstractHttpService httpService, ApiConfig config) {
+            super(httpService, config);
         }
 
         /**
@@ -69,7 +69,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public SchemaForm getEditBookingSchema(Booking booking) throws IOException {
             URL url = new URL(UriTemplate.fromTemplate(booking.getEditLink()).expand());
-            return new SchemaForm(HttpService.api_GET(url, httpService.getConfig().auth_token));
+            return new SchemaForm(httpService.api_GET(url));
         }
     }
 
@@ -79,13 +79,13 @@ public class AdminAPI extends AbstractAPI {
      * @return CompanyAPI instance
      */
     public CompanyAPI company() {
-        return new CompanyAPI(newConfig());
+        return new CompanyAPI(httpService, newConfig());
     }
 
     public class CompanyAPI extends AbstractAPI {
 
-        public CompanyAPI(ApiConfig config) {
-            super(config);
+        public CompanyAPI(AbstractHttpService httpService, ApiConfig config) {
+            super(httpService, config);
         }
 
 
@@ -96,7 +96,7 @@ public class AdminAPI extends AbstractAPI {
          * @throws IOException
          */
         public Company companyRead(String companyId) throws IOException {
-            URL url = new URL(AdminURLS.Company.companyRead().set("companyId", companyId).expand());
+            URL url = new URL(AdminURLS.Company.companyRead(config().serverUrl).set("companyId", companyId).expand());
             return new Company(httpService.api_GET(url));
         }
 
@@ -108,13 +108,13 @@ public class AdminAPI extends AbstractAPI {
      * @return ServiceAPI instance
      */
     public ServiceAPI service() {
-        return new ServiceAPI(newConfig());
+        return new ServiceAPI(httpService, newConfig());
     }
 
     public class ServiceAPI extends AbstractAPI {
 
-        public ServiceAPI(ApiConfig config) {
-            super(config);
+        public ServiceAPI(AbstractHttpService httpService, ApiConfig config) {
+            super(httpService, config);
         }
 
         /**
@@ -155,7 +155,35 @@ public class AdminAPI extends AbstractAPI {
          */
         public SchemaForm getNewServiceSchema(Company company) throws IOException {
             URL url = new URL(UriTemplate.fromTemplate(company.getNewServiceLink()).expand());
-            return new SchemaForm(HttpService.api_GET(url, httpService.getConfig().auth_token));
+            return new SchemaForm(httpService.api_GET(url));
+        }
+
+        /**
+         * Create a service
+         * @param company the company to own the service
+         * @param sCParams Contains parameters for service creation. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return Service
+         * @throws IOException
+         */
+        public Service serviceCreate(Company company, ServiceParams.ServiceCreateParams sCParams) throws IOException {
+            URL url = new URL (company.getServicesLink());
+            return new Service(httpService.api_POST(url, sCParams.getParams()));
+        }
+
+        /**
+         * Update a service
+         * @param service the service to update
+         * @param sUParams Contains parameters for service update. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return Service
+         * @throws IOException
+         */
+        public Service serviceUpdate(Service service, ServiceParams.ServiceUpdateParams sUParams) throws IOException {
+            URL url = new URL (service.getEditLink());
+            return new Service(httpService.api_POST(url, sUParams.getParams()));
         }
 
         /**
@@ -165,8 +193,8 @@ public class AdminAPI extends AbstractAPI {
          * @throws IOException
          */
         public SchemaForm getNewBookingSchema(Service service) throws IOException {
-            URL url = new URL(UriTemplate.fromTemplate(service.get_newBookingLik()).expand());
-            return new SchemaForm(HttpService.api_GET(url, httpService.getConfig().auth_token));
+            URL url = new URL(UriTemplate.fromTemplate(service.getNewBookingLik()).expand());
+            return new SchemaForm(httpService.api_GET(url));
         }
 
         /**
@@ -176,8 +204,8 @@ public class AdminAPI extends AbstractAPI {
          * @throws IOException
          */
         public SchemaForm getEditServiceSchema(Service service) throws IOException {
-            URL url = new URL(UriTemplate.fromTemplate(service.get_editServiceLik()).expand());
-            return new SchemaForm(HttpService.api_GET(url, httpService.getConfig().auth_token));
+            URL url = new URL(UriTemplate.fromTemplate(service.getEditLink()).expand());
+            return new SchemaForm(httpService.api_GET(url));
         }
     }
 

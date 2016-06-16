@@ -32,8 +32,8 @@ public abstract class ModelTest {
     @After
     public abstract void tearDown();
 
-    public JsonNode getJSON(String jsonFile) {
-        ClassLoader classLoader = getClass().getClassLoader();
+    public static JsonNode getJSON(String jsonFile) {
+        ClassLoader classLoader = ModelTest.class.getClassLoader();
         String fileName;
         try {
             fileName = classLoader.getResource(jsonFile).getFile();

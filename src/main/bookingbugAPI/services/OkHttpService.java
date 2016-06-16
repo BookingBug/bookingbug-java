@@ -16,123 +16,18 @@ import java.util.Objects;
 /**
  * Created by sebi on 23.05.2016.
  */
-public class OkHttpService {
+public class OkHttpService extends AbstractHttpService {
 
-    AbstractAPI.ApiConfig config;
     private final OkHttpClient client = new OkHttpClient();
 
     public OkHttpService(AbstractAPI.ApiConfig config) {
-        this.config = config;
-    }
-
-    /**
-     * Get current service configuration
-     * @return {@link bookingbugAPI.api.AbstractAPI.ApiConfig}
-     */
-    public AbstractAPI.ApiConfig getConfig() {
-        return config;
-    }
-
-
-    /**
-     * Makes a synchronous GET request
-     * @param url URL to get
-     * @return {@link HttpServiceResponse}
-     * @throws HttpException
-     */
-    public HttpServiceResponse api_GET(URL url) throws HttpException {
-        return callApi(url, "GET", HttpService.urlEncodedContentType, null);
-    }
-
-
-    /**
-     * Makes a synchronous POST request with {@link Http#urlEncodedContentType} contentType
-     * @param url URL to post to
-     * @param params Map, a generic Map containing data to post
-     * @return {@link HttpServiceResponse}
-     * @throws HttpException
-     */
-    public HttpServiceResponse api_POST(URL url, Map params) throws HttpException {
-        return callApi(url, "POST", HttpService.urlEncodedContentType, params);
-    }
-
-
-    /**
-     * Makes a synchronous POST request with specific contentType
-     * @param url URL to post to
-     * @param contentType String, can be {@link Http#urlEncodedContentType} or {@link Http#jsonContentType}.
-     * @param params Map, a generic Map containing data to post
-     * @return {@link HttpServiceResponse}
-     * @throws HttpException
-     */
-    public HttpServiceResponse api_POST(URL url, String contentType, Map params) throws HttpException {
-        return callApi(url, "POST", contentType, params);
-    }
-
-
-    /**
-     * Makes a synchronous PUT request with {@link Http#urlEncodedContentType} contentType
-     * @param url URL to put to
-     * @param params Map, a generic Map containing data to put
-     * @return {@link HttpServiceResponse}
-     * @throws HttpException
-     */
-    public HttpServiceResponse api_PUT(URL url, Map params) throws HttpException {
-        return callApi(url, "PUT", HttpService.urlEncodedContentType, params);
-    }
-
-
-    /**
-     * Makes a synchronous PUT request with specific contentType
-     * @param url URL to put to
-     * @param contentType String, can be {@link Http#urlEncodedContentType} or {@link Http#jsonContentType}.
-     * @param params Map, a generic Map containing data to put
-     * @return {@link HttpServiceResponse}
-     * @throws HttpException
-     */
-    public HttpServiceResponse api_PUT(URL url, String contentType, Map params) throws HttpException {
-        return callApi(url, "PUT", contentType, params);
-    }
-
-
-    /**
-     * Makes a synchronous DELETE request
-     * @param url URL to delete to
-     * @return {@link HttpServiceResponse}
-     * @throws HttpException
-     */
-    public HttpServiceResponse api_DELETE(URL url) throws HttpException {
-        return callApi(url, "DELETE", HttpService.urlEncodedContentType, null);
-    }
-
-
-    /**
-     * Makes a synchronous DELETE request with parameters and {@link Http#urlEncodedContentType} contentType
-     * @param url URL to delete to
-     * @param params Map, a generic Map containing data to put
-     * @return {@link HttpServiceResponse}
-     * @throws HttpException
-     */
-    public HttpServiceResponse api_DELETE(URL url, Map params) throws HttpException {
-        return callApi(url, "DELETE", HttpService.urlEncodedContentType, params);
-    }
-
-
-    /**
-     * Makes a synchronous DELETE request with parameters and specific contentType
-     * @param url URL to delete to
-     * @param contentType String, can be {@link Http#urlEncodedContentType} or {@link Http#jsonContentType}.
-     * @param params Map, a generic Map containing data to put
-     * @return {@link HttpServiceResponse}
-     * @throws HttpException
-     */
-    public HttpServiceResponse api_DELETE(URL url, String contentType, Map params) throws HttpException {
-        return callApi(url, "DELETE", contentType, params);
+        super(config);
     }
 
 
     /**
      * Make a synchronous configurable network request. Uses headers and other config from {@link OkHttpService#config}
+     * If the {@code method} is GET, then response caching will be enabled
      * @param url URL to call
      * @param method String, can be GET, POST, PUT, DELETE, UPDATE
      * @param contentType String, can be {@link Http#urlEncodedContentType} or {@link Http#jsonContentType}
@@ -141,8 +36,11 @@ public class OkHttpService {
      * @return {@link HttpServiceResponse}
      * @throws HttpException
      */
-    private HttpServiceResponse callApi(URL url, String method, String contentType, Map params) throws HttpException {
-        HttpService.NetResponse cache = config.cacheService.getDBResponse(url.toString(), method);
+    protected HttpServiceResponse callApi(URL url, String method, String contentType, Map params) throws HttpException {
+        PlainHttpService.NetResponse cache = null;
+
+        if(Objects.equals(method, "GET"))
+            cache = config.cacheService.getDBResponse(url.toString(), method);
 
         if(cache != null) {
             return new HttpServiceResponse(Utils.stringToContentRep(cache.getResp()), method, contentType, params, config.auth_token);
@@ -188,7 +86,9 @@ public class OkHttpService {
                 throw new HttpException("Unexpected code " + response, response.message(), response.code());
 
             String raw_resp = response.body().string();
-            config.cacheService.storeResult(url.toString(), method, raw_resp);
+
+            if(Objects.equals(method, "GET"))
+                config.cacheService.storeResult(url.toString(), method, raw_resp);
 
             return new HttpServiceResponse(Utils.stringToContentRep(raw_resp), method, contentType, params, config.auth_token);
         } catch (IOException e) {

@@ -34,13 +34,13 @@ public class CacheService  {
     public void storeResult(String url, String method, String resp) {
         if(mock) return;
 
-        Dao<HttpService.NetResponse, Integer> respDao;
+        Dao<PlainHttpService.NetResponse, Integer> respDao;
 
         try {
             db.createIfNotExists();
             respDao = db.getDao();
 
-            HttpService.NetResponse response = new HttpService.NetResponse(url, method, resp);
+            PlainHttpService.NetResponse response = new PlainHttpService.NetResponse(url, method, resp);
             respDao.create(response);
 
         } catch (SQLException e) {
@@ -48,14 +48,14 @@ public class CacheService  {
         }
     }
 
-    public HttpService.NetResponse getDBResponse(String url, String method) {
+    public PlainHttpService.NetResponse getDBResponse(String url, String method) {
         if(mock) return null;
         try {
             db.createIfNotExists();
-            Dao<HttpService.NetResponse, Integer> respDao = db.getDao();
-            QueryBuilder<HttpService.NetResponse, Integer> builder = respDao.queryBuilder();
+            Dao<PlainHttpService.NetResponse, Integer> respDao = db.getDao();
+            QueryBuilder<PlainHttpService.NetResponse, Integer> builder = respDao.queryBuilder();
             builder.where().eq("url", url).and().eq("method", method);
-            List<HttpService.NetResponse> responses = respDao.query(builder.prepare());
+            List<PlainHttpService.NetResponse> responses = respDao.query(builder.prepare());
             if(responses.size() > 0)
                 return responses.get(0);
 
@@ -71,7 +71,7 @@ public class CacheService  {
      */
     public interface SQLite {
 
-        Dao<HttpService.NetResponse, Integer> getDao() throws SQLException;
+        Dao<PlainHttpService.NetResponse, Integer> getDao() throws SQLException;
         ConnectionSource getConnectionSource() throws SQLException;
         void createIfNotExists() throws SQLException;
 
@@ -83,17 +83,17 @@ public class CacheService  {
     public static final class JDBC_Sqlite implements SQLite {
 
         ConnectionSource connectionSource;
-        Dao<HttpService.NetResponse, Integer> dao;
+        Dao<PlainHttpService.NetResponse, Integer> dao;
 
         @Override
         public void createIfNotExists() throws SQLException {
-            TableUtils.createTableIfNotExists(getConnectionSource(), HttpService.NetResponse.class);
+            TableUtils.createTableIfNotExists(getConnectionSource(), PlainHttpService.NetResponse.class);
         }
 
         @Override
-        public Dao<HttpService.NetResponse, Integer> getDao() throws SQLException {
+        public Dao<PlainHttpService.NetResponse, Integer> getDao() throws SQLException {
             if(dao == null)
-                dao = DaoManager.createDao(getConnectionSource(), HttpService.NetResponse.class);
+                dao = DaoManager.createDao(getConnectionSource(), PlainHttpService.NetResponse.class);
             return dao;
         }
 

@@ -1,14 +1,12 @@
 package bookingbugAPI.models;
 
-import bookingbugAPI.services.HttpService;
+import bookingbugAPI.services.PlainHttpService;
 import com.damnhandy.uri.template.UriTemplate;
-import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import helpers.HttpServiceResponse;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
 
 public class Event extends BBRoot {
 
@@ -30,7 +28,7 @@ public class Event extends BBRoot {
         if (getLink("new_booking") != null) {
             String link = getLink("new_booking");
             URL url = new URL(UriTemplate.fromTemplate(link).expand());
-            return new SchemaForm(HttpService.api_GET(url, this.auth_token));
+            return new SchemaForm(PlainHttpService.api_GET(url, this.auth_token));
         }
         // Throw exception: link is missing
         throw new IOException("new_booking link missing");

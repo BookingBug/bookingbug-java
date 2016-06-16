@@ -1,6 +1,6 @@
 package helpers;
 
-import bookingbugAPI.services.HttpService;
+import bookingbugAPI.services.PlainHttpService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -36,7 +36,7 @@ public class TokenGeneratorTest {
             //String urlStr = "http://192.168.100.123:3000/api/v1/login/sso/37021?token=" + token + "";
 
             URL url = new URL(urlStr);
-            assertNotNull(HttpService.api_POST(url, true));
+            assertNotNull(PlainHttpService.api_POST(url, true));
 
         } catch (Exception e) {
             e.printStackTrace();

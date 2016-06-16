@@ -3,15 +3,13 @@ package bookingbugAPI.models;
 import bookingbugAPI.api.AdminURLS;
 import bookingbugAPI.models.params.BookingCancelParams;
 import bookingbugAPI.models.params.BookingUpdateParams;
-import bookingbugAPI.services.HttpService;
+import bookingbugAPI.services.PlainHttpService;
 import com.damnhandy.uri.template.UriTemplate;
-import com.j256.ormlite.stmt.query.In;
 import helpers.HttpServiceResponse;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.Map;
 
 
@@ -31,7 +29,7 @@ public class Booking extends BBRoot {
     public BBRoot getSchema() throws IOException {
         String link = getRep().getLinkByRel("edit").getHref();
         URL url = new URL(UriTemplate.fromTemplate(link).expand());
-        return new BBRoot(HttpService.api_GET(url, auth_token));
+        return new BBRoot(PlainHttpService.api_GET(url, auth_token));
     }
 
     /**
@@ -42,7 +40,7 @@ public class Booking extends BBRoot {
      */
     public Booking bookingUpdate_Admin(BookingUpdateParams bParams) throws IOException {
         URL url = new URL(AdminURLS.Bookings.bookingUpdate().set("companyId", getCompanyId()).set("id", this.id).expand());
-        return new Booking(HttpService.api_PUT(url, bParams.getParams(), auth_token), auth_token);
+        return new Booking(PlainHttpService.api_PUT(url, bParams.getParams(), auth_token), auth_token);
     }
 
     /**
@@ -54,7 +52,7 @@ public class Booking extends BBRoot {
      */
     public Booking bookingCancel_Admin(BookingCancelParams bcParams) throws IOException {
         URL url = new URL(AdminURLS.Bookings.bookingCancel().set("companyId", getCompanyId()).set("id", this.id).expand());
-        return new Booking(HttpService.api_DELETE(url, HttpService.jsonContentType, bcParams.getParams(), auth_token), auth_token);
+        return new Booking(PlainHttpService.api_DELETE(url, PlainHttpService.jsonContentType, bcParams.getParams(), auth_token), auth_token);
     }
 
     /**

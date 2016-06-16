@@ -1,8 +1,7 @@
 package bookingbugAPI.models;
 
 import bookingbugAPI.api.PublicURLS;
-import bookingbugAPI.services.HttpService;
-import com.theoryinpractise.halbuilder.api.ContentRepresentation;
+import bookingbugAPI.services.PlainHttpService;
 import helpers.HttpServiceResponse;
 
 import java.io.IOException;
@@ -36,7 +35,7 @@ public class Purchase extends BBRoot{
      */
     public Resource purchaseReadTotal(String companyId, String purchaseTotalId) throws IOException {
         URL url = new URL(PublicURLS.Purchase.purchaseReadTotal().set("companyId", companyId).set("purchaseTotalId", purchaseTotalId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        return new Resource(PlainHttpService.api_GET(url, auth_token), auth_token);
     }
 
 
@@ -49,7 +48,7 @@ public class Purchase extends BBRoot{
      */
     public Resource purchaseReadItem(String companyId, String purchaseTotalId) throws IOException {
         URL url = new URL(PublicURLS.Purchase.purchaseReadItem().set("companyId", companyId).set("purchaseTotalId", purchaseTotalId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        return new Resource(PlainHttpService.api_GET(url, auth_token), auth_token);
     }
 
 
@@ -61,7 +60,7 @@ public class Purchase extends BBRoot{
      */
     public Resource purchaseRead(String purchaseId) throws IOException {
         URL url = new URL(PublicURLS.Purchase.purchaseRead().set("purchaseId", purchaseId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        return new Resource(PlainHttpService.api_GET(url, auth_token), auth_token);
     }
 
 
@@ -73,7 +72,7 @@ public class Purchase extends BBRoot{
      */
     public Resource purchaseFindByBookingRef(String bookingRefId) throws IOException {
         URL url = new URL(PublicURLS.Purchase.purchaseFindByBookingRef().set("bookingRefId", bookingRefId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        return new Resource(PlainHttpService.api_GET(url, auth_token), auth_token);
     }
 
 
@@ -85,7 +84,7 @@ public class Purchase extends BBRoot{
      */
     public Resource purchaseUpdate(String purchaseId, Map<String,String> params) throws IOException {
         URL url = new URL(PublicURLS.Purchase.purchaseUpdate().set("purchaseId", purchaseId).expand());
-        return new Resource(HttpService.api_PUT(url, params, auth_token), auth_token);
+        return new Resource(PlainHttpService.api_PUT(url, params, auth_token), auth_token);
     }
 
 
@@ -98,7 +97,7 @@ public class Purchase extends BBRoot{
      */
     public Resource bookWaitlistItem(String purchaseId) throws IOException {
         URL url = new URL(PublicURLS.Purchase.bookWaitlistItem().set("purchaseId", purchaseId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        return new Resource(PlainHttpService.api_GET(url, auth_token), auth_token);
     }
 
 
@@ -110,7 +109,7 @@ public class Purchase extends BBRoot{
      */
     public Resource deleteBookingsForPurchase(String purchaseId) throws IOException {
         URL url = new URL(PublicURLS.Purchase.deleteBookingsForPurchase().set("purchaseId", purchaseId).expand());
-        return new Resource(HttpService.api_DELETE(url, auth_token), auth_token);
+        return new Resource(PlainHttpService.api_DELETE(url, auth_token), auth_token);
     }
 
 
@@ -123,7 +122,7 @@ public class Purchase extends BBRoot{
      */
     public Resource bookingRead(String purchaseId, String bookingId) throws IOException {
         URL url = new URL(PublicURLS.Purchase.bookingRead().set("purchaseId", purchaseId).set("bookingId", bookingId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        return new Resource(PlainHttpService.api_GET(url, auth_token), auth_token);
     }
 
 
@@ -136,7 +135,7 @@ public class Purchase extends BBRoot{
      */
     public Resource bookingUpdate(String purchaseId, String bookingId, Map<String,String> params) throws IOException {
         URL url = new URL(PublicURLS.Purchase.bookingUpdate().set("purchaseId", purchaseId).set("bookingId", bookingId).expand());
-        return new Resource(HttpService.api_PUT(url, params, auth_token), auth_token);
+        return new Resource(PlainHttpService.api_PUT(url, params, auth_token), auth_token);
     }
 
 
@@ -149,7 +148,7 @@ public class Purchase extends BBRoot{
      */
     public Resource bookingCancel(String purchaseId, String bookingId) throws IOException {
         URL url = new URL(PublicURLS.Purchase.bookingCancel().set("purchaseId", purchaseId).set("bookingId", bookingId).expand());
-        return new Resource(HttpService.api_DELETE(url, auth_token), auth_token);
+        return new Resource(PlainHttpService.api_DELETE(url, auth_token), auth_token);
     }
 
 
@@ -162,7 +161,7 @@ public class Purchase extends BBRoot{
      */
     public Resource bookingAttachementAdd(String purchaseId, String bookingId, Map<String,String> params) throws IOException {
         URL url = new URL(PublicURLS.Purchase.bookingAttachementAdd().set("purchaseId", purchaseId).set("bookingId", bookingId).expand());
-        return new Resource(HttpService.api_POST(url, params, auth_token), auth_token);
+        return new Resource(PlainHttpService.api_POST(url, params, auth_token), auth_token);
     }
 
 
@@ -175,7 +174,7 @@ public class Purchase extends BBRoot{
      */
     public Resource bookingAttachementAddOrUpdate(String purchaseId, String bookingId, Map<String,String> params) throws IOException {
         URL url = new URL(PublicURLS.Purchase.bookingAttachementAddOrUpdate().set("purchaseId", purchaseId).set("bookingId", bookingId).expand());
-        return new Resource(HttpService.api_PUT(url, params, auth_token), auth_token);
+        return new Resource(PlainHttpService.api_PUT(url, params, auth_token), auth_token);
     }
 
 
@@ -187,7 +186,7 @@ public class Purchase extends BBRoot{
      */
     public Resource bookingAttachementList(String purchaseId) throws IOException {
         URL url = new URL(PublicURLS.Purchase.bookingAttachementList().set("purchaseId", purchaseId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        return new Resource(PlainHttpService.api_GET(url, auth_token), auth_token);
     }
 
 
@@ -199,7 +198,7 @@ public class Purchase extends BBRoot{
      */
     public Resource purchaseDealsList(String purchaseId) throws IOException {
         URL url = new URL(PublicURLS.Purchase.purchaseDealsList().set("purchaseId", purchaseId).expand());
-        return new Resource(HttpService.api_GET(url, auth_token), auth_token);
+        return new Resource(PlainHttpService.api_GET(url, auth_token), auth_token);
     }
 
 }

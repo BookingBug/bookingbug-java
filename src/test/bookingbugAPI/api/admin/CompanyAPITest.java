@@ -1,17 +1,9 @@
 package bookingbugAPI.api.admin;
 
-import bookingbugAPI.api.API;
-import bookingbugAPI.api.AdminURLS;
 import bookingbugAPI.models.Company;
 import bookingbugAPI.models.Currency;
-import bookingbugAPI.models.SchemaForm;
-import bookingbugAPI.services.CacheService;
-import bookingbugAPI.services.HttpService;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

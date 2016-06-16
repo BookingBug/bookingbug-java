@@ -2,7 +2,7 @@ package bookingbugAPI.models;
 
 import bookingbugAPI.api.PublicURLS;
 import bookingbugAPI.models.params.EventListParams;
-import bookingbugAPI.services.HttpService;
+import bookingbugAPI.services.PlainHttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import helpers.HttpServiceResponse;
 import helpers.Utils;
@@ -31,7 +31,7 @@ public class EventChain extends BBRoot {
 
     public SchemaForm getNewBookingSchema() throws IOException {
         URL url = new URL(UriTemplate.fromTemplate(this.getRep().getLinkByRel("new_booking").getHref()).expand());
-        return new SchemaForm(HttpService.api_GET(url, this.auth_token));
+        return new SchemaForm(PlainHttpService.api_GET(url, this.auth_token));
     }
 
     /**
@@ -53,7 +53,7 @@ public class EventChain extends BBRoot {
         }
 
         URL url = new URL(template.expand(params.getParamsMapObj()));
-        return new BBCollection<Event>(HttpService.api_GET(url, auth_token), auth_token, "events", Event.class);
+        return new BBCollection<Event>(PlainHttpService.api_GET(url, auth_token), auth_token, "events", Event.class);
     }
 
     public Observable<BBCollection<Event>> eventListObs(final EventListParams params) {

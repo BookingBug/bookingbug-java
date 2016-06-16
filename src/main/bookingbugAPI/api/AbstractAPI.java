@@ -1,5 +1,6 @@
 package bookingbugAPI.api;
 
+import bookingbugAPI.services.AbstractHttpService;
 import bookingbugAPI.services.CacheService;
 import bookingbugAPI.services.OkHttpService;
 
@@ -16,14 +17,19 @@ import java.util.logging.Logger;
  */
 public abstract class AbstractAPI {
 
-    protected OkHttpService httpService;
+    protected AbstractHttpService httpService;
 
-    public AbstractAPI(ApiConfig config){
-        httpService = new OkHttpService(config);
+    public AbstractAPI(AbstractHttpService httpService, ApiConfig config){
+        //httpService = new OkHttpService(config);
+        this.httpService = httpService;
     }
 
     public ApiConfig newConfig() {
         return new ApiConfig(httpService.getConfig());
+    }
+
+    protected ApiConfig config() {
+        return httpService.getConfig();
     }
 
     public String getAuthToken(){

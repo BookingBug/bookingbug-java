@@ -1,6 +1,6 @@
 package bookingbugAPI.models;
 
-import bookingbugAPI.services.HttpService;
+import bookingbugAPI.services.PlainHttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import com.theoryinpractise.halbuilder.api.Link;
 import helpers.HttpServiceResponse;
@@ -26,18 +26,11 @@ public class Service extends BBRoot {
     public Service() {
     }
 
-    public String get_editServiceLik() {
-        return getLink("edit");
-    }
-    public String get_newBookingLik() {
-        return getLink("new_booking");
-    }
-
     public SchemaForm getNewBookingSchema() throws IOException {
         if(getLink("new_booking") != null) {
             String link = getLink("new_booking");
             URL url = new URL(UriTemplate.fromTemplate(link).expand());
-            return new SchemaForm(HttpService.api_GET(url, this.auth_token));
+            return new SchemaForm(PlainHttpService.api_GET(url, this.auth_token));
         }
         // Throw exception: link is missing
         throw new IOException("new_booking link missing");
@@ -46,7 +39,7 @@ public class Service extends BBRoot {
     public Service getService(Link link) throws IOException {
         String absUrl = Utils.absoluteURL(link.getHref());
         URL url = new URL(UriTemplate.fromTemplate(absUrl).expand());
-        Service service = new Service(HttpService.api_GET(url, auth_token), auth_token);
+        Service service = new Service(PlainHttpService.api_GET(url, auth_token), auth_token);
         return service;
     }
 
@@ -228,6 +221,22 @@ public class Service extends BBRoot {
      */
     public Boolean getChildLevelService(){
         return getBoolean("child_level_service", BOOLEAN_DEFAULT_VALUE);
+    }
+
+    /**
+     * Returns the edit link
+     * @return the link to edit this service
+     */
+    public String getEditLink() {
+        return getLink("edit");
+    }
+
+    /**
+     * Returns the new booking link
+     * @return the link to create a new booking
+     */
+    public String getNewBookingLik() {
+        return getLink("new_booking");
     }
 
     /**

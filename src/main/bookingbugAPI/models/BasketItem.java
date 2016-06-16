@@ -1,13 +1,10 @@
 package bookingbugAPI.models;
 
-import bookingbugAPI.api.PublicURLS;
-import bookingbugAPI.services.HttpService;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import helpers.HttpServiceResponse;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 

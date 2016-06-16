@@ -1,6 +1,6 @@
 package bookingbugAPI.models;
 
-import bookingbugAPI.services.HttpService;
+import bookingbugAPI.services.PlainHttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import helpers.HttpServiceResponse;
 
@@ -23,14 +23,14 @@ public class Administrator extends BBRoot {
     public Company getCompany() throws IOException {
         String link = response.getRep().getLinkByRel("company").getHref();
         URL url = new URL(UriTemplate.fromTemplate(link).expand());
-        return new Company(HttpService.api_GET(url, auth_token), auth_token);
+        return new Company(PlainHttpService.api_GET(url, auth_token), auth_token);
     }
 
 
     public BBRoot getEditSchema() throws IOException {
         String link = response.getRep().getLinkByRel("edit").getHref();
         URL url = new URL(UriTemplate.fromTemplate(link).expand());
-        return new BBRoot(HttpService.api_GET(url, auth_token), auth_token);
+        return new BBRoot(PlainHttpService.api_GET(url, auth_token), auth_token);
     }
 
 

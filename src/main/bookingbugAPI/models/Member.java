@@ -1,6 +1,6 @@
 package bookingbugAPI.models;
 
-import bookingbugAPI.services.HttpService;
+import bookingbugAPI.services.PlainHttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import helpers.HttpServiceResponse;
 
@@ -17,7 +17,7 @@ public class Member extends BBRoot {
     public BBRoot getSchema() throws IOException{
         String link = getRep().getLinkByRel("edit_member").getHref();
         URL url = new URL(UriTemplate.fromTemplate(link).expand());
-        HttpServiceResponse schema_rep = HttpService.api_GET(url, auth_token);
+        HttpServiceResponse schema_rep = PlainHttpService.api_GET(url, auth_token);
         return new BBRoot(schema_rep);
     }
 

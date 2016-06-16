@@ -13,7 +13,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  * Testing that the urls are available and receiving requests (the response is not relevant).
   */
-public class HttpServiceTest {
+public class PlainHttpServiceTest {
 
     private static final int CompanyId = 10;
 
@@ -22,7 +22,7 @@ public class HttpServiceTest {
     public void companyDetails(){
         try {
             URL url = new URL(PublicURLS.Details.companyDetails().set("companyId", CompanyId).expand());
-            assertNotNull(HttpService.api_GET(url, true));
+            assertNotNull(PlainHttpService.api_GET(url, true));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (HttpException e) {
@@ -35,7 +35,7 @@ public class HttpServiceTest {
     public void eventGroupList(){
         try {
             URL url = new URL(PublicURLS.EventGroup.eventGroupList().set("companyId", CompanyId).expand());
-            assertNotNull(HttpService.api_GET(url, true));
+            assertNotNull(PlainHttpService.api_GET(url, true));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (HttpException e) {
@@ -48,7 +48,7 @@ public class HttpServiceTest {
     public void eventList(){
         try {
             URL url = new URL(PublicURLS.Event.eventList().set("companyId", CompanyId).expand());
-            assertNotNull(HttpService.api_GET(url, true));
+            assertNotNull(PlainHttpService.api_GET(url, true));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (HttpException e) {
@@ -61,7 +61,7 @@ public class HttpServiceTest {
     public void eventRead(){
         try {
             URL url = new URL(PublicURLS.Event.eventRead().set("companyId", CompanyId).expand());
-            assertNotNull(HttpService.api_GET(url, true));
+            assertNotNull(PlainHttpService.api_GET(url, true));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (HttpException e) {
@@ -74,7 +74,7 @@ public class HttpServiceTest {
     public void eventChainList(){
         try {
             URL url = new URL(PublicURLS.EventChain.eventChainList().set("companyId", CompanyId).expand());
-            assertNotNull(HttpService.api_GET(url, true));
+            assertNotNull(PlainHttpService.api_GET(url, true));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (HttpException e) {

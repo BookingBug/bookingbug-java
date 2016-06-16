@@ -1,8 +1,6 @@
 package bookingbugAPI.services;
 
 import bookingbugAPI.models.HttpException;
-import bookingbugAPI.models.PublicRoot;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.field.DatabaseField;
@@ -11,16 +9,13 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTable;
 import com.j256.ormlite.table.TableUtils;
-import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import com.theoryinpractise.halbuilder.api.RepresentationFactory;
 import helpers.Config;
-import bookingbugAPI.models.BBRoot;
 import helpers.Http;
 import helpers.HttpServiceResponse;
 import helpers.hal_addon.CustomJsonRepresentationFactory;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.SQLException;
@@ -30,9 +25,9 @@ import java.util.logging.Logger;
 
 import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON;
 
-public class HttpService {
+public class PlainHttpService {
 
-    private final static Logger log = Logger.getLogger(HttpService.class.getName());
+    private final static Logger log = Logger.getLogger(PlainHttpService.class.getName());
 
     public final static String jsonContentType = "application/json";
     public final static String urlEncodedContentType = "application/x-www-form-urlencoded";

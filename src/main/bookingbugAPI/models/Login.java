@@ -1,7 +1,7 @@
 package bookingbugAPI.models;
 
 import bookingbugAPI.api.AdminURLS;
-import bookingbugAPI.services.HttpService;
+import bookingbugAPI.services.PlainHttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import com.theoryinpractise.halbuilder.api.Link;
@@ -128,7 +128,7 @@ public class Login extends BBRoot {
             if (admin_reps.size() == 0 || administrator == null) {
                 String link = getRep().getLinkByRel("administrator").getHref();
                 URL url = new URL(UriTemplate.fromTemplate(link).expand());
-                administrator = new Administrator(HttpService.api_GET(url, auth_token), auth_token);
+                administrator = new Administrator(PlainHttpService.api_GET(url, auth_token), auth_token);
             }
         }
         return administrator;
@@ -142,7 +142,7 @@ public class Login extends BBRoot {
      */
     public Administrator getAdministrator(Link link) throws IOException {
         URL url = new URL(UriTemplate.fromTemplate(link.getHref()).expand());
-        return new Administrator(HttpService.api_GET(url, auth_token), auth_token);
+        return new Administrator(PlainHttpService.api_GET(url, auth_token), auth_token);
     }
 
     /**Returns the list of administrators
@@ -163,7 +163,7 @@ public class Login extends BBRoot {
     public Administrator createAdministrator(Map<String, String> data) throws HttpException, MalformedURLException {
         String uri = AdminURLS.Administrator.administratorCreate().set("companyId", get("company_id")).expand();
         URL url = new URL(uri);
-        return new Administrator(HttpService.api_POST(url, data, auth_token), auth_token);
+        return new Administrator(PlainHttpService.api_POST(url, data, auth_token), auth_token);
     }
 
     /**
@@ -176,7 +176,7 @@ public class Login extends BBRoot {
      */
     public Administrator updateAdministrator(Link link, Map<String, String> data) throws HttpException, MalformedURLException {
         URL url = new URL(UriTemplate.fromTemplate(link.getHref()).expand());
-        return new Administrator(HttpService.api_PUT(url, HttpService.jsonContentType, data, auth_token), auth_token);
+        return new Administrator(PlainHttpService.api_PUT(url, PlainHttpService.jsonContentType, data, auth_token), auth_token);
     }
 
     /**
@@ -187,6 +187,6 @@ public class Login extends BBRoot {
      */
     public Member getMember(Link link) throws IOException {
         URL url = new URL(UriTemplate.fromTemplate(link.getHref()).expand());
-        return new Member(HttpService.api_GET(url, auth_token), auth_token);
+        return new Member(PlainHttpService.api_GET(url, auth_token), auth_token);
     }
 }

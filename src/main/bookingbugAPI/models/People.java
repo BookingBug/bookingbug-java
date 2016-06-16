@@ -3,7 +3,7 @@ package bookingbugAPI.models;
 
 
 import com.damnhandy.uri.template.UriTemplate;
-import bookingbugAPI.services.HttpService;
+import bookingbugAPI.services.PlainHttpService;
 import com.theoryinpractise.halbuilder.api.Link;
 import helpers.HttpServiceResponse;
 import helpers.Utils;
@@ -216,7 +216,7 @@ public class People extends BBRoot{
         if(schema == null){
             String link = getRep().getLinkByRel("new").getHref();
             URL url = new URL(UriTemplate.fromTemplate(link).expand());
-            schema = new BBRoot(HttpService.api_GET(url, auth_token));
+            schema = new BBRoot(PlainHttpService.api_GET(url, auth_token));
         }
         return schema;
     }
@@ -224,7 +224,7 @@ public class People extends BBRoot{
     public People getPerson(Link link) throws IOException{
         String absUrl = Utils.absoluteURL(link.getHref());
         URL url = new URL(UriTemplate.fromTemplate(absUrl).expand());
-        return new People(HttpService.api_GET(url, auth_token), auth_token);
+        return new People(PlainHttpService.api_GET(url, auth_token), auth_token);
     }
 
 }

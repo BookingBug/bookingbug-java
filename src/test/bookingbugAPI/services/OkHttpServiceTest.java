@@ -141,7 +141,7 @@ public class OkHttpServiceTest {
 
         try {
             //With specific encoding
-            response = httpService.api_POST(postURL, HttpService.urlEncodedContentType, params);
+            response = httpService.api_POST(postURL, PlainHttpService.urlEncodedContentType, params);
             assertEquals("Received status should be 201", response.getRep().getContent(), "{\"status\":\"201\"}");
 
             //With default encoding
@@ -176,7 +176,7 @@ public class OkHttpServiceTest {
 
         try {
             //With specific encoding
-            response = httpService.api_PUT(putURL, HttpService.urlEncodedContentType, params);
+            response = httpService.api_PUT(putURL, PlainHttpService.urlEncodedContentType, params);
             assertEquals("Received status should be 201", response.getRep().getContent(), "{\"status\":\"updated\"}");
 
             //With default encoding
@@ -215,7 +215,7 @@ public class OkHttpServiceTest {
             assertEquals("Received status should be 200", response.getRep().getContent(), "{\"status\":\"deleted\"}");
 
             //With specific encoding
-            response = httpService.api_DELETE(deleteURL, HttpService.urlEncodedContentType, params);
+            response = httpService.api_DELETE(deleteURL, PlainHttpService.urlEncodedContentType, params);
             assertEquals("Received status should be 201", response.getRep().getContent(), "{\"status\":\"deleted\"}");
 
             //With default encoding
