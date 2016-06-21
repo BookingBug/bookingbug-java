@@ -25,8 +25,8 @@ import static org.junit.Assert.assertNotNull;
  */
 public abstract class AbstractAPITest {
 
-    protected static final String companyId = "37025";
-    protected static final String token = "x2_5PcI15mq7sEWm70JazA";
+    protected static final String companyId = "37030";
+    protected static final String token = "VjfAmjzOtW8OWLLsfLKUAg";
 
     protected API defaultAPI;
     protected API mockAPI;
@@ -69,7 +69,7 @@ public abstract class AbstractAPITest {
 
     /**
      * Starts a {@link MockWebServer} and initializes an api with the server's url
-     * The api uses a custom HttpService {@link MockHttpService} which replaces all root url paths to a predefined one
+     * The api uses a custom HttpService {@link MockHttpService} which replaces all
      * @param dispatcher The dispatcher to mock http calls
      * @return the server
      * @throws IOException

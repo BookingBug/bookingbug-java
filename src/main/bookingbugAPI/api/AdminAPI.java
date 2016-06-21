@@ -1,11 +1,10 @@
 package bookingbugAPI.api;
 
 import bookingbugAPI.models.*;
-import bookingbugAPI.models.params.BookingListParams;
-import bookingbugAPI.models.params.ServiceListParams;
-import bookingbugAPI.models.params.ServiceParams;
+import bookingbugAPI.models.params.*;
 import bookingbugAPI.services.AbstractHttpService;
 import com.damnhandy.uri.template.UriTemplate;
+import helpers.Http;
 import helpers.Utils;
 
 import java.io.IOException;
@@ -193,7 +192,7 @@ public class AdminAPI extends AbstractAPI {
          * @throws IOException
          */
         public SchemaForm getNewBookingSchema(Service service) throws IOException {
-            URL url = new URL(UriTemplate.fromTemplate(service.getNewBookingLik()).expand());
+            URL url = new URL(UriTemplate.fromTemplate(service.getNewBookingLink()).expand());
             return new SchemaForm(httpService.api_GET(url));
         }
 
@@ -209,4 +208,114 @@ public class AdminAPI extends AbstractAPI {
         }
     }
 
+
+    /**
+     * Accessor to create an instance of {@link ServiceAPI} with current configuration
+     * @return ServiceAPI instance
+     */
+    public ClientAPI client() {
+        return new ClientAPI(httpService, newConfig());
+    }
+
+    public class ClientAPI extends AbstractAPI {
+
+        public ClientAPI(AbstractHttpService httpService, ApiConfig config) {
+            super(httpService, config);
+        }
+
+
+        /**
+         * List of Clients for a company. Results are returned as a paginated list
+         * @param company The owning company for clients
+         * @param clParams Parameters for this call
+         * @return Collection of Client
+         * @throws IOException
+         */
+        public BBCollection<Client> clientList(Company company, Params clParams) throws IOException {
+            UriTemplate template = Utils.TemplateWithPagination(company.getClientLink(), clParams);
+            URL url = new URL(template.expand());
+
+            BBCollection<Client> clients = new BBCollection<Client>(httpService.api_GET(url), httpService.getConfig().auth_token,  "clients", Client.class);
+            return clients;
+        }
+
+        /**
+         * Load a specific client details
+         * @param company  The owning company for client
+         * @param clientId The client's id
+         * @return Client
+         * @throws IOException
+         */
+        public Client clientRead(Company company, String clientId) throws IOException {
+            URL url = new URL(AdminURLS.Client.clientRead()
+                    .set("companyId", company.id)
+                    .set("serviceId", clientId)
+                    .expand());
+            return new Client(httpService.api_GET(url));
+        }
+
+        /**
+         * Load a specific client details
+         * @param company  The owning company for client
+         * @param email The client's email
+         * @return Client
+         * @throws IOException
+         */
+        public Client clientReadByEmail(Company company, String email) throws IOException {
+            URL url = new URL(UriTemplate.fromTemplate(company.getClientByEmailLink()).set("email", email).expand());
+            return new Client(httpService.api_GET(url));
+        }
+
+        /**
+         * Get the schema for editing a client
+         * @param client The client to edit
+         * @return SchemaForm
+         * @throws IOException
+         */
+        public SchemaForm getEditClientSchema(Client client) throws IOException {
+            URL url = new URL(UriTemplate.fromTemplate(client.getEditLink()).expand());
+            return new SchemaForm(httpService.api_GET(url));
+        }
+
+        /**
+         * Enable/Disable specific client
+         * @param company The company for the client
+         * @param ctParams parameters for this call
+         * @return Client TODO: check return type after 401 is solved
+         * @throws IOException
+         */
+        public Client clientEnableDisable(Company company, ClientToggleParams ctParams) throws IOException {
+            URL url = new URL(UriTemplate.fromTemplate(company.getClientLink()).expand());
+            return new Client(httpService.api_PUT(url, Http.urlEncodedContentType, ctParams.getParams()));
+        }
+
+        /**
+         * Update a client
+         * @param client the client to update
+         * @param cuParams Contains parameters for client update. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return Client
+         * @throws IOException
+         */
+        public Client clientUpdate(Client client, ClientParams.Update cuParams) throws IOException {
+            URL url = new URL (client.getSelf());
+            return new Client(httpService.api_PUT(url, cuParams.getParams()));
+        }
+
+        /**
+         * Create a client
+         * @param company the company for client
+         * @param clParams Contains parameters for client creation. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return Client
+         * @throws IOException
+         */
+        public Client clientCreate(Company company, ClientParams.Create clParams) throws IOException {
+            URL url = new URL (UriTemplate.fromTemplate(company.getClientLink()).expand());
+            return new Client(httpService.api_POST(url, clParams.getParams()));
+        }
+
+    }
 }

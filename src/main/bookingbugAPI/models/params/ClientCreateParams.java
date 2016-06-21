@@ -5,6 +5,7 @@ import java.util.Map;
 /**
  * Created by sebi on 18.01.2016.
  */
+@Deprecated
 public class ClientCreateParams extends Params {
 
     String first_name;

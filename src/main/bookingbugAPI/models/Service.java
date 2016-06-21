@@ -235,7 +235,7 @@ public class Service extends BBRoot {
      * Returns the new booking link
      * @return the link to create a new booking
      */
-    public String getNewBookingLik() {
+    public String getNewBookingLink() {
         return getLink("new_booking");
     }
 
