@@ -4,6 +4,7 @@ import bookingbugAPI.api.API;
 import bookingbugAPI.api.AbstractAPI;
 import bookingbugAPI.models.Company;
 import bookingbugAPI.models.HttpException;
+import bookingbugAPI.models.Resource;
 import bookingbugAPI.services.AbstractHttpService;
 import bookingbugAPI.services.CacheService;
 import bookingbugAPI.services.OkHttpService;
@@ -25,8 +26,9 @@ import static org.junit.Assert.assertNotNull;
  */
 public abstract class AbstractAPITest {
 
-    protected static final String companyId = "37030";
-    protected static final String token = "VjfAmjzOtW8OWLLsfLKUAg";
+    protected static final String companyId = "36990";
+    protected static final String resourceId = "5";
+    protected static final String token = "ro13e9jaWi3kvA4fMToU1w";
 
     protected API defaultAPI;
     protected API mockAPI;
@@ -110,5 +112,20 @@ public abstract class AbstractAPITest {
         }
         assertNotNull(company);
         return company;
+    }
+
+    public Resource getResource() {
+        return getResource(new API.APIBuilder().withCache(CacheService.JDBC()).withAuthToken(token).build());
+    }
+
+    public Resource getResource(API api) {
+        Resource resource = null;
+        try {
+            resource = api.admin().resource().resourceRead(getCompany(), resourceId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assertNotNull(resource);
+        return resource;
     }
 }

@@ -1,0 +1,244 @@
+{
+    "total_price": 1000,
+    "price": 1000,
+    "paid": 0,
+    "deposit": 0,
+    "tax_payable_on_price": 0,
+    "tax_payable_on_deposit": 0,
+    "tax_payable_on_due_now": 0,
+    "due_now": 1000,
+    "long_id": "PS78SXbSy8Edp-5GOTUxMjM5NQ%3D%3D",
+    "id": 9512395,
+    "client_name": "Et Sdfg",
+    "created_at": "2016-06-20T16:18:01Z",
+    "certificate_paid": 0,
+    "payment_type": "other",
+    "_embedded": {
+        "client": {
+            "first_name": "et",
+            "last_name": "sdfg",
+            "email": "sdfg@sdf.com",
+            "country": "United Kingdom",
+            "phone_prefix": "44",
+            "mobile_prefix": "44",
+            "id": 2746138,
+            "answers": [],
+            "deleted": false,
+            "notifications": {},
+            "client_type": "Contact",
+            "_links": {
+                "self": {
+                    "href": "https://uk.bookingbug.com/api/v1/49511/client/2746138"
+                },
+                "questions": {
+                    "href": "https://uk.bookingbug.com/api/v1/49511/client_details"
+                }
+            }
+        },
+        "member": {
+            "id": 2746138,
+            "name": "Et Sdfg",
+            "first_name": "et",
+            "last_name": "sdfg",
+            "client_type": "Contact",
+            "email": "sdfg@sdf.com",
+            "country": "United Kingdom",
+            "phone_prefix": "44",
+            "mobile_prefix": "44",
+            "path": "https://uk.bookingbug.com/api/v1",
+            "company_id": 49511,
+            "has_active_wallet": false,
+            "has_wallet": false,
+            "_links": {
+                "self": {
+                    "href": "https://uk.bookingbug.com/api/v1/49511/members/2746138{?embed}",
+                    "templated": true
+                },
+                "bookings": {
+                    "href": "https://uk.bookingbug.com/api/v1/49511/members/2746138/bookings{?start_date,end_date,include_cancelled,page,per_page}",
+                    "templated": true
+                },
+                "pre_paid_bookings": {
+                    "href": "https://uk.bookingbug.com/api/v1/49511/members/2746138/pre_paid_bookings{?include_invalid,event_id}",
+                    "templated": true
+                },
+                "purchase_totals": {
+                    "href": "https://uk.bookingbug.com/api/v1/49511/members/2746138/purchase_totals{?start_date,end_date,page,per_page}",
+                    "templated": true
+                },
+                "edit_member": {
+                    "href": "https://uk.bookingbug.com/api/v1/49511/members/2746138/edit"
+                },
+                "company": {
+                    "href": "https://uk.bookingbug.com/api/v1/company/49511"
+                },
+                "update_password": {
+                    "href": "https://uk.bookingbug.com/api/v1/login/49511/update_password/2746138"
+                },
+                "send_welcome_email": {
+                    "href": "https://uk.bookingbug.com/api/v1/49511/members/2746138/send_welcome_email"
+                }
+            }
+        },
+        "bookings": [{
+                     "id": 10977829,
+                     "full_describe": "My Recurring Event",
+                     "describe": "Tue 21st Jun 10:00am, 2 hours",
+                     "datetime": "2016-06-21T10:00:00+01:00",
+                     "end_datetime": "2016-06-21T12:00:00+01:00",
+                     "duration": 120,
+                     "duration_span": 7200,
+                     "listed_duration": 120,
+                     "on_waitlist": false,
+                     "company_id": 49511,
+                     "attended": true,
+                     "price": 1000,
+                     "due_now": 1000,
+                     "paid": 0,
+                     "quantity": 1,
+                     "event_id": 1050864,
+                     "session_id": 225004,
+                     "service_id": 102277,
+                     "purchase_id": 9512395,
+                     "purchase_ref": "PS78SXbSy8Edp-5GOTUxMjM5NQ%3D%3D",
+                     "settings": {},
+                     "min_cancellation_time": "2016-06-19T09:00:00+01:00",
+                     "service_name": "Group",
+                     "time_zone": "Europe/London",
+                     "address": {
+                     "id": 50926,
+                     "address1": "1 drury lane",
+                     "address2": "mufin maker street",
+                     "address3": "bakers ville",
+                     "address4": "love town",
+                     "address5": "bristol",
+                     "postcode": "tn22 8pz",
+                     "country": "United Kingdom",
+                     "lat": 50.972873,
+                     "long": 0.0966977,
+                     "map_url": "",
+                     "map_marker": "1+drury+lane,+mufin+maker+street,+bakers+ville,+love+town,+bristol,+tn22+8pz,+United+Kingdom",
+                     "phone": "+376 775506660",
+                     "homephone": "775506660",
+                     "_links": {
+                     "self": {
+                     "href": "https://uk.bookingbug.com/api/v1/49511/addresses/50926"
+                     }
+                     }
+                     },
+                     "booking_type": "Booking",
+                     "slot_id": 14171479,
+                     "first_name": "et",
+                     "last_name": "sdfg",
+                     "email": "sdfg@sdf.com",
+                     "_embedded": {
+                     "answers": [],
+                     "survey_answers": []
+                     },
+                     "_links": {
+                     "self": {
+                     "href": "https://uk.bookingbug.com/api/v1/purchases/PS78SXbSy8Edp-5GOTUxMjM5NQ%3D%3D/bookings/10977829"
+                     },
+                     "check_in": {
+                     "href": "https://uk.bookingbug.com/api/v1/bookings/10977829/check_in"
+                     },
+                     "attachments": {
+                     "href": "https://uk.bookingbug.com/api/v1/purchases/PS78SXbSy8Edp-5GOTUxMjM5NQ%3D%3D/bookings/10977829/attach"
+                     },
+                     "service": {
+                     "href": "https://uk.bookingbug.com/api/v1/49511/services/102277"
+                     },
+                     "company": {
+                     "href": "https://uk.bookingbug.com/api/v1/company/49511"
+                     },
+                     "client": {
+                     "href": "https://uk.bookingbug.com/api/v1/49511/client/2746138"
+                     },
+                     "member": {
+                     "href": "https://uk.bookingbug.com/api/v1/49511/members/2746138{?embed}",
+                     "templated": true
+                     },
+                     "event_groups": {
+                     "href": "https://uk.bookingbug.com/api/v1/49511/event_groups/225004",
+                     "templated": true,
+                     "title": "Group"
+                     },
+                     "event_chain": {
+                     "title": "My Recurring Event",
+                     "href": "https://uk.bookingbug.com/api/v1/49511/event_chains/225004{?member_level_id}",
+                     "templated": true
+                     },
+                     "survey_questions": {
+                     "href": "https://uk.bookingbug.com/api/v1/49511/31503/survey_questions{?admin_only}",
+                     "templated": true
+                     },
+                     "address": {
+                     "href": "https://uk.bookingbug.com/api/v1/49511/addresses/50926"
+                     }
+                     }
+                     }],
+        "packages": [],
+        "products": [],
+        "pre_paid_bookings": [],
+        "deals": [],
+        "course_bookings": [],
+        "external_purchases": [],
+        "confirm_messages": []
+    },
+    "_links": {
+        "self": {
+            "href": "https://uk.bookingbug.com/api/v1/purchases/PS78SXbSy8Edp-5GOTUxMjM5NQ%3D%3D"
+        },
+        "ical": {
+            "href": "http://uk.bookingbug.com/ical/total/PS78SXbSy8Edp-5GOTUxMjM5NQ%3D%3D"
+        },
+        "web_cal": {
+            "href": "webcal://uk.bookingbug.com/ical/total/PS78SXbSy8Edp-5GOTUxMjM5NQ%3D%3D"
+        },
+        "gcal": {
+            "href": "http://www.google.com/calendar/event?dates=20160621T090000Z%2F20160621T110000Z&details=&sprop=www.bookingbug.com&text=Booking%3A+My+Recurring+Event+at+Phones&trp=false&action=TEMPLATE"
+        },
+        "client": {
+            "href": "https://uk.bookingbug.com/api/v1/49511/client/2746138"
+        },
+        "member": {
+            "href": "https://uk.bookingbug.com/api/v1/49511/members/2746138{?embed}",
+            "templated": true
+        },
+        "company": {
+            "href": "https://uk.bookingbug.com/api/v1/company/49511"
+        },
+        "bookings": {
+            "href": "https://uk.bookingbug.com/api/v1/purchases/PS78SXbSy8Edp-5GOTUxMjM5NQ%3D%3D/bookings"
+        },
+        "packages": {
+            "href": "https://uk.bookingbug.com/api/v1/purchases/PS78SXbSy8Edp-5GOTUxMjM5NQ%3D%3D/packages"
+        },
+        "pre_paid_bookings": {
+            "href": "https://uk.bookingbug.com/api/v1/purchases/PS78SXbSy8Edp-5GOTUxMjM5NQ%3D%3D/pre_paid_bookings"
+        },
+        "products": {
+            "href": "https://uk.bookingbug.com/api/v1/purchases/PS78SXbSy8Edp-5GOTUxMjM5NQ%3D%3D/products"
+        },
+        "deals": {
+            "href": "https://uk.bookingbug.com/api/v1/purchases/PS78SXbSy8Edp-5GOTUxMjM5NQ%3D%3D/deals"
+        },
+        "confirm_messages": {
+            "href": "https://uk.bookingbug.com/api/v1/purchases/PS78SXbSy8Edp-5GOTUxMjM5NQ%3D%3D/confirm_messages"
+        },
+        "book_waitlist_item": {
+            "href": "https://uk.bookingbug.com/api/v1/purchases/PS78SXbSy8Edp-5GOTUxMjM5NQ%3D%3D/book_waitlist_item"
+        },
+        "external_purchases": {
+            "href": "https://uk.bookingbug.com/api/v1/purchases/PS78SXbSy8Edp-5GOTUxMjM5NQ%3D%3D/external_purchases"
+        },
+        "print": {
+            "href": "/angular/print_purchase.html?id=PS78SXbSy8Edp-5GOTUxMjM5NQ%3D%3D&company_id=49511"
+        },
+        "paypal_express": {
+            "href": "/pay/paypal_express/PS78SXbSy8Edp-5GOTUxMjM5NQ%3D%3D{?landing_page,allow_guest_checkout,allow_note,logo_image,max_amount,no_shipping,allowed_payment_method}",
+            "templated": true,
+            "type": "location"
+        }
+    }
+}

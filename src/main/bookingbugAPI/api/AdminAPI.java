@@ -318,4 +318,102 @@ public class AdminAPI extends AbstractAPI {
         }
 
     }
+
+
+    /**
+     * Accessor to create an instance of {@link ResourceAPI} with current configuration
+     * @return ResourceAPI instance
+     */
+    public ResourceAPI resource() {
+        return new ResourceAPI(httpService, newConfig());
+    }
+
+    public class ResourceAPI extends AbstractAPI {
+
+        public ResourceAPI(AbstractHttpService httpService, ApiConfig config) {
+            super(httpService, config);
+        }
+
+        /**
+         * Load specific resource details
+         * @param company
+         * @param resourceId
+         * @return Resource
+         * @throws IOException
+         */
+        public Resource resourceRead(Company company, String resourceId) throws IOException{
+            URL url = new URL(AdminURLS.Resource.resourceRead()
+                    .set("companyId", company.id)
+                    .set("resourceId", resourceId)
+                    .expand());
+            return new Resource(httpService.api_GET(url));
+        }
+
+        /**
+         * List of Resources for a company. Results are returned as a paginated list
+         * @param company The owning company for services
+         * @param rlParams Parameters for this call
+         * @return Collection of Service
+         * @throws IOException
+         */
+        public BBCollection<Resource> resourceList(Company company, Params rlParams) throws IOException {
+            UriTemplate template = Utils.TemplateWithPagination(company.getResourcesLink(), rlParams);
+            URL url = new URL(template.expand());
+
+            BBCollection<Resource> resources = new BBCollection<Resource>(httpService.api_GET(url), httpService.getConfig().auth_token,  "resources", Resource.class);
+            return resources;
+        }
+
+        /**
+         * Create a new resource
+         * @param company the company for resource
+         * @param rcParams Contains parameters for resource creation. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return Resource
+         * @throws IOException
+         */
+        public Resource resourceCreate(Company company, ResourceParams.Create rcParams) throws IOException {
+            URL url = new URL (UriTemplate.fromTemplate(company.getResourcesLink()).expand());
+            return new Resource(httpService.api_POST(url, rcParams.getParams()));
+        }
+
+        /**
+         * Update a resource
+         * @param resource the resource to update
+         * @param ruParams Contains parameters for resource update. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return Resource
+         * @throws IOException
+         */
+        public Resource resourceUpdate(Resource resource, ResourceParams.Update ruParams) throws IOException {
+            URL url = new URL (resource.getSelf());
+            return new Resource(httpService.api_PUT(url, ruParams.getParams()));
+        }
+
+        /**
+         * Get the schema for creating a new resource
+         * @param company The company to own the resource
+         * @return SchemaForm
+         * @throws IOException
+         */
+        public SchemaForm getNewResourceSchema(Company company) throws IOException {
+            URL url = new URL(UriTemplate.fromTemplate(company.getNewResourceLink()).expand());
+            return new SchemaForm(httpService.api_GET(url));
+        }
+
+        /**
+         * Get the schema for editing a resource
+         * @param resource The resource to edit
+         * @return SchemaForm
+         * @throws IOException
+         */
+        public SchemaForm getEditResourceSchema(Resource resource) throws IOException {
+            URL url = new URL(UriTemplate.fromTemplate(resource.getEditLink()).expand());
+            return new SchemaForm(httpService.api_GET(url));
+        }
+
+        //TODO: Add block and schedule calls
+    }
 }

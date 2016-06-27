@@ -92,6 +92,14 @@ public class Resource extends BBRoot {
     }
 
     /**
+     * Returns the edit link
+     * @return the link to edit this service
+     */
+    public String getEditLink() {
+        return getLink("edit");
+    }
+
+    /**
      * Returns the items link.
      *
      * @return the items link associated with the current Resource object
