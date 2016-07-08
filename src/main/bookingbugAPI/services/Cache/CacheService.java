@@ -1,8 +1,10 @@
-package bookingbugAPI.services;
+package bookingbugAPI.services.Cache;
 
+import bookingbugAPI.services.Http.PlainHttpService;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.logger.LocalLog;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
@@ -13,10 +15,15 @@ import java.util.List;
 /**
  * Class used for caching HTTP Responses
  */
-public class CacheService  {
+public class CacheService extends AbstractCacheService {
 
     SQLite db;
     boolean mock;
+
+    static {
+        //For OrmLite log garbage
+        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
+    }
 
     public CacheService(SQLite db, boolean mock) {
         this.db = db;
@@ -31,6 +38,7 @@ public class CacheService  {
         return new CacheService(new JDBC_Sqlite(), true);
     }
 
+    @Override
     public void storeResult(String url, String method, String resp) {
         if(mock) return;
 
@@ -48,6 +56,7 @@ public class CacheService  {
         }
     }
 
+    @Override
     public PlainHttpService.NetResponse getDBResponse(String url, String method) {
         if(mock) return null;
         try {

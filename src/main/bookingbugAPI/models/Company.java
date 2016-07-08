@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.factories.SchemaFactoryWrapper;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
-import bookingbugAPI.services.PlainHttpService;
+import bookingbugAPI.services.Http.PlainHttpService;
 import com.theoryinpractise.halbuilder.json.JsonRepresentationFactory;
 import helpers.HttpServiceResponse;
 import helpers.Utils;

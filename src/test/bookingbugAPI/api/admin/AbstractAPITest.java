@@ -5,9 +5,9 @@ import bookingbugAPI.api.AbstractAPI;
 import bookingbugAPI.models.Company;
 import bookingbugAPI.models.HttpException;
 import bookingbugAPI.models.Resource;
-import bookingbugAPI.services.AbstractHttpService;
-import bookingbugAPI.services.CacheService;
-import bookingbugAPI.services.OkHttpService;
+import bookingbugAPI.services.Cache.CacheService;
+import bookingbugAPI.services.Http.OkHttpService;
+import bookingbugAPI.services.ServiceProvider;
 import com.squareup.okhttp.mockwebserver.Dispatcher;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import helpers.HttpServiceResponse;
@@ -39,14 +39,14 @@ public abstract class AbstractAPITest {
      */
     private class MockHttpService  extends OkHttpService {
 
-        public MockHttpService(AbstractAPI.ApiConfig config) {
-            super(config);
+        public MockHttpService(ServiceProvider provider) {
+            super(provider);
         }
 
         @Override
         protected HttpServiceResponse callApi(URL url, String method, String contentType, Map params) throws HttpException {
             String strUrl = url.toString();
-            strUrl = strUrl.replaceFirst("^(?:https?:\\/\\/)?(?:[^@\\n]+@)?(?:www\\.)?([^:\\/\\n]+)", getConfig().serverUrl);
+            strUrl = strUrl.replaceFirst("^(?:https?:\\/\\/)?(?:[^@\\n]+@)?(?:www\\.)?([^:\\/\\n]+)", provider.configService().serverUrl);
             try {
                 return super.callApi(new URL(strUrl), method, contentType, params);
             } catch (MalformedURLException e) {
@@ -58,10 +58,10 @@ public abstract class AbstractAPITest {
 
     @Before
     public void setUp() {
-        defaultAPI = new API.APIBuilder()
-                .withCache(CacheService.MOCK())
-                .withAuthToken(token)
-                .build();
+        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig()
+                .withCacheService(CacheService.MOCK())
+                .withAuthToken(token);
+        defaultAPI = new API(config);
     }
 
     @After
@@ -86,20 +86,20 @@ public abstract class AbstractAPITest {
         if(serverUrl.endsWith("/"))
             serverUrl = serverUrl.substring(0, serverUrl.length()-1);
 
-        API.APIBuilder builder = new API.APIBuilder()
-                .withCache(CacheService.MOCK())
+        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig()
+                .withCacheService(CacheService.MOCK())
                 .withAuthToken(token)
                 .withServerUrl(serverUrl);
-        builder.withHttpService(new MockHttpService(builder));
-        mockAPI = builder.build();
+        config.withHttpService(new MockHttpService(config));
+        mockAPI = new API(config);
 
         return server;
     }
 
     public Company getCompany() {
         Company company = null;
-        API.APIBuilder builder = new API.APIBuilder().withCache(CacheService.JDBC()).withAuthToken(token);
-        API api = builder.build();
+        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withCacheService(CacheService.JDBC()).withAuthToken(token);
+        API api = new API(config);
         return getCompany(api);
     }
 
@@ -115,7 +115,7 @@ public abstract class AbstractAPITest {
     }
 
     public Resource getResource() {
-        return getResource(new API.APIBuilder().withCache(CacheService.JDBC()).withAuthToken(token).build());
+        return getResource(new API(new AbstractAPI.ApiConfig().withCacheService(CacheService.JDBC()).withAuthToken(token)));
     }
 
     public Resource getResource(API api) {

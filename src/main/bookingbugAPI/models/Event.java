@@ -1,6 +1,6 @@
 package bookingbugAPI.models;
 
-import bookingbugAPI.services.PlainHttpService;
+import bookingbugAPI.services.Http.PlainHttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import helpers.HttpServiceResponse;
 import org.joda.time.DateTime;

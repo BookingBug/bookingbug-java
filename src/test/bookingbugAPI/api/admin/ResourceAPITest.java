@@ -87,6 +87,7 @@ public class ResourceAPITest extends AbstractAPITest {
                     .setName("test resource")
                     .setDescription("adfasd asd");
             Resource resource = mockAPI.admin().resource().resourceCreate(company, params);
+
             assertNotNull(resource);
             server.shutdown();
         }catch (Exception e) {

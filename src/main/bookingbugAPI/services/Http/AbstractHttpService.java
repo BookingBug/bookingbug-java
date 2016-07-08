@@ -1,7 +1,7 @@
-package bookingbugAPI.services;
+package bookingbugAPI.services.Http;
 
-import bookingbugAPI.api.AbstractAPI;
 import bookingbugAPI.models.HttpException;
+import bookingbugAPI.services.ServiceProvider;
 import helpers.Http;
 import helpers.HttpServiceResponse;
 
@@ -12,20 +12,11 @@ import java.util.Map;
  * Created by sebi on 15.06.2016.
  */
 public abstract class AbstractHttpService {
-    AbstractAPI.ApiConfig config;
+    protected final ServiceProvider provider;
 
-    public AbstractHttpService(AbstractAPI.ApiConfig config) {
-        this.config = config;
+    public AbstractHttpService(ServiceProvider provider) {
+        this.provider = provider;
     }
-
-    /**
-     * Get current service configuration
-     * @return {@link bookingbugAPI.api.AbstractAPI.ApiConfig}
-     */
-    public AbstractAPI.ApiConfig getConfig() {
-        return config;
-    }
-
 
     /**
      * Makes a synchronous GET request

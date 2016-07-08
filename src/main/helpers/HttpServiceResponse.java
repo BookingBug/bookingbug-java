@@ -1,6 +1,6 @@
 package helpers;
 
-import bookingbugAPI.services.PlainHttpService;
+import bookingbugAPI.services.Http.PlainHttpService;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 
 import java.util.Map;

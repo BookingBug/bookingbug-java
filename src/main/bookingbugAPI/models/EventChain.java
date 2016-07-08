@@ -2,7 +2,7 @@ package bookingbugAPI.models;
 
 import bookingbugAPI.api.PublicURLS;
 import bookingbugAPI.models.params.EventListParams;
-import bookingbugAPI.services.PlainHttpService;
+import bookingbugAPI.services.Http.PlainHttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import helpers.HttpServiceResponse;
 import helpers.Utils;

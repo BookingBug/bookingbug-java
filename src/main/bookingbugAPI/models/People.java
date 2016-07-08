@@ -3,7 +3,7 @@ package bookingbugAPI.models;
 
 
 import com.damnhandy.uri.template.UriTemplate;
-import bookingbugAPI.services.PlainHttpService;
+import bookingbugAPI.services.Http.PlainHttpService;
 import com.theoryinpractise.halbuilder.api.Link;
 import helpers.HttpServiceResponse;
 import helpers.Utils;

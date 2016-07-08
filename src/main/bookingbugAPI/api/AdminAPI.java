@@ -2,7 +2,7 @@ package bookingbugAPI.api;
 
 import bookingbugAPI.models.*;
 import bookingbugAPI.models.params.*;
-import bookingbugAPI.services.AbstractHttpService;
+import bookingbugAPI.services.ServiceProvider;
 import com.damnhandy.uri.template.UriTemplate;
 import helpers.Http;
 import helpers.Utils;
@@ -13,8 +13,9 @@ import java.net.URL;
 
 public class AdminAPI extends AbstractAPI {
 
-    AdminAPI(AbstractHttpService httpService, ApiConfig builder) {
-        super(httpService, builder);
+
+    public AdminAPI(ServiceProvider provider) {
+        super(provider);
     }
 
     /**
@@ -22,13 +23,13 @@ public class AdminAPI extends AbstractAPI {
      * @return BookingAPI instance
      */
     public BookingAPI booking() {
-        return new BookingAPI(httpService, newConfig());
+        return new BookingAPI(newProvider());
     }
 
     public class BookingAPI extends AbstractAPI {
 
-        BookingAPI(AbstractHttpService httpService, ApiConfig config) {
-            super(httpService, config);
+        public BookingAPI(ServiceProvider provider) {
+            super(provider);
         }
 
         /**
@@ -40,8 +41,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public BBCollection<Booking> bookingList(Company company, BookingListParams bLParams) throws IOException {
             URL url = new URL(Utils.inflateLink(company.getBookingsLink(), bLParams.getParams()));
-            BBCollection<Booking> bookings = new BBCollection<Booking>(httpService.api_GET(url), getAuthToken(), "bookings", Booking.class);
-            //BBCollection<Booking> bookings = new BBCollection<Booking>(HttpService.api_GET(url, getAuthToken()), getAuthToken(), "bookings", Booking.class);
+            BBCollection<Booking> bookings = new BBCollection<Booking>(httpService().api_GET(url), getAuthToken(), "bookings", Booking.class);
             return bookings;
         }
 
@@ -57,7 +57,7 @@ public class AdminAPI extends AbstractAPI {
                     .set("companyId", company.id)
                     .set("bookingId", bookingId)
                     .expand());
-            return new Booking(httpService.api_GET(url));
+            return new Booking(httpService().api_GET(url));
         }
 
         /**
@@ -68,7 +68,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public SchemaForm getEditBookingSchema(Booking booking) throws IOException {
             URL url = new URL(UriTemplate.fromTemplate(booking.getEditLink()).expand());
-            return new SchemaForm(httpService.api_GET(url));
+            return new SchemaForm(httpService().api_GET(url));
         }
     }
 
@@ -78,15 +78,15 @@ public class AdminAPI extends AbstractAPI {
      * @return CompanyAPI instance
      */
     public CompanyAPI company() {
-        return new CompanyAPI(httpService, newConfig());
+        return new CompanyAPI(newProvider());
     }
 
     public class CompanyAPI extends AbstractAPI {
 
-        public CompanyAPI(AbstractHttpService httpService, ApiConfig config) {
-            super(httpService, config);
-        }
 
+        public CompanyAPI(ServiceProvider provider) {
+            super(provider);
+        }
 
         /**
          * Load All of the Links and Properties of a Company
@@ -95,8 +95,8 @@ public class AdminAPI extends AbstractAPI {
          * @throws IOException
          */
         public Company companyRead(String companyId) throws IOException {
-            URL url = new URL(AdminURLS.Company.companyRead(config().serverUrl).set("companyId", companyId).expand());
-            return new Company(httpService.api_GET(url));
+            URL url = new URL(AdminURLS.Company.companyRead(configService().serverUrl).set("companyId", companyId).expand());
+            return new Company(httpService().api_GET(url));
         }
 
     }
@@ -107,13 +107,14 @@ public class AdminAPI extends AbstractAPI {
      * @return ServiceAPI instance
      */
     public ServiceAPI service() {
-        return new ServiceAPI(httpService, newConfig());
+        return new ServiceAPI(newProvider());
     }
 
     public class ServiceAPI extends AbstractAPI {
 
-        public ServiceAPI(AbstractHttpService httpService, ApiConfig config) {
-            super(httpService, config);
+
+        public ServiceAPI(ServiceProvider provider) {
+            super(provider);
         }
 
         /**
@@ -127,7 +128,7 @@ public class AdminAPI extends AbstractAPI {
             UriTemplate template = Utils.TemplateWithPagination(company.getServicesLink(), slParams);
             URL url = new URL(template.expand());
 
-            BBCollection<Service> services = new BBCollection<Service>(httpService.api_GET(url), httpService.getConfig().auth_token,  "services", Service.class);
+            BBCollection<Service> services = new BBCollection<Service>(httpService().api_GET(url), configService().auth_token,  "services", Service.class);
             return services;
         }
 
@@ -143,7 +144,7 @@ public class AdminAPI extends AbstractAPI {
                     .set("companyId", company.id)
                     .set("serviceId", serviceId)
                     .expand());
-            return new Service(httpService.api_GET(url));
+            return new Service(httpService().api_GET(url));
         }
 
         /**
@@ -154,7 +155,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public SchemaForm getNewServiceSchema(Company company) throws IOException {
             URL url = new URL(UriTemplate.fromTemplate(company.getNewServiceLink()).expand());
-            return new SchemaForm(httpService.api_GET(url));
+            return new SchemaForm(httpService().api_GET(url));
         }
 
         /**
@@ -168,7 +169,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public Service serviceCreate(Company company, ServiceParams.ServiceCreateParams sCParams) throws IOException {
             URL url = new URL (company.getServicesLink());
-            return new Service(httpService.api_POST(url, sCParams.getParams()));
+            return new Service(httpService().api_POST(url, sCParams.getParams()));
         }
 
         /**
@@ -182,7 +183,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public Service serviceUpdate(Service service, ServiceParams.ServiceUpdateParams sUParams) throws IOException {
             URL url = new URL (service.getEditLink());
-            return new Service(httpService.api_POST(url, sUParams.getParams()));
+            return new Service(httpService().api_POST(url, sUParams.getParams()));
         }
 
         /**
@@ -193,7 +194,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public SchemaForm getNewBookingSchema(Service service) throws IOException {
             URL url = new URL(UriTemplate.fromTemplate(service.getNewBookingLink()).expand());
-            return new SchemaForm(httpService.api_GET(url));
+            return new SchemaForm(httpService().api_GET(url));
         }
 
         /**
@@ -204,7 +205,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public SchemaForm getEditServiceSchema(Service service) throws IOException {
             URL url = new URL(UriTemplate.fromTemplate(service.getEditLink()).expand());
-            return new SchemaForm(httpService.api_GET(url));
+            return new SchemaForm(httpService().api_GET(url));
         }
     }
 
@@ -214,15 +215,15 @@ public class AdminAPI extends AbstractAPI {
      * @return ServiceAPI instance
      */
     public ClientAPI client() {
-        return new ClientAPI(httpService, newConfig());
+        return new ClientAPI(newProvider());
     }
 
     public class ClientAPI extends AbstractAPI {
 
-        public ClientAPI(AbstractHttpService httpService, ApiConfig config) {
-            super(httpService, config);
-        }
 
+        public ClientAPI(ServiceProvider provider) {
+            super(provider);
+        }
 
         /**
          * List of Clients for a company. Results are returned as a paginated list
@@ -235,7 +236,7 @@ public class AdminAPI extends AbstractAPI {
             UriTemplate template = Utils.TemplateWithPagination(company.getClientLink(), clParams);
             URL url = new URL(template.expand());
 
-            BBCollection<Client> clients = new BBCollection<Client>(httpService.api_GET(url), httpService.getConfig().auth_token,  "clients", Client.class);
+            BBCollection<Client> clients = new BBCollection<Client>(httpService().api_GET(url), configService().auth_token,  "clients", Client.class);
             return clients;
         }
 
@@ -251,7 +252,7 @@ public class AdminAPI extends AbstractAPI {
                     .set("companyId", company.id)
                     .set("serviceId", clientId)
                     .expand());
-            return new Client(httpService.api_GET(url));
+            return new Client(httpService().api_GET(url));
         }
 
         /**
@@ -263,7 +264,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public Client clientReadByEmail(Company company, String email) throws IOException {
             URL url = new URL(UriTemplate.fromTemplate(company.getClientByEmailLink()).set("email", email).expand());
-            return new Client(httpService.api_GET(url));
+            return new Client(httpService().api_GET(url));
         }
 
         /**
@@ -274,7 +275,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public SchemaForm getEditClientSchema(Client client) throws IOException {
             URL url = new URL(UriTemplate.fromTemplate(client.getEditLink()).expand());
-            return new SchemaForm(httpService.api_GET(url));
+            return new SchemaForm(httpService().api_GET(url));
         }
 
         /**
@@ -286,7 +287,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public Client clientEnableDisable(Company company, ClientToggleParams ctParams) throws IOException {
             URL url = new URL(UriTemplate.fromTemplate(company.getClientLink()).expand());
-            return new Client(httpService.api_PUT(url, Http.urlEncodedContentType, ctParams.getParams()));
+            return new Client(httpService().api_PUT(url, Http.urlEncodedContentType, ctParams.getParams()));
         }
 
         /**
@@ -300,7 +301,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public Client clientUpdate(Client client, ClientParams.Update cuParams) throws IOException {
             URL url = new URL (client.getSelf());
-            return new Client(httpService.api_PUT(url, cuParams.getParams()));
+            return new Client(httpService().api_PUT(url, cuParams.getParams()));
         }
 
         /**
@@ -314,7 +315,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public Client clientCreate(Company company, ClientParams.Create clParams) throws IOException {
             URL url = new URL (UriTemplate.fromTemplate(company.getClientLink()).expand());
-            return new Client(httpService.api_POST(url, clParams.getParams()));
+            return new Client(httpService().api_POST(url, clParams.getParams()));
         }
 
     }
@@ -325,13 +326,13 @@ public class AdminAPI extends AbstractAPI {
      * @return ResourceAPI instance
      */
     public ResourceAPI resource() {
-        return new ResourceAPI(httpService, newConfig());
+        return new ResourceAPI(newProvider());
     }
 
     public class ResourceAPI extends AbstractAPI {
 
-        public ResourceAPI(AbstractHttpService httpService, ApiConfig config) {
-            super(httpService, config);
+        public ResourceAPI(ServiceProvider provider) {
+            super(provider);
         }
 
         /**
@@ -346,7 +347,7 @@ public class AdminAPI extends AbstractAPI {
                     .set("companyId", company.id)
                     .set("resourceId", resourceId)
                     .expand());
-            return new Resource(httpService.api_GET(url));
+            return new Resource(httpService().api_GET(url));
         }
 
         /**
@@ -360,7 +361,7 @@ public class AdminAPI extends AbstractAPI {
             UriTemplate template = Utils.TemplateWithPagination(company.getResourcesLink(), rlParams);
             URL url = new URL(template.expand());
 
-            BBCollection<Resource> resources = new BBCollection<Resource>(httpService.api_GET(url), httpService.getConfig().auth_token,  "resources", Resource.class);
+            BBCollection<Resource> resources = new BBCollection<Resource>(httpService().api_GET(url), configService().auth_token,  "resources", Resource.class);
             return resources;
         }
 
@@ -375,7 +376,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public Resource resourceCreate(Company company, ResourceParams.Create rcParams) throws IOException {
             URL url = new URL (UriTemplate.fromTemplate(company.getResourcesLink()).expand());
-            return new Resource(httpService.api_POST(url, rcParams.getParams()));
+            return new Resource(httpService().api_POST(url, rcParams.getParams()));
         }
 
         /**
@@ -389,7 +390,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public Resource resourceUpdate(Resource resource, ResourceParams.Update ruParams) throws IOException {
             URL url = new URL (resource.getSelf());
-            return new Resource(httpService.api_PUT(url, ruParams.getParams()));
+            return new Resource(httpService().api_PUT(url, ruParams.getParams()));
         }
 
         /**
@@ -400,7 +401,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public SchemaForm getNewResourceSchema(Company company) throws IOException {
             URL url = new URL(UriTemplate.fromTemplate(company.getNewResourceLink()).expand());
-            return new SchemaForm(httpService.api_GET(url));
+            return new SchemaForm(httpService().api_GET(url));
         }
 
         /**
@@ -411,7 +412,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public SchemaForm getEditResourceSchema(Resource resource) throws IOException {
             URL url = new URL(UriTemplate.fromTemplate(resource.getEditLink()).expand());
-            return new SchemaForm(httpService.api_GET(url));
+            return new SchemaForm(httpService().api_GET(url));
         }
 
         //TODO: Add block and schedule calls

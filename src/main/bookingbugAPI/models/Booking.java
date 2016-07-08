@@ -3,7 +3,7 @@ package bookingbugAPI.models;
 import bookingbugAPI.api.AdminURLS;
 import bookingbugAPI.models.params.BookingCancelParams;
 import bookingbugAPI.models.params.BookingUpdateParams;
-import bookingbugAPI.services.PlainHttpService;
+import bookingbugAPI.services.Http.PlainHttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import helpers.HttpServiceResponse;
 import org.joda.time.DateTime;

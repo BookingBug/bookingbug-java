@@ -1,139 +1,161 @@
 package bookingbugAPI.api;
 
-import bookingbugAPI.services.AbstractHttpService;
-import bookingbugAPI.services.CacheService;
-import bookingbugAPI.services.OkHttpService;
-
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import bookingbugAPI.services.Http.AbstractHttpService;
+import bookingbugAPI.services.Cache.AbstractCacheService;
+import bookingbugAPI.services.Cache.CacheService;
+import bookingbugAPI.services.ConfigService;
+import bookingbugAPI.services.Logger.AbstractLoggerService;
+import bookingbugAPI.services.Logger.JavaLoggerService;
+import bookingbugAPI.services.Http.OkHttpService;
+import bookingbugAPI.services.ServiceProvider;
 
 /**
  * Abstract API class
  * Contains basic methods and members
  */
-public abstract class AbstractAPI {
+public abstract class AbstractAPI implements ServiceProvider {
 
-    protected AbstractHttpService httpService;
+    ServiceProvider provider;
 
-    public AbstractAPI(AbstractHttpService httpService, ApiConfig config){
-        //httpService = new OkHttpService(config);
-        this.httpService = httpService;
+    public AbstractAPI(ServiceProvider provider){
+        this.provider = provider;
     }
 
+    /**
+     * Returns an ApiConfig with the same configuration as the current one, except that the <b>ConfigService is a clone</b>
+     * @return current configuration with ConfigService clone
+     */
     public ApiConfig newConfig() {
-        return new ApiConfig(httpService.getConfig());
+        ApiConfig clone = new ApiConfig(provider);
+        ConfigService newConfig = new ConfigService(provider.configService());
+        return clone.withConfigService(newConfig);
     }
 
-    protected ApiConfig config() {
-        return httpService.getConfig();
+    public ServiceProvider newProvider() {
+        return (ServiceProvider)newConfig();
     }
 
     public String getAuthToken(){
-        return httpService.getConfig().auth_token;
+        return provider.configService().auth_token;
     }
 
-    public void setAuthToken(String auth_token) {
-        httpService.getConfig().withAuthToken(auth_token);
+    @Override
+    public AbstractHttpService httpService() {
+        return provider.httpService();
+    }
+
+    @Override
+    public AbstractLoggerService loggerService() {
+        return provider.loggerService();
+    }
+
+    @Override
+    public AbstractCacheService cacheService() {
+        return provider.cacheService();
+    }
+
+    @Override
+    public ConfigService configService() {
+        return provider.configService();
     }
 
     /**
      * Class which holds an API configuration
      * @param <T> Keep fluent interface for subclasses
      */
-    public static class ApiConfig<T extends ApiConfig>  {
+    public static class ApiConfig<T extends ApiConfig> implements ServiceProvider {
 
-        static final String propFileName = "bb_sdk_config.properties";
-        private final static Logger logger = Logger.getLogger(ApiConfig.class.getName());
+        //Services
+        public AbstractCacheService cacheService;
+        public AbstractLoggerService loggerService;
+        public AbstractHttpService httpService;
+        public ConfigService configService;
 
-        public String auth_token;
-        public String appId;
-        public String appKey;
-        public String userAgent;
-        public String serverUrl;
-        public CacheService cacheService;
-
-        public ApiConfig(ApiConfig config) {
-            this.auth_token = config.auth_token;
-            this.appId = config.appId;
-            this.appKey = config.appKey;
-            this.userAgent = config.userAgent;
-            this.serverUrl = config.serverUrl;
-            this.cacheService = config.cacheService;
+        public ApiConfig(ServiceProvider provider) {
+            this.cacheService = provider.cacheService();
+            this.loggerService = provider.loggerService();
+            this.httpService = provider.httpService();
+            this.configService = provider.configService();
         }
 
         public ApiConfig() {
-            loadConfigFile(null);
+            //Load default services
+            configService = new ConfigService();
+            configService.loadConfigFile(null);
+
+            httpService = new OkHttpService(this);
             cacheService = CacheService.JDBC();
+            loggerService = new JavaLoggerService();
         }
 
         public T withNothing() {
-            auth_token = null;
-            appId = "";
-            appKey = "";
-            userAgent = "";
-            serverUrl = null;
             cacheService = null;
+            loggerService = null;
+            httpService = null;
+            configService = new ConfigService();
+
             return (T) this;
         }
 
         public T withAuthToken(String token) {
-            this.auth_token = token;
-            return (T)this;
-        }
-
-        public T withCache(CacheService cacheService) {
-            this.cacheService = cacheService;
+            this.configService.auth_token = token;
             return (T)this;
         }
 
         public T withApp(String appId, String appKey) {
-            this.appId = appId;
-            this.appKey = appKey;
+            this.configService.appId = appId;
+            this.configService.appKey = appKey;
             return (T)this;
         }
 
         public T withUserAgent(String userAgent) {
-            this.userAgent = userAgent;
+            this.configService.userAgent = userAgent;
             return (T)this;
         }
 
         public T withServerUrl(String serverUrl) {
-            this.serverUrl = serverUrl;
+            this.configService.serverUrl = serverUrl;
             return (T)this;
         }
 
         public T withConfigString(String configString) {
-            loadConfigFile(configString);
+            configService.loadConfigFile(configString);
             return (T)this;
         }
 
-        private void loadConfigFile(String configString) {
-            try{
-                Properties prop = new Properties();
+        public T withCacheService(CacheService cacheService) {
+            this.cacheService = cacheService;
+            return (T)this;
+        }
 
-                if(configString != null) {
-                    prop.load(new StringReader(configString));
-                }
-                else {
-                    InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propFileName);
-                    if (inputStream != null) {
-                        prop.load(inputStream);
-                    } else {
-                        throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
-                    }
-                }
+        public T withConfigService(ConfigService configService) {
+            this.configService = configService;
+            return (T)this;
+        }
 
-                appId = prop.getProperty("application.auth.appid");
-                appKey = prop.getProperty("application.auth.appkey");
-                userAgent = prop.getProperty("application.auth.useragent");
-                serverUrl = prop.getProperty("application.auth.serverurl");
-            } catch (Exception e) {
-                logger.log(Level.SEVERE, "Exception @ ApiConfig.withConfigFile(): " + e.getMessage());
-            }
+        public T withHttpService(AbstractHttpService httpService) {
+            this.httpService = httpService;
+            return (T)this;
+        }
+
+        @Override
+        public AbstractHttpService httpService() {
+            return httpService;
+        }
+
+        @Override
+        public AbstractLoggerService loggerService() {
+            return loggerService;
+        }
+
+        @Override
+        public AbstractCacheService cacheService() {
+            return cacheService;
+        }
+
+        @Override
+        public ConfigService configService() {
+            return configService;
         }
     }
 }
