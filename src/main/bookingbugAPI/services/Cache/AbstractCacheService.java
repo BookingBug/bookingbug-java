@@ -3,7 +3,7 @@ package bookingbugAPI.services.Cache;
 import bookingbugAPI.services.Http.PlainHttpService;
 
 /**
- * Created by sebi on 07.07.2016.
+ * Class used for caching HTTP Responses
  */
 public abstract class AbstractCacheService {
 

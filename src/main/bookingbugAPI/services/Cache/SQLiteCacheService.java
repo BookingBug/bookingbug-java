@@ -1,6 +1,8 @@
 package bookingbugAPI.services.Cache;
 
 import bookingbugAPI.services.Http.PlainHttpService;
+import bookingbugAPI.services.Logger.AbstractLoggerService;
+import bookingbugAPI.services.ServiceProvider;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -13,38 +15,45 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Class used for caching HTTP Responses
+ * Class used for caching HTTP Responses using SQLite db implementation
  */
-public class CacheService extends AbstractCacheService {
+public class SQLiteCacheService extends AbstractCacheService {
 
     SQLite db;
-    boolean mock;
+    ServiceProvider provider;
 
     static {
         //For OrmLite log garbage
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
     }
 
-    public CacheService(SQLite db, boolean mock) {
+    public SQLiteCacheService(ServiceProvider provider) {
+        this.db = new JDBC_Sqlite();
+        this.provider = provider;
+    }
+
+    /**
+     * Constructor for custom SQLite driver implementation. See {@link SQLite}
+     * @param provider the service provider
+     * @param db the SQLite implementation
+     */
+    public SQLiteCacheService(ServiceProvider provider, SQLite db) {
         this.db = db;
-        this.mock = mock;
+        this.provider = provider;
     }
 
-    public static CacheService JDBC() {
-        return new CacheService(new JDBC_Sqlite(), false);
-    }
-
-    public static CacheService MOCK() {
-        return new CacheService(new JDBC_Sqlite(), true);
-    }
-
+    /**
+     * Cache a network result
+     * @param url the url
+     * @param method the http method (verb)
+     * @param resp the response to cache
+     */
     @Override
     public void storeResult(String url, String method, String resp) {
-        if(mock) return;
-
         Dao<PlainHttpService.NetResponse, Integer> respDao;
-
+        AbstractLoggerService.Logger logger = provider.loggerService().getLogger(SQLiteCacheService.class.getName());
         try {
+            logger.v("Caching result for {0} {1}", url, method);
             db.createIfNotExists();
             respDao = db.getDao();
 
@@ -52,24 +61,32 @@ public class CacheService extends AbstractCacheService {
             respDao.create(response);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.e(e, "Error when caching result");
         }
     }
 
+    /**
+     * Restore from cache
+     * @param url the url
+     * @param method the http method (verb)
+     * @return The response if found or null
+     */
     @Override
     public PlainHttpService.NetResponse getDBResponse(String url, String method) {
-        if(mock) return null;
+        AbstractLoggerService.Logger logger = provider.loggerService().getLogger(SQLiteCacheService.class.getName());
         try {
             db.createIfNotExists();
             Dao<PlainHttpService.NetResponse, Integer> respDao = db.getDao();
             QueryBuilder<PlainHttpService.NetResponse, Integer> builder = respDao.queryBuilder();
             builder.where().eq("url", url).and().eq("method", method);
             List<PlainHttpService.NetResponse> responses = respDao.query(builder.prepare());
-            if(responses.size() > 0)
+            if(responses.size() > 0) {
+                logger.v("Restoring from cache result for {0} {1}", url, method);
                 return responses.get(0);
+            }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.e(e, "Error when restoring from cache");
         }
         return null;
     }

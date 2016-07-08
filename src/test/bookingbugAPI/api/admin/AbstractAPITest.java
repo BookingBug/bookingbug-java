@@ -5,7 +5,8 @@ import bookingbugAPI.api.AbstractAPI;
 import bookingbugAPI.models.Company;
 import bookingbugAPI.models.HttpException;
 import bookingbugAPI.models.Resource;
-import bookingbugAPI.services.Cache.CacheService;
+import bookingbugAPI.services.Cache.MockCacheService;
+import bookingbugAPI.services.Cache.SQLiteCacheService;
 import bookingbugAPI.services.Http.OkHttpService;
 import bookingbugAPI.services.ServiceProvider;
 import com.squareup.okhttp.mockwebserver.Dispatcher;
@@ -59,7 +60,7 @@ public abstract class AbstractAPITest {
     @Before
     public void setUp() {
         AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig()
-                .withCacheService(CacheService.MOCK())
+                .withCacheService(new MockCacheService())
                 .withAuthToken(token);
         defaultAPI = new API(config);
     }
@@ -87,7 +88,7 @@ public abstract class AbstractAPITest {
             serverUrl = serverUrl.substring(0, serverUrl.length()-1);
 
         AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig()
-                .withCacheService(CacheService.MOCK())
+                .withCacheService(new MockCacheService())
                 .withAuthToken(token)
                 .withServerUrl(serverUrl);
         config.withHttpService(new MockHttpService(config));
@@ -98,7 +99,8 @@ public abstract class AbstractAPITest {
 
     public Company getCompany() {
         Company company = null;
-        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withCacheService(CacheService.JDBC()).withAuthToken(token);
+        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withAuthToken(token);
+        config.withCacheService(new SQLiteCacheService(config));
         API api = new API(config);
         return getCompany(api);
     }
@@ -115,7 +117,9 @@ public abstract class AbstractAPITest {
     }
 
     public Resource getResource() {
-        return getResource(new API(new AbstractAPI.ApiConfig().withCacheService(CacheService.JDBC()).withAuthToken(token)));
+        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withAuthToken(token);
+        config.withCacheService(new SQLiteCacheService(config));
+        return getResource(new API(config));
     }
 
     public Resource getResource(API api) {

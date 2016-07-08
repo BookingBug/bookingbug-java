@@ -2,7 +2,7 @@ package bookingbugAPI.api;
 
 import bookingbugAPI.services.Http.AbstractHttpService;
 import bookingbugAPI.services.Cache.AbstractCacheService;
-import bookingbugAPI.services.Cache.CacheService;
+import bookingbugAPI.services.Cache.SQLiteCacheService;
 import bookingbugAPI.services.ConfigService;
 import bookingbugAPI.services.Logger.AbstractLoggerService;
 import bookingbugAPI.services.Logger.JavaLoggerService;
@@ -84,14 +84,14 @@ public abstract class AbstractAPI implements ServiceProvider {
             configService.loadConfigFile(null);
 
             httpService = new OkHttpService(this);
-            cacheService = CacheService.JDBC();
+            cacheService = new SQLiteCacheService(this);
             loggerService = new JavaLoggerService();
         }
 
         public T withNothing() {
-            cacheService = null;
+            /*cacheService = null;
             loggerService = null;
-            httpService = null;
+            httpService = null;*/
             configService = new ConfigService();
 
             return (T) this;
@@ -123,7 +123,7 @@ public abstract class AbstractAPI implements ServiceProvider {
             return (T)this;
         }
 
-        public T withCacheService(CacheService cacheService) {
+        public T withCacheService(AbstractCacheService cacheService) {
             this.cacheService = cacheService;
             return (T)this;
         }

@@ -68,6 +68,7 @@ public class OkHttpService extends AbstractHttpService {
             try {
                 body = Http.getEncoder(contentType).encode(params);
             } catch (Http.EncodingException | Http.UnknownContentType e) {
+                logger.e(e, "Unknown Error");
                 throw new HttpException("Error", e) ;
             }
         }

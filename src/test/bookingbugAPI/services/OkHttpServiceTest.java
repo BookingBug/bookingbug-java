@@ -2,7 +2,8 @@ package bookingbugAPI.services;
 
 import bookingbugAPI.api.AbstractAPI;
 import bookingbugAPI.models.HttpException;
-import bookingbugAPI.services.Cache.CacheService;
+import bookingbugAPI.services.Cache.MockCacheService;
+import bookingbugAPI.services.Cache.SQLiteCacheService;
 import bookingbugAPI.services.Http.OkHttpService;
 import bookingbugAPI.services.Http.PlainHttpService;
 import com.squareup.okhttp.mockwebserver.Dispatcher;
@@ -67,7 +68,7 @@ public class OkHttpServiceTest {
     private AbstractAPI.ApiConfig getConfig() {
         AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig();
 
-        config.withApp(appId, appKey).withCacheService(CacheService.MOCK());
+        config.withApp(appId, appKey).withCacheService(new MockCacheService());
 
         return config;
     }
@@ -88,7 +89,7 @@ public class OkHttpServiceTest {
      */
     @Test
     public void headerTest() throws IOException {
-        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withNothing().withCacheService(CacheService.MOCK());
+        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withNothing().withCacheService(new MockCacheService());
         OkHttpService httpService = new OkHttpService(config);
 
         MockWebServer server = new MockWebServer();
@@ -128,7 +129,7 @@ public class OkHttpServiceTest {
      */
     @Test
     public void testPOST() throws IOException {
-        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withCacheService(CacheService.MOCK());
+        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withCacheService(new MockCacheService());
         OkHttpService httpService = new OkHttpService(config);
 
         MockWebServer server = new MockWebServer();
@@ -163,7 +164,7 @@ public class OkHttpServiceTest {
      */
     @Test
     public void testPUT() throws IOException {
-        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withCacheService(CacheService.MOCK());
+        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withCacheService(new MockCacheService());
         OkHttpService httpService = new OkHttpService(config);
 
         MockWebServer server = new MockWebServer();
@@ -198,7 +199,7 @@ public class OkHttpServiceTest {
      */
     @Test
     public void testDELETE() throws IOException {
-        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withCacheService(CacheService.MOCK());
+        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withCacheService(new MockCacheService());
         OkHttpService httpService = new OkHttpService(config);
 
         MockWebServer server = new MockWebServer();
