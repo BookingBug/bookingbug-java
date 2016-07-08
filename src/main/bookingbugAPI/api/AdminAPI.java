@@ -6,9 +6,11 @@ import bookingbugAPI.services.ServiceProvider;
 import com.damnhandy.uri.template.UriTemplate;
 import helpers.Http;
 import helpers.Utils;
+import rx.Observable;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.concurrent.Callable;
 
 
 public class AdminAPI extends AbstractAPI {
@@ -45,6 +47,10 @@ public class AdminAPI extends AbstractAPI {
             return bookings;
         }
 
+        public Observable<BBCollection<Booking>> bookingListObs(final Company company, final BookingListParams bLParams) {
+            return Observable.fromCallable(() -> bookingList(company, bLParams));
+        }
+
         /**
          * Get all details about a specific booking
          * @param company the company owning the booking
@@ -60,6 +66,10 @@ public class AdminAPI extends AbstractAPI {
             return new Booking(httpService().api_GET(url));
         }
 
+        public Observable<Booking> bookingReadObs(final Company company, final String bookingId) {
+            return Observable.fromCallable(()->bookingRead(company, bookingId));
+        }
+
         /**
          * Get the edit schema for booking
          * @param booking
@@ -69,6 +79,10 @@ public class AdminAPI extends AbstractAPI {
         public SchemaForm getEditBookingSchema(Booking booking) throws IOException {
             URL url = new URL(UriTemplate.fromTemplate(booking.getEditLink()).expand());
             return new SchemaForm(httpService().api_GET(url));
+        }
+
+        public Observable<SchemaForm> getEditBookingSchemaObs(final Booking booking) {
+            return Observable.fromCallable(()->getEditBookingSchema(booking));
         }
     }
 
@@ -97,6 +111,10 @@ public class AdminAPI extends AbstractAPI {
         public Company companyRead(String companyId) throws IOException {
             URL url = new URL(AdminURLS.Company.companyRead(configService().serverUrl).set("companyId", companyId).expand());
             return new Company(httpService().api_GET(url));
+        }
+
+        public Observable<Company> companyReadObs(final String companyId) {
+            return Observable.fromCallable(()->companyRead(companyId));
         }
 
     }
@@ -132,6 +150,10 @@ public class AdminAPI extends AbstractAPI {
             return services;
         }
 
+        public Observable<BBCollection<Service>> serviceListObs(final Company company, final ServiceListParams slParams){
+            return Observable.fromCallable(()->serviceList(company, slParams));
+        }
+
         /**
          * Load a Specific Service Details
          * @param company The owning company for service
@@ -147,6 +169,10 @@ public class AdminAPI extends AbstractAPI {
             return new Service(httpService().api_GET(url));
         }
 
+        public Observable<Service> serviceReadObs(final Company company, final String serviceId) {
+            return Observable.fromCallable(()->serviceRead(company, serviceId));
+        }
+
         /**
          * Get schema for creating a new service
          * @param company The owning company
@@ -156,6 +182,10 @@ public class AdminAPI extends AbstractAPI {
         public SchemaForm getNewServiceSchema(Company company) throws IOException {
             URL url = new URL(UriTemplate.fromTemplate(company.getNewServiceLink()).expand());
             return new SchemaForm(httpService().api_GET(url));
+        }
+
+        public Observable<SchemaForm> getNewServiceSchemaObs(final Company company) {
+            return Observable.fromCallable(()->getNewServiceSchema(company));
         }
 
         /**
@@ -172,6 +202,10 @@ public class AdminAPI extends AbstractAPI {
             return new Service(httpService().api_POST(url, sCParams.getParams()));
         }
 
+        public Observable<Service> serviceCreateObs(final Company company, final ServiceParams.ServiceCreateParams sCParams) {
+            return Observable.fromCallable(()->serviceCreate(company, sCParams));
+        }
+
         /**
          * Update a service
          * @param service the service to update
@@ -186,6 +220,10 @@ public class AdminAPI extends AbstractAPI {
             return new Service(httpService().api_POST(url, sUParams.getParams()));
         }
 
+        public Observable<Service> serviceUpdateObs(final Service service, final ServiceParams.ServiceUpdateParams sUParams) {
+            return Observable.fromCallable(()->serviceUpdate(service, sUParams));
+        }
+
         /**
          * Get a schema for creating a new booking with provided service
          * @param service The service
@@ -197,6 +235,10 @@ public class AdminAPI extends AbstractAPI {
             return new SchemaForm(httpService().api_GET(url));
         }
 
+        public Observable<SchemaForm> getNewBookingSchemaObs(final Service service) {
+            return Observable.fromCallable(()->getNewBookingSchema(service));
+        }
+
         /**
          * Get a schema for editing a service
          * @param service The service to be edited
@@ -206,6 +248,10 @@ public class AdminAPI extends AbstractAPI {
         public SchemaForm getEditServiceSchema(Service service) throws IOException {
             URL url = new URL(UriTemplate.fromTemplate(service.getEditLink()).expand());
             return new SchemaForm(httpService().api_GET(url));
+        }
+
+        public Observable<SchemaForm> getEditServiceSchemaObs(final Service service) {
+            return Observable.fromCallable(()->getEditServiceSchema(service));
         }
     }
 
@@ -240,6 +286,10 @@ public class AdminAPI extends AbstractAPI {
             return clients;
         }
 
+        public Observable<BBCollection<Client>> clientListObs(final Company company, final Params clParams) {
+            return Observable.fromCallable(()->clientList(company, clParams));
+        }
+
         /**
          * Load a specific client details
          * @param company  The owning company for client
@@ -255,6 +305,10 @@ public class AdminAPI extends AbstractAPI {
             return new Client(httpService().api_GET(url));
         }
 
+        public Observable<Client> clientReadObs(final Company company, final String clientId) {
+            return Observable.fromCallable(()->clientRead(company, clientId));
+        }
+
         /**
          * Load a specific client details
          * @param company  The owning company for client
@@ -265,6 +319,10 @@ public class AdminAPI extends AbstractAPI {
         public Client clientReadByEmail(Company company, String email) throws IOException {
             URL url = new URL(UriTemplate.fromTemplate(company.getClientByEmailLink()).set("email", email).expand());
             return new Client(httpService().api_GET(url));
+        }
+
+        public Observable<Client> clientReadByEmailObs(final Company company, final String email) {
+            return Observable.fromCallable(()->clientReadByEmail(company, email));
         }
 
         /**
@@ -278,6 +336,10 @@ public class AdminAPI extends AbstractAPI {
             return new SchemaForm(httpService().api_GET(url));
         }
 
+        public Observable<SchemaForm> getEditClientSchemaObs(final Client client) {
+            return Observable.fromCallable(()->getEditClientSchema(client));
+        }
+
         /**
          * Enable/Disable specific client
          * @param company The company for the client
@@ -288,6 +350,10 @@ public class AdminAPI extends AbstractAPI {
         public Client clientEnableDisable(Company company, ClientToggleParams ctParams) throws IOException {
             URL url = new URL(UriTemplate.fromTemplate(company.getClientLink()).expand());
             return new Client(httpService().api_PUT(url, Http.urlEncodedContentType, ctParams.getParams()));
+        }
+
+        public Observable<Client> clientEnableDisableObs(final Company company, final ClientToggleParams ctParams) {
+            return Observable.fromCallable(()->clientEnableDisable(company, ctParams));
         }
 
         /**
@@ -304,6 +370,10 @@ public class AdminAPI extends AbstractAPI {
             return new Client(httpService().api_PUT(url, cuParams.getParams()));
         }
 
+        public Observable<Client> clientUpdateObs(final Client client, final ClientParams.Update cuParams) {
+            return Observable.fromCallable(()->clientUpdate(client, cuParams));
+        }
+
         /**
          * Create a client
          * @param company the company for client
@@ -316,6 +386,10 @@ public class AdminAPI extends AbstractAPI {
         public Client clientCreate(Company company, ClientParams.Create clParams) throws IOException {
             URL url = new URL (UriTemplate.fromTemplate(company.getClientLink()).expand());
             return new Client(httpService().api_POST(url, clParams.getParams()));
+        }
+
+        public Observable<Client> clientCreateObs(final Company company, final ClientParams.Create clParams) {
+            return Observable.fromCallable(()->clientCreate(company, clParams));
         }
 
     }
@@ -350,6 +424,10 @@ public class AdminAPI extends AbstractAPI {
             return new Resource(httpService().api_GET(url));
         }
 
+        public Observable<Resource> resourceReadObs(final Company company, final String resourceId) {
+            return Observable.fromCallable(()->resourceRead(company, resourceId));
+        }
+
         /**
          * List of Resources for a company. Results are returned as a paginated list
          * @param company The owning company for services
@@ -363,6 +441,10 @@ public class AdminAPI extends AbstractAPI {
 
             BBCollection<Resource> resources = new BBCollection<Resource>(httpService().api_GET(url), configService().auth_token,  "resources", Resource.class);
             return resources;
+        }
+
+        public Observable<BBCollection<Resource>> resourceListObs(final Company company, final Params rlParams) {
+            return Observable.fromCallable(()->resourceList(company, rlParams));
         }
 
         /**
@@ -379,6 +461,10 @@ public class AdminAPI extends AbstractAPI {
             return new Resource(httpService().api_POST(url, rcParams.getParams()));
         }
 
+        public Observable<Resource> resourceCreateObs(final Company company, final ResourceParams.Create rcParams) {
+            return Observable.fromCallable(()->resourceCreate(company, rcParams));
+        }
+
         /**
          * Update a resource
          * @param resource the resource to update
@@ -393,6 +479,10 @@ public class AdminAPI extends AbstractAPI {
             return new Resource(httpService().api_PUT(url, ruParams.getParams()));
         }
 
+        public Observable<Resource> resourceUpdateObs(final Resource resource, final ResourceParams.Update ruParams) {
+            return Observable.fromCallable(()->resourceUpdate(resource, ruParams));
+        }
+
         /**
          * Get the schema for creating a new resource
          * @param company The company to own the resource
@@ -404,6 +494,10 @@ public class AdminAPI extends AbstractAPI {
             return new SchemaForm(httpService().api_GET(url));
         }
 
+        public Observable<SchemaForm> getNewResourceSchemaObs(final Company company) {
+            return Observable.fromCallable(()->getNewResourceSchema(company));
+        }
+
         /**
          * Get the schema for editing a resource
          * @param resource The resource to edit
@@ -413,6 +507,10 @@ public class AdminAPI extends AbstractAPI {
         public SchemaForm getEditResourceSchema(Resource resource) throws IOException {
             URL url = new URL(UriTemplate.fromTemplate(resource.getEditLink()).expand());
             return new SchemaForm(httpService().api_GET(url));
+        }
+
+        public Observable<SchemaForm> getEditResourceSchemaObs(final Resource resource) {
+            return Observable.fromCallable(()->getEditResourceSchema(resource));
         }
 
         //TODO: Add block and schedule calls
