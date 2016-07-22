@@ -4,16 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class PeopleListParams {
+public class PersonListParams {
 
     String page;
     String per_page;
 
 
-    public PeopleListParams(){}
+    public PersonListParams(){}
 
 
-    public PeopleListParams(Map<String, String[]> args){
+    public PersonListParams(Map<String, String[]> args){
         if (args==null || args.isEmpty()) {
             return;
         }

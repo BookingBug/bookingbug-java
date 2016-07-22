@@ -1113,7 +1113,7 @@ public class AdminAPI extends AbstractAPI {
         /**
          * Delete an administrator
          *
-         * @param company The owning company
+         * @param company         The owning company
          * @param administratorId the id of administrator to be deleted
          * @return SchemaForm
          * @throws IOException
@@ -1162,9 +1162,9 @@ public class AdminAPI extends AbstractAPI {
          */
         public Administrator administratorUpdate(Company company, String adminId, AdministratorParams.Update aUParams) throws IOException {
             URL url = new URL(AdminURLS.Administrator.administratorUpdate()
-            .set("companyId", company.id)
-            .set("adminId", adminId)
-            .expand());
+                    .set("companyId", company.id)
+                    .set("adminId", adminId)
+                    .expand());
             return new Administrator(httpService().api_PUT(url, aUParams.getParams()));
         }
 
@@ -1203,5 +1203,180 @@ public class AdminAPI extends AbstractAPI {
         public Observable<SchemaForm> getNewAdministratorSchemaObs(final Company company) {
             return Observable.fromCallable(() -> getNewAdministratorSchema(company));
         }
+    }
+
+
+    /**
+     * Accessor to create an instance of {@link PersonAPI} with current configuration
+     *
+     * @return PersonAPI instance
+     */
+    public PersonAPI person() {
+        return new PersonAPI(newProvider());
+    }
+
+    public class PersonAPI extends AbstractAPI {
+        public PersonAPI(ServiceProvider provider) {
+            super(provider);
+        }
+
+        /**
+         * Load a specific person details by reference
+         *
+         * @param company
+         * @param personId
+         * @return
+         * @throws IOException
+         */
+        public Person personRead(Company company, String personId) throws IOException {
+            URL url = new URL(AdminURLS.Person.personRead()
+                    .set("companyId", company.id)
+                    .set("personId", personId)
+                    .expand());
+            return new Person(httpService().api_GET(url));
+        }
+
+        public Observable<Person> personReadObs(final Company company, final String refId) {
+            return Observable.fromCallable(() -> personRead(company, refId));
+        }
+
+        /**
+         * Load specific person details by reference
+         *
+         * @param company
+         * @param refId   the reference to the person to read
+         * @return People
+         * @throws IOException
+         */
+        public Person personReadByRefId(Company company, String refId) throws IOException {
+            URL url = new URL(AdminURLS.Person.personReadUsingRefId()
+                    .set("companyId", company.id)
+                    .set("refId", refId)
+                    .expand());
+            return new Person(httpService().api_GET(url));
+        }
+
+        public Observable<Person> personReadByRefIdObs(final Company company, final String refId) {
+            return Observable.fromCallable(() -> personReadByRefId(company, refId));
+        }
+
+        /**
+         * List of persons for a company. Results are returned as a paginated list
+         *
+         * @param company  The owning company for people
+         * @param plParams Parameters for this call
+         * @return Collection of People
+         * @throws IOException
+         */
+        public BBCollection<Person> personList(Company company, Params plParams) throws IOException {
+            UriTemplate template = Utils.TemplateWithPagination(company.getPeopleLink(), plParams);
+            URL url = new URL(template.expand());
+
+            return new BBCollection<>(httpService().api_GET(url), configService().auth_token, "people", Person.class);
+        }
+
+        public Observable<BBCollection<Person>> personListObs(final Company company, final Params plParams) {
+            return Observable.fromCallable(() -> personList(company, plParams));
+        }
+
+        /**
+         * Create a new person
+         *
+         * @param company  the company for person
+         * @param pcParams Contains parameters for person creation. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return People
+         * @throws IOException
+         */
+        public Person personCreate(Company company, PersonParams.Create pcParams) throws IOException {
+            URL url = new URL(AdminURLS.Person.personCreate()
+                    .set("companyId", company.id)
+                    .expand());
+            return new Person(httpService().api_POST(url, pcParams.getParams()));
+        }
+
+        public Observable<Person> personCreateObs(final Company company, final PersonParams.Create rcParams) {
+            return Observable.fromCallable(() -> personCreate(company, rcParams));
+        }
+
+        /**
+         * Update a person
+         *
+         * @param company  the company the person is part of.
+         * @param personId the person to update
+         * @param puParams Contains parameters for person update. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return People
+         * @throws IOException
+         */
+
+        public Person personUpdate(Company company, String personId, PersonParams.Update puParams) throws IOException {
+            URL url = new URL(AdminURLS.Person.personUpdate()
+                    .set("companyId", company.id)
+                    .set("personId", personId)
+                    .expand());
+            return new Person(httpService().api_PUT(url, puParams.getParams()));
+        }
+
+        public Observable<Person> personUpdateObs(final Company company, final String personId, final PersonParams.Update puParams) {
+            return Observable.fromCallable(() -> personUpdate(company, personId, puParams));
+        }
+
+
+        /**
+         * Get a schema for editing a person
+         *
+         * @param person the person to edit
+         * @return SchemaForm
+         * @throws IOException
+         */
+        public SchemaForm getEditPersonSchema(Person person) throws IOException {
+            URL url = new URL(person.getEditLink());
+            return new SchemaForm(httpService().api_GET(url));
+        }
+
+        public Observable<SchemaForm> getEditPersonSchemaObs(final Person person) {
+            return Observable.fromCallable(() -> getEditPersonSchema(person));
+        }
+
+        /**
+         * Get the schema for creating a new person
+         *
+         * @param company The company to own the person
+         * @return SchemaForm
+         * @throws IOException
+         */
+        public SchemaForm getNewPersonSchema(Company company) throws IOException {
+            URL url = new URL(UriTemplate.fromTemplate(company.getNewPersonLink()).expand());
+            return new SchemaForm(httpService().api_GET(url));
+        }
+
+        public Observable<SchemaForm> getNewPersonSchemaObs(final Company company) {
+            return Observable.fromCallable(() -> getNewPersonSchema(company));
+        }
+
+        /**
+         * Set a staff member attendance
+         *
+         * @param company  the company the person is part of.
+         * @param personId the person to update
+         * @return People
+         * @throws IOException
+         */
+
+        public Person setPersonAttendance(Company company, String personId, PersonParams.Update puParams) throws IOException {
+            URL url = new URL(new Person().getAttendanceLink());
+            return new Person(httpService().api_PUT(url, puParams.getParams()));
+        }
+
+        public Observable<Person> setPersonAttendanceObs(final Company company, final String personId, final PersonParams.Update puParams) {
+            return Observable.fromCallable(() -> personUpdate(company, personId, puParams));
+        }
+
+        // TODO: 15.07.2016 Test setPersonAttendance
+
+        // TODO: 15.07.2016 Implement getQueuersToAMember() 
     }
 }

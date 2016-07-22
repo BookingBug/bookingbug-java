@@ -161,10 +161,10 @@ public class Company extends BBRoot{
 
 
     //TODO: kept for compatibility with AdminController until checked there
-    public People getPeopleList() throws IOException {
+    public Person getPeopleList() throws IOException {
         String link = response.getRep().getLinkByRel("people").getHref();
         URL url = new URL(UriTemplate.fromTemplate(link).expand());
-        return new People(PlainHttpService.api_GET(url, auth_token), auth_token);
+        return new Person(PlainHttpService.api_GET(url, auth_token), auth_token);
     }
 
 
@@ -173,17 +173,17 @@ public class Company extends BBRoot{
      * @return BBCollection<People>
      * @throws IOException
      */
-    public BBCollection<People> personList() throws IOException {
+    public BBCollection<Person> personList() throws IOException {
         URL url = new URL(PublicURLS.Person.personList().set("companyId", this.id).expand());
-        BBCollection<People> people = new BBCollection<People>(PlainHttpService.api_GET(url, auth_token), auth_token, "people", People.class);
+        BBCollection<Person> people = new BBCollection<Person>(PlainHttpService.api_GET(url, auth_token), auth_token, "people", Person.class);
         return people;
     }
 
 
-    public BBCollection<People> personList_Admin(PeopleListParams plParams) throws IOException {
+    public BBCollection<Person> personList_Admin(PersonListParams plParams) throws IOException {
         String urlStr = AdminURLS.Person.personList().set("companyId", this.id).expand();
         URL url = new URL(Utils.inflateLink(urlStr, plParams.getParams()));
-        BBCollection<People> people = new BBCollection<People>(PlainHttpService.api_GET(url, auth_token), auth_token, "people", People.class);
+        BBCollection<Person> people = new BBCollection<Person>(PlainHttpService.api_GET(url, auth_token), auth_token, "people", Person.class);
         return people;
     }
 
@@ -194,9 +194,9 @@ public class Company extends BBRoot{
      * @return People
      * @throws IOException
      */
-    public People personRead(String personId) throws IOException {
+    public Person personRead(String personId) throws IOException {
         URL url = new URL(PublicURLS.Person.personRead().set("companyId", this.id).set("personId", personId).expand());
-        BBCollection<People> people = new BBCollection<People>(PlainHttpService.api_GET(url, auth_token), auth_token, "person", People.class);
+        BBCollection<Person> people = new BBCollection<Person>(PlainHttpService.api_GET(url, auth_token), auth_token, "person", Person.class);
         return people.getObjectAtIndex(0);
     }
 
@@ -206,9 +206,9 @@ public class Company extends BBRoot{
      * @return People
      * @throws IOException
      */
-    public People personReadUsingReferenceId(String ref) throws IOException {
+    public Person personReadUsingReferenceId(String ref) throws IOException {
         URL url = new URL(PublicURLS.Person.personReadUsingReferenceId().set("companyId", this.id).set("ref", ref).expand());
-        BBCollection<People> people = new BBCollection<People>(PlainHttpService.api_GET(url, auth_token), auth_token, "person", People.class);
+        BBCollection<Person> people = new BBCollection<Person>(PlainHttpService.api_GET(url, auth_token), auth_token, "person", Person.class);
         return people.getObjectAtIndex(0);
     }
 
@@ -1306,7 +1306,7 @@ public class Company extends BBRoot{
      * @throws HttpException
      * @throws MalformedURLException
      */
-    public BBRoot updatePerson(People person, Map<String, String> data) throws HttpException, MalformedURLException {
+    public BBRoot updatePerson(Person person, Map<String, String> data) throws HttpException, MalformedURLException {
         String uri = AdminURLS.Person.personUpdate().set("companyId", get("id")).set("personId", person.get("id")).expand();
         URL url = new URL (uri);
         return new BBRoot(PlainHttpService.api_PUT(url, PlainHttpService.jsonContentType, data, auth_token), auth_token);

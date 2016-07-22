@@ -2,10 +2,7 @@ package bookingbugAPI.api.admin;
 
 import bookingbugAPI.api.API;
 import bookingbugAPI.api.AbstractAPI;
-import bookingbugAPI.models.Administrator;
-import bookingbugAPI.models.Company;
-import bookingbugAPI.models.HttpException;
-import bookingbugAPI.models.Resource;
+import bookingbugAPI.models.*;
 import bookingbugAPI.services.Cache.MockCacheService;
 import bookingbugAPI.services.Cache.SQLiteCacheService;
 import bookingbugAPI.services.Http.OkHttpService;
@@ -30,6 +27,8 @@ public abstract class AbstractAPITest {
 
     protected static final String companyId = "36990";
     protected static final String resourceId = "5";
+    protected static final String adminId = "23455";
+    protected static final String personId = "15289";
     protected static final String token = "ro13e9jaWi3kvA4fMToU1w";
 
     protected API defaultAPI;
@@ -143,11 +142,28 @@ public abstract class AbstractAPITest {
     public Administrator getAdministrator(API api) {
         Administrator administrator = null;
         try {
-            administrator = api.admin().administrator().administratorRead(getCompany(), resourceId);
+            administrator = api.admin().administrator().administratorRead(getCompany(), adminId);
         } catch (IOException e) {
             e.printStackTrace();
         }
         assertNotNull(administrator);
         return administrator;
+    }
+
+    public Person getPerson() {
+        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withAuthToken(token);
+        config.withCacheService(new SQLiteCacheService(config));
+        return getPerson(new API(config));
+    }
+
+    public Person getPerson(API api) {
+        Person person = null;
+        try {
+            person = api.admin().person().personRead(getCompany(), personId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assertNotNull(person);
+        return person;
     }
 }

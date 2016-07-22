@@ -13,20 +13,20 @@ import java.net.URL;
 import java.util.List;
 
 
-public class People extends BBRoot{
+public class Person extends BBRoot{
 
     private BBRoot schema;
 
-    public People(HttpServiceResponse httpServiceResponse){
+    public Person(HttpServiceResponse httpServiceResponse){
         super(httpServiceResponse);
     }
 
-    public People(HttpServiceResponse httpServiceResponse, String auth_token){
+    public Person(HttpServiceResponse httpServiceResponse, String auth_token){
         super(httpServiceResponse);
         this.auth_token = auth_token;
     }
 
-    public People() {
+    public Person() {
         super();
     }
 
@@ -221,10 +221,10 @@ public class People extends BBRoot{
         return schema;
     }
 
-    public People getPerson(Link link) throws IOException{
+    public Person getPerson(Link link) throws IOException{
         String absUrl = Utils.absoluteURL(link.getHref());
         URL url = new URL(UriTemplate.fromTemplate(absUrl).expand());
-        return new People(PlainHttpService.api_GET(url, auth_token), auth_token);
+        return new Person(PlainHttpService.api_GET(url, auth_token), auth_token);
     }
 
 }

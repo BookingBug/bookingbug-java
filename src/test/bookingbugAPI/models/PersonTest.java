@@ -11,7 +11,7 @@ import java.text.ParseException;
 
 import static org.junit.Assert.assertTrue;
 
-public class PeopleTest extends ModelTest {
+public class PersonTest extends ModelTest {
     private JsonNode jsonNode;
 
     @Override
@@ -23,7 +23,7 @@ public class PeopleTest extends ModelTest {
     @Override
     @Test
     public void modelInit() throws ParseException {
-        People person = new People(new HttpServiceResponse(Utils.stringToContentRep(jsonNode.toString())));
+        Person person = new Person(new HttpServiceResponse(Utils.stringToContentRep(jsonNode.toString())));
         JsonNode jsonLinks = jsonNode.get("_links");
 
         assertTrue(person.getId().equals(jsonNode.get("id").intValue()));

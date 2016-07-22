@@ -2,6 +2,7 @@ package bookingbugAPI.api;
 
 import com.damnhandy.uri.template.UriTemplate;
 import com.damnhandy.uri.template.UriTemplateBuilder;
+import com.sun.jndi.toolkit.url.Uri;
 import helpers.Config;
 
 
@@ -187,6 +188,16 @@ public class AdminURLS {
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/people")
                     .path(UriTemplateBuilder.var("personId"))
+                    .build();
+        }
+
+        public static UriTemplate personReadUsingRefId() {
+            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+                    .literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .literal("people")
+                    .literal("find_by_ref")
+                    .path(UriTemplateBuilder.var("refId"))
                     .build();
         }
     }
