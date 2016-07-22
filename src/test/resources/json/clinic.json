@@ -1,0 +1,19 @@
+{
+  "name": "string",
+  "start_time": "2016-07-11T12:30:32.596Z",
+  "end_time": "2016-07-11T12:30:32.596Z",
+  "resource_ids": [
+    "string"
+  ],
+  "person_ids": [
+    "string"
+  ],
+  "service_ids": [
+    "string"
+  ],
+  "repeat_rule": {
+    "id": 0,
+    "rules": {},
+    "properties": {}
+  }
+}
