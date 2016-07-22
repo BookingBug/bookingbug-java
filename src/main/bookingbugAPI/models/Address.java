@@ -8,7 +8,9 @@ public class Address extends BBRoot{
         super(httpServiceResponse);
     }
 
-    public Address() {}
+    public Address(HttpServiceResponse httpServiceResponse, String auth_token) {
+        super(httpServiceResponse, auth_token);
+    }
 
     /**
      * Returns the id.

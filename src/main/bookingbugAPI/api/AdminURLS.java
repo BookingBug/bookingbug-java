@@ -56,6 +56,15 @@ public class AdminURLS {
                     .path(UriTemplateBuilder.var("addressId"))
                     .build();
         }
+
+        public static UriTemplate addressDelete() {
+            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+                    .literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .literal("/addresses")
+                    .path(UriTemplateBuilder.var("addressId"))
+                    .build();
+        }
     }
 
 

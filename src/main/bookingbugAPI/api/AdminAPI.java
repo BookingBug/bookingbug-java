@@ -863,7 +863,7 @@ public class AdminAPI extends AbstractAPI {
          * @return SchemaForm
          * @throws IOException
          */
-        public SchemaForm scheduleDelete(Company company, String scheduleId) throws IOException {
+        public SchemaForm getDeleteScheduleSchema(Company company, String scheduleId) throws IOException {
             URL url = new URL(AdminURLS.Schedule.scheduleDelete()
                     .set("companyId", company.id)
                     .set("scheduleId", scheduleId)
@@ -871,8 +871,8 @@ public class AdminAPI extends AbstractAPI {
             return new SchemaForm(httpService().api_DELETE(url));
         }
 
-        public Observable<SchemaForm> getNewScheduleSchemaObs(final Company company, final String scheduleID) {
-            return Observable.fromCallable(() -> scheduleDelete(company, scheduleID));
+        public Observable<SchemaForm> getDeletedScheduleSchemaObs(final Company company, final String scheduleID) {
+            return Observable.fromCallable(() -> getDeleteScheduleSchema(company, scheduleID));
         }
 
         /**
@@ -938,6 +938,119 @@ public class AdminAPI extends AbstractAPI {
 
         public Observable<SchemaForm> getEditScheduleSchemaObs(Company company, String scheduleId) {
             return Observable.fromCallable(() -> getEditScheduleSchema(company, scheduleId));
+        }
+    }
+
+
+    /**
+     * Accessor to create an instance of {@link AddressAPI} with current configuration
+     *
+     * @return AddressAPI instance
+     */
+    public AddressAPI address() {
+        return new AddressAPI(newProvider());
+    }
+
+    public class AddressAPI extends AbstractAPI {
+
+        public AddressAPI(ServiceProvider provider) {
+            super(provider);
+        }
+
+        /**
+         * Get a list of admin schedules for a company
+         *
+         * @param company  The owning company for address
+         * @param aLParams The parameters for this call
+         * @return Collection of addresses
+         * @throws IOException
+         */
+        public BBCollection<Address> addressList(Company company, Params aLParams) throws IOException {
+            UriTemplate template = Utils.TemplateWithPagination(company.getAddressesLink(), aLParams);
+            URL url = new URL(template.expand());
+            return new BBCollection<>(httpService().api_GET(url), getAuthToken(), "addresses", Address.class);
+        }
+
+        public Observable<BBCollection<Address>> addressListObs(final Company company, final Params aLParams) {
+            return Observable.fromCallable(() -> addressList(company, aLParams));
+        }
+
+        /**
+         * Create a address
+         *
+         * @param company  the company to own the address
+         * @param aCParams Contains parameters for address creation. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return Service
+         * @throws IOException
+         */
+        public Address addressCreate(Company company, AddressParams.Create aCParams) throws IOException {
+            URL url = new URL(company.getAddressLink());
+            return new Address(httpService().api_POST(url, aCParams.getParams()));
+        }
+
+        public Observable<Address> addressCreateObs(final Company company, final AddressParams.Create sCParams) {
+            return Observable.fromCallable(() -> addressCreate(company, sCParams));
+        }
+
+        /**
+         * Delete a address
+         *
+         * @param company The owning company
+         * @return SchemaForm
+         * @throws IOException
+         */
+        public SchemaForm getDeleteAddressSchema(Company company, String addressId) throws IOException {
+            URL url = new URL(AdminURLS.Address.addressDelete()
+                    .set("companyId", company.id)
+                    .set("addressId", addressId)
+                    .expand());
+            return new SchemaForm(httpService().api_DELETE(url));
+        }
+
+        public Observable<SchemaForm> getDeletedAddressSchemaObs(final Company company, final String addressID) {
+            return Observable.fromCallable(() -> getDeleteAddressSchema(company, addressID));
+        }
+
+        /**
+         * Get all details about a specific address
+         *
+         * @param company    the company owning the address
+         * @param addressId the id of address to read
+         * @return Address
+         * @throws IOException
+         */
+        public Address addressRead(Company company, String addressId) throws IOException {
+            URL url = new URL(AdminURLS.Address.addressRead()
+                    .set("companyId", company.id)
+                    .set("addressId", addressId)
+                    .expand());
+            return new Address(httpService().api_GET(url));
+        }
+
+        public Observable<Address> addressReadObs(final Company company, final String addressId) {
+            return Observable.fromCallable(() -> addressRead(company, addressId));
+        }
+
+        /**
+         * Update a address
+         *
+         * @param company    the company owning the address
+         * @param sUParams   Contains parameters for address update. If the schema is used, then set the json form output
+         *                   to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                   in order to ignore declared fields
+         * @return Address
+         * @throws IOException
+         */
+        public Address addressUpdate(Company company, AddressParams.Update sUParams) throws IOException {
+            URL url = new URL(company.getAddressLink());
+
+            return new Address(httpService().api_PUT(url, sUParams.getParams()));
+        }
+
+        public Observable<Address> serviceUpdateObs(final Company company, final AddressParams.Update sUParams) {
+            return Observable.fromCallable(() -> addressUpdate(company, sUParams));
         }
     }
 }
