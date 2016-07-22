@@ -129,6 +129,22 @@
             </plugin>
 
             <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>net.orfjackal.retrolambda</groupId>
                 <artifactId>retrolambda-maven-plugin</artifactId>
                 <version>2.3.0</version>
@@ -144,6 +160,28 @@
                     <target>${testBytecodeTarget}</target>
                     <defaultMethods>${testDefaultMethods}</defaultMethods>
                     <fork>${testFork}</fork>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>animal-sniffer-maven-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>signature-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <signature>
+                        <groupId>org.codehaus.mojo.signature</groupId>
+                        <artifactId>java17</artifactId>
+                        <version>1.0</version>
+                    </signature>
                 </configuration>
             </plugin>
         </plugins>

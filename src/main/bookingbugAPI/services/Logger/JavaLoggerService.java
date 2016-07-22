@@ -1,9 +1,5 @@
 package bookingbugAPI.services.Logger;
 
-import sun.misc.JavaLangAccess;
-import sun.misc.SharedSecrets;
-import sun.util.logging.LoggingSupport;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Date;
@@ -34,11 +30,11 @@ public class JavaLoggerService extends AbstractLoggerService {
 
         //Custom log levels (INFO is higher than DEBUG)
         public static final Level DEBUG = new Level("DEBUG", Level.INFO.intValue() + 1){};
-        public static final Level INFO = new Level("DEBUG", Level.INFO.intValue() + 2){};
+        public static final Level INFO = new Level("INFO", Level.INFO.intValue() + 2){};
 
         //Custom Formatter to display correct Class and Method name
         public static final Formatter formatter = new Formatter() {
-            private final String format = LoggingSupport.getSimpleFormat();
+            private final String format = "%1$tb %1$td, %1$tY %1$tl:%1$tM:%1$tS %1$Tp %2$s%n%4$s: %5$s%6$s%n";
             private final Date dat = new Date();
 
             @Override
@@ -76,18 +72,15 @@ public class JavaLoggerService extends AbstractLoggerService {
             }
 
             // Private method to infer the caller's class and method names
-            // Same code, only the isLoggerImplFrame is different
+            // The isLoggerImplFrame is different and uses StackTrace
             private void inferCaller(LogRecord record) {
-                JavaLangAccess access = SharedSecrets.getJavaLangAccess();
                 Throwable throwable = new Throwable();
-                int depth = access.getStackTraceDepth(throwable);
+                StackTraceElement[] stackTrace = throwable.getStackTrace();
 
+                int depth = stackTrace.length;
                 boolean lookingForLogger = true;
                 for (int ix = 0; ix < depth; ix++) {
-                    // Calling getStackTraceElement directly prevents the VM
-                    // from paying the cost of building the entire stack frame.
-                    StackTraceElement frame =
-                            access.getStackTraceElement(throwable, ix);
+                    StackTraceElement frame = stackTrace[ix];
                     String cname = frame.getClassName();
                     boolean isLoggerImpl = isLoggerImplFrame(cname);
                     if (lookingForLogger) {
