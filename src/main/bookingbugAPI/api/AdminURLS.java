@@ -556,6 +556,24 @@ public class AdminURLS {
                     .path(UriTemplateBuilder.var("adminId"))
                     .build();
         }
+
+        public static UriTemplate administratorDelete() {
+            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+                    .literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .literal("/administrators")
+                    .path(UriTemplateBuilder.var("adminId"))
+                    .build();
+        }
+
+        public static UriTemplate administratorUpdate() {
+            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+                    .literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .literal("/administrators")
+                    .path(UriTemplateBuilder.var("adminId"))
+                    .build();
+        }
     }
 
 

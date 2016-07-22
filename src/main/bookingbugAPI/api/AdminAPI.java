@@ -976,7 +976,7 @@ public class AdminAPI extends AbstractAPI {
         }
 
         /**
-         * Create a address
+         * Create an address
          *
          * @param company  the company to own the address
          * @param aCParams Contains parameters for address creation. If the schema is used, then set the json form output
@@ -995,7 +995,7 @@ public class AdminAPI extends AbstractAPI {
         }
 
         /**
-         * Delete a address
+         * Delete an address
          *
          * @param company The owning company
          * @return SchemaForm
@@ -1016,7 +1016,7 @@ public class AdminAPI extends AbstractAPI {
         /**
          * Get all details about a specific address
          *
-         * @param company    the company owning the address
+         * @param company   the company owning the address
          * @param addressId the id of address to read
          * @return Address
          * @throws IOException
@@ -1034,12 +1034,12 @@ public class AdminAPI extends AbstractAPI {
         }
 
         /**
-         * Update a address
+         * Update an address
          *
-         * @param company    the company owning the address
-         * @param sUParams   Contains parameters for address update. If the schema is used, then set the json form output
-         *                   to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
-         *                   in order to ignore declared fields
+         * @param company  the company owning the address
+         * @param sUParams Contains parameters for address update. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
          * @return Address
          * @throws IOException
          */
@@ -1051,6 +1051,157 @@ public class AdminAPI extends AbstractAPI {
 
         public Observable<Address> serviceUpdateObs(final Company company, final AddressParams.Update sUParams) {
             return Observable.fromCallable(() -> addressUpdate(company, sUParams));
+        }
+    }
+
+
+    /**
+     * Accessor to create an instance of {@link AdministratorAPI} with current configuration
+     *
+     * @return AdministratorAPI instance
+     */
+    public AdministratorAPI administrator() {
+        return new AdministratorAPI(newProvider());
+    }
+
+    public class AdministratorAPI extends AbstractAPI {
+
+        public AdministratorAPI(ServiceProvider provider) {
+            super(provider);
+        }
+
+        /**
+         * Get a list of admin schedules for a company
+         *
+         * @param company  The owning company for administrator
+         * @param aLParams The parameters for this call
+         * @return Collection of administrators
+         * @throws IOException
+         */
+        public BBCollection<Administrator> administratorList(Company company, Params aLParams) throws IOException {
+            UriTemplate template = Utils.TemplateWithPagination(company.getAdministratorsLink(), aLParams);
+            URL url = new URL(template.expand());
+            return new BBCollection<>(httpService().api_GET(url), getAuthToken(), "administrators", Administrator.class);
+        }
+
+        public Observable<BBCollection<Administrator>> administratorListObs(final Company company, final Params aLParams) {
+            return Observable.fromCallable(() -> administratorList(company, aLParams));
+        }
+
+        /**
+         * Create an administrator
+         *
+         * @param company  the company to own the administrator
+         * @param aCParams Contains parameters for administrator creation. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return Service
+         * @throws IOException
+         */
+        public Administrator administratorCreate(Company company, AdministratorParams.Create aCParams) throws IOException {
+            URL url = new URL(AdminURLS.Administrator.administratorCreate()
+                    .set("companyId", company.id)
+                    .expand());
+
+            return new Administrator(httpService().api_POST(url, aCParams.getParams()));
+        }
+
+        public Observable<Administrator> administratorCreateObs(final Company company, final AdministratorParams.Create aCParams) {
+            return Observable.fromCallable(() -> administratorCreate(company, aCParams));
+        }
+
+        /**
+         * Delete an administrator
+         *
+         * @param company The owning company
+         * @param administratorId the id of administrator to be deleted
+         * @return SchemaForm
+         * @throws IOException
+         */
+        public SchemaForm getDeleteAdministratorSchema(Company company, String administratorId) throws IOException {
+            URL url = new URL(AdminURLS.Administrator.administratorDelete()
+                    .set("companyId", company.id)
+                    .set("administratorId", administratorId)
+                    .expand());
+            return new SchemaForm(httpService().api_DELETE(url));
+        }
+
+        public Observable<SchemaForm> getDeletedAdministratorSchemaObs(final Company company, final String administratorID) {
+            return Observable.fromCallable(() -> getDeleteAdministratorSchema(company, administratorID));
+        }
+
+        /**
+         * Get all details about a specific administrator
+         *
+         * @param company         the company owning the administrator
+         * @param administratorId the id of administrator to read
+         * @return Administrator
+         * @throws IOException
+         */
+        public Administrator administratorRead(Company company, String administratorId) throws IOException {
+            URL url = new URL(AdminURLS.Administrator.administratorRead()
+                    .set("companyId", company.id)
+                    .set("administratorId", administratorId)
+                    .expand());
+            return new Administrator(httpService().api_GET(url));
+        }
+
+        public Observable<Administrator> administratorReadObs(final Company company, final String administratorId) {
+            return Observable.fromCallable(() -> administratorRead(company, administratorId));
+        }
+
+        /**
+         * Update an administrator
+         *
+         * @param company  the company owning the administrator
+         * @param aUParams Contains parameters for administrator update. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return Administrator
+         * @throws IOException
+         */
+        public Administrator administratorUpdate(Company company, String adminId, AdministratorParams.Update aUParams) throws IOException {
+            URL url = new URL(AdminURLS.Administrator.administratorUpdate()
+            .set("companyId", company.id)
+            .set("adminId", adminId)
+            .expand());
+            return new Administrator(httpService().api_PUT(url, aUParams.getParams()));
+        }
+
+        public Observable<Administrator> administratorUpdateObs(final Company company, final String adminId, final AdministratorParams.Update aUParams) {
+            return Observable.fromCallable(() -> administratorUpdate(company, adminId, aUParams));
+        }
+
+        /**
+         * Get the edit schema for booking
+         *
+         * @param administrator
+         * @return SchemaForm
+         * @throws IOException
+         */
+        public SchemaForm getEditAdministratorSchema(Administrator administrator) throws IOException {
+            URL url = new URL(UriTemplate.fromTemplate(administrator.getEditLink()).expand());
+            return new SchemaForm(httpService().api_GET(url));
+        }
+
+        public Observable<SchemaForm> getEditAdministratorSchemaObs(final Administrator administrator) {
+            return Observable.fromCallable(() -> getEditAdministratorSchema(administrator));
+        }
+
+        /**
+         * Get schema for creating a new administrator
+         *
+         * @param company The owning company
+         * @return SchemaForm
+         * @throws IOException
+         */
+        public SchemaForm getNewAdministratorSchema(Company company) throws IOException {
+            URL url = new URL(UriTemplate.fromTemplate(company.getNewAdministratorLink()).expand());
+            return new SchemaForm(httpService().api_GET(url));
+        }
+
+        public Observable<SchemaForm> getNewAdministratorSchemaObs(final Company company) {
+            return Observable.fromCallable(() -> getNewAdministratorSchema(company));
         }
     }
 }

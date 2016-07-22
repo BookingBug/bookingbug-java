@@ -2,6 +2,7 @@ package bookingbugAPI.api.admin;
 
 import bookingbugAPI.api.API;
 import bookingbugAPI.api.AbstractAPI;
+import bookingbugAPI.models.Administrator;
 import bookingbugAPI.models.Company;
 import bookingbugAPI.models.HttpException;
 import bookingbugAPI.models.Resource;
@@ -131,5 +132,22 @@ public abstract class AbstractAPITest {
         }
         assertNotNull(resource);
         return resource;
+    }
+
+    public Administrator getAdministrator() {
+        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withAuthToken(token);
+        config.withCacheService(new SQLiteCacheService(config));
+        return getAdministrator(new API(config));
+    }
+
+    public Administrator getAdministrator(API api) {
+        Administrator administrator = null;
+        try {
+            administrator = api.admin().administrator().administratorRead(getCompany(), resourceId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assertNotNull(administrator);
+        return administrator;
     }
 }
