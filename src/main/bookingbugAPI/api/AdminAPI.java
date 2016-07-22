@@ -515,4 +515,146 @@ public class AdminAPI extends AbstractAPI {
 
         //TODO: Add block and schedule calls
     }
+
+    /**
+     * Accessor to create an instance of {@link EventChainAPI} with current configuration
+     * @return EventChainAPI instance
+     */
+    public EventChainAPI eventChain() {
+        return new EventChainAPI(newProvider());
+    }
+
+    public class EventChainAPI extends AbstractAPI {
+        public EventChainAPI(ServiceProvider provider) {
+            super(provider);
+        }
+
+        /**
+         * Load specific event chain details
+         * @param company
+         * @param eventChainId
+         * @return EventChain
+         * @throws IOException
+         */
+        public EventChain eventChainRead(Company company, String eventChainId) throws IOException{
+            URL url = new URL(AdminURLS.EventChain.eventChainRead()
+                    .set("companyId", company.id)
+                    .set("eventChainId", eventChainId)
+                    .expand());
+            return new EventChain(httpService().api_GET(url));
+        }
+
+        public Observable<EventChain> eventChainReadObs(final Company company, final String eventChainId) {
+            return Observable.fromCallable(()->eventChainRead(company, eventChainId));
+        }
+
+        /**
+         * Load specific event chain details by reference
+         * @param company
+         * @param refId the reference to the event chain to read
+         * @return EventChain
+         * @throws IOException
+         */
+        public EventChain eventChainReadByRefId(Company company, String refId) throws IOException{
+            URL url = new URL(AdminURLS.EventChain.eventChainReadUsingRefId()
+                    .set("companyId", company.id)
+                    .set("refId", refId)
+                    .expand());
+            return new EventChain(httpService().api_GET(url));
+        }
+
+        public Observable<EventChain> eventChainReadByRefIdObs(final Company company, final String refId) {
+            return Observable.fromCallable(()->eventChainReadByRefId(company, refId));
+        }
+
+        /**
+         * List of event chains for a company. Results are returned as a paginated list
+         * @param company The owning company for services
+         * @param rlParams Parameters for this call
+         * @return Collection of Service
+         * @throws IOException
+         */
+        public BBCollection<EventChain> eventChainList(Company company, Params rlParams) throws IOException {
+            UriTemplate template = Utils.TemplateWithPagination(company.getEventChainsLink(), rlParams);
+            URL url = new URL(template.expand());
+
+            return new BBCollection<>(httpService().api_GET(url), configService().auth_token, "eventChains", EventChain.class);
+        }
+
+        public Observable<BBCollection<EventChain>> eventChainListObs(final Company company, final Params rlParams) {
+            return Observable.fromCallable(()->eventChainList(company, rlParams));
+        }
+
+        /**
+         * Create a new event chain
+         * @param company the company for event chain
+         * @param eccParams Contains parameters for event chain creation. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return EventChain
+         * @throws IOException
+         */
+        public EventChain eventChainCreate(Company company, EventChainParams.Create eccParams) throws IOException {
+            URL url = new URL (UriTemplate.fromTemplate(company.getEventChainsLink()).expand());
+            return new EventChain(httpService().api_POST(url, eccParams.getParams()));
+        }
+
+        public Observable<EventChain> eventChainCreateObs(final Company company, final EventChainParams.Create rcParams) {
+            return Observable.fromCallable(()->eventChainCreate(company, rcParams));
+        }
+
+        /**
+         * Update a event chain
+         * @param eventChain the event chain to update
+         * @param ecuParams Contains parameters for event chain update. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return EventChain
+         * @throws IOException
+         */
+
+        public EventChain eventChainUpdate(EventChain eventChain, EventChainParams.Update ecuParams) throws IOException {
+            URL url = new URL (eventChain.getSelf());
+            return new EventChain(httpService().api_PUT(url, ecuParams.getParams()));
+        }
+
+        public Observable<EventChain> eventChainUpdateObs(final EventChain eventChain, final EventChainParams.Update ruParams) {
+            return Observable.fromCallable(()->eventChainUpdate(eventChain, ruParams));
+        }
+
+
+        /**
+         * Get a schema for editing a eventChain
+         * @param company
+         * @param eventChainId the event chain to edit
+         * @return
+         * @throws IOException
+         */
+        public SchemaForm getEditEventChainSchema(Company company, String eventChainId) throws IOException {
+            URL url = new URL(AdminURLS.EventChain.eventChainEdit()
+                    .set("companyId", company.id)
+                    .set("eventChainId", eventChainId)
+                    .expand());
+            return new SchemaForm(httpService().api_GET(url));
+        }
+
+        public Observable<SchemaForm> getEditEventChainSchemaObs(final Company company, final String eventChainId) {
+            return Observable.fromCallable(()->getEditEventChainSchema(company, eventChainId));
+        }
+
+        /**
+         * Get the schema for creating a new event chain
+         * @param company The company to own the event chain
+         * @return SchemaForm
+         * @throws IOException
+         */
+        public SchemaForm getNewEventChainSchema(Company company) throws IOException {
+            URL url = new URL(UriTemplate.fromTemplate(company.getEventChainsLink()).expand());
+            return new SchemaForm(httpService().api_GET(url));
+        }
+
+        public Observable<SchemaForm> getNewEventChainSchemaObs(final Company company) {
+            return Observable.fromCallable(()->getNewEventChainSchema(company));
+        }
+    }
 }
