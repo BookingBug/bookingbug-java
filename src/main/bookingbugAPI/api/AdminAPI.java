@@ -37,15 +37,14 @@ public class AdminAPI extends AbstractAPI {
         /**
          * Get a list of admin bookings for a company
          *
-         * @param company  The owning company for bookin
+         * @param company  The owning company for booking
          * @param bLParams The parameters for this call
          * @return Collection of bookings
          * @throws IOException
          */
         public BBCollection<Booking> bookingList(Company company, BookingListParams bLParams) throws IOException {
             URL url = new URL(Utils.inflateLink(company.getBookingsLink(), bLParams.getParams()));
-            BBCollection<Booking> bookings = new BBCollection<Booking>(httpService().api_GET(url), getAuthToken(), "bookings", Booking.class);
-            return bookings;
+            return new BBCollection<>(httpService().api_GET(url), getAuthToken(), "bookings", Booking.class);
         }
 
         public Observable<BBCollection<Booking>> bookingListObs(final Company company, final BookingListParams bLParams) {
@@ -153,8 +152,7 @@ public class AdminAPI extends AbstractAPI {
             UriTemplate template = Utils.TemplateWithPagination(company.getServicesLink(), slParams);
             URL url = new URL(template.expand());
 
-            BBCollection<Service> services = new BBCollection<Service>(httpService().api_GET(url), configService().auth_token, "services", Service.class);
-            return services;
+            return new BBCollection<>(httpService().api_GET(url), configService().auth_token, "services", Service.class);
         }
 
         public Observable<BBCollection<Service>> serviceListObs(final Company company, final ServiceListParams slParams) {
@@ -297,8 +295,7 @@ public class AdminAPI extends AbstractAPI {
             UriTemplate template = Utils.TemplateWithPagination(company.getClientLink(), clParams);
             URL url = new URL(template.expand());
 
-            BBCollection<Client> clients = new BBCollection<Client>(httpService().api_GET(url), configService().auth_token, "clients", Client.class);
-            return clients;
+            return new BBCollection<>(httpService().api_GET(url), configService().auth_token, "clients", Client.class);
         }
 
         public Observable<BBCollection<Client>> clientListObs(final Company company, final Params clParams) {
@@ -456,15 +453,14 @@ public class AdminAPI extends AbstractAPI {
          *
          * @param company  The owning company for services
          * @param rlParams Parameters for this call
-         * @return Collection of Service
+         * @return Collection of Resource
          * @throws IOException
          */
         public BBCollection<Resource> resourceList(Company company, Params rlParams) throws IOException {
             UriTemplate template = Utils.TemplateWithPagination(company.getResourcesLink(), rlParams);
             URL url = new URL(template.expand());
 
-            BBCollection<Resource> resources = new BBCollection<Resource>(httpService().api_GET(url), configService().auth_token, "resources", Resource.class);
-            return resources;
+            return new BBCollection<>(httpService().api_GET(url), configService().auth_token, "resources", Resource.class);
         }
 
         public Observable<BBCollection<Resource>> resourceListObs(final Company company, final Params rlParams) {
@@ -604,7 +600,7 @@ public class AdminAPI extends AbstractAPI {
          *
          * @param company  The owning company for services
          * @param rlParams Parameters for this call
-         * @return Collection of Service
+         * @return Collection of EventChain
          * @throws IOException
          */
         public BBCollection<EventChain> eventChainList(Company company, Params rlParams) throws IOException {
@@ -638,7 +634,7 @@ public class AdminAPI extends AbstractAPI {
         }
 
         /**
-         * Update a event chain
+         * Update an event chain
          *
          * @param eventChain the event chain to update
          * @param ecuParams  Contains parameters for event chain update. If the schema is used, then set the json form output
@@ -663,7 +659,7 @@ public class AdminAPI extends AbstractAPI {
          *
          * @param company
          * @param eventChainId the event chain to edit
-         * @return
+         * @return SchemaForm
          * @throws IOException
          */
         public SchemaForm getEditEventChainSchema(Company company, String eventChainId) throws IOException {
@@ -715,7 +711,7 @@ public class AdminAPI extends AbstractAPI {
          *
          * @param company
          * @param eventGroupId
-         * @return EventChain
+         * @return EventGroup
          * @throws IOException
          */
         public EventGroup eventGroupRead(Company company, String eventGroupId) throws IOException {
@@ -731,11 +727,11 @@ public class AdminAPI extends AbstractAPI {
         }
 
         /**
-         * List of event chains for a company. Results are returned as a paginated list
+         * List of event groups for a company. Results are returned as a paginated list
          *
          * @param company  The owning company for services
          * @param rlParams Parameters for this call
-         * @return Collection of Service
+         * @return Collection of EventGroup
          * @throws IOException
          */
         public BBCollection<EventGroup> eventGroupList(Company company, Params rlParams) throws IOException {
@@ -807,14 +803,13 @@ public class AdminAPI extends AbstractAPI {
          *
          * @param company  The owning company for schedule
          * @param sLParams The parameters for this call
-         * @return Collection of schedules
+         * @return Collection of Schedule
          * @throws IOException
          */
         public BBCollection<Schedule> scheduleList(Company company, Params sLParams) throws IOException {
             UriTemplate template = Utils.TemplateWithPagination(company.getSchedulesLink(), sLParams);
             URL url = new URL(template.expand());
-            BBCollection<Schedule> schedules = new BBCollection<Schedule>(httpService().api_GET(url), getAuthToken(), "schedules", Schedule.class);
-            return schedules;
+            return new BBCollection<>(httpService().api_GET(url), getAuthToken(), "schedules", Schedule.class);
         }
 
         public Observable<BBCollection<Schedule>> scheduleListObs(final Company company, final Params sLParams) {
@@ -871,7 +866,7 @@ public class AdminAPI extends AbstractAPI {
             return new SchemaForm(httpService().api_DELETE(url));
         }
 
-        public Observable<SchemaForm> getDeletedScheduleSchemaObs(final Company company, final String scheduleID) {
+        public Observable<SchemaForm> getDeleteScheduleSchemaObs(final Company company, final String scheduleID) {
             return Observable.fromCallable(() -> getDeleteScheduleSchema(company, scheduleID));
         }
 
@@ -915,7 +910,7 @@ public class AdminAPI extends AbstractAPI {
             return new Schedule(httpService().api_PUT(url, sUParams.getParams()));
         }
 
-        public Observable<Schedule> serviceUpdateObs(final Company company, final String scheduleId, final ScheduleParams.Update sUParams) {
+        public Observable<Schedule> scheduleUpdateObs(final Company company, final String scheduleId, final ScheduleParams.Update sUParams) {
             return Observable.fromCallable(() -> scheduleUpdate(company, scheduleId, sUParams));
         }
 
@@ -923,7 +918,7 @@ public class AdminAPI extends AbstractAPI {
          * Get the edit schema for schedule
          *
          * @param company    the company owning the schedule
-         * @param scheduleId the if of schedule to edit
+         * @param scheduleId the id of schedule to edit
          * @return SchemaForm
          * @throws IOException
          */
@@ -958,16 +953,16 @@ public class AdminAPI extends AbstractAPI {
         }
 
         /**
-         * Get a list of admin schedules for a company
+         * Get a list of addresses for a company
          *
          * @param company  The owning company for address
          * @param aLParams The parameters for this call
-         * @return Collection of addresses
+         * @return Collection of Address
          * @throws IOException
          */
         public BBCollection<Address> addressList(Company company, Params aLParams) throws IOException {
-            UriTemplate template = Utils.TemplateWithPagination(company.getAddressesLink(), aLParams);
-            URL url = new URL(template.expand());
+            URL url = new URL(Utils.inflateLink(company.getAddressesLink(), aLParams.getParams()));
+
             return new BBCollection<>(httpService().api_GET(url), getAuthToken(), "addresses", Address.class);
         }
 
@@ -982,7 +977,7 @@ public class AdminAPI extends AbstractAPI {
          * @param aCParams Contains parameters for address creation. If the schema is used, then set the json form output
          *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
          *                 in order to ignore declared fields
-         * @return Service
+         * @return Address
          * @throws IOException
          */
         public Address addressCreate(Company company, AddressParams.Create aCParams) throws IOException {
@@ -997,7 +992,7 @@ public class AdminAPI extends AbstractAPI {
         /**
          * Delete an address
          *
-         * @param company The owning company
+         * @param company the company to own the address
          * @return SchemaForm
          * @throws IOException
          */
@@ -1009,7 +1004,7 @@ public class AdminAPI extends AbstractAPI {
             return new SchemaForm(httpService().api_DELETE(url));
         }
 
-        public Observable<SchemaForm> getDeletedAddressSchemaObs(final Company company, final String addressID) {
+        public Observable<SchemaForm> getDeleteAddressSchemaObs(final Company company, final String addressID) {
             return Observable.fromCallable(() -> getDeleteAddressSchema(company, addressID));
         }
 
@@ -1049,7 +1044,7 @@ public class AdminAPI extends AbstractAPI {
             return new Address(httpService().api_PUT(url, sUParams.getParams()));
         }
 
-        public Observable<Address> serviceUpdateObs(final Company company, final AddressParams.Update sUParams) {
+        public Observable<Address> addressUpdateObs(final Company company, final AddressParams.Update sUParams) {
             return Observable.fromCallable(() -> addressUpdate(company, sUParams));
         }
     }
@@ -1071,11 +1066,11 @@ public class AdminAPI extends AbstractAPI {
         }
 
         /**
-         * Get a list of admin schedules for a company
+         * Get a list of administrators for a company
          *
          * @param company  The owning company for administrator
          * @param aLParams The parameters for this call
-         * @return Collection of administrators
+         * @return Collection of Administrator
          * @throws IOException
          */
         public BBCollection<Administrator> administratorList(Company company, Params aLParams) throws IOException {
@@ -1095,7 +1090,7 @@ public class AdminAPI extends AbstractAPI {
          * @param aCParams Contains parameters for administrator creation. If the schema is used, then set the json form output
          *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
          *                 in order to ignore declared fields
-         * @return Service
+         * @return Administrator
          * @throws IOException
          */
         public Administrator administratorCreate(Company company, AdministratorParams.Create aCParams) throws IOException {
@@ -1126,7 +1121,7 @@ public class AdminAPI extends AbstractAPI {
             return new SchemaForm(httpService().api_DELETE(url));
         }
 
-        public Observable<SchemaForm> getDeletedAdministratorSchemaObs(final Company company, final String administratorID) {
+        public Observable<SchemaForm> getDeleteAdministratorSchemaObs(final Company company, final String administratorID) {
             return Observable.fromCallable(() -> getDeleteAdministratorSchema(company, administratorID));
         }
 
@@ -1173,7 +1168,7 @@ public class AdminAPI extends AbstractAPI {
         }
 
         /**
-         * Get the edit schema for booking
+         * Get the edit schema for administrator
          *
          * @param administrator
          * @return SchemaForm
@@ -1417,11 +1412,11 @@ public class AdminAPI extends AbstractAPI {
         }
 
         /**
-         * List of Resources for a company. Results are returned as a paginated list
+         * List of clinics for a company. Results are returned as a paginated list
          *
          * @param company  The owning company for services
          * @param clParams Parameters for this call
-         * @return Collection of Service
+         * @return Collection of Clinic
          * @throws IOException
          */
         public BBCollection<Clinic> clinicList(Company company, Params clParams) throws IOException {
@@ -1491,6 +1486,86 @@ public class AdminAPI extends AbstractAPI {
 
         public Observable<Clinic> clinicUpdateObs(final Clinic clinic, final ClinicParams.Update cuParams) {
             return Observable.fromCallable(() -> clinicUpdate(clinic, cuParams));
+        }
+    }
+
+
+    /**
+     * Accessor to create an instance of {@link PurchaseAPI} with current configuration
+     *
+     * @return PurchaseAPI instance
+     */
+    public PurchaseAPI purchase() {
+        return new PurchaseAPI(newProvider());
+    }
+
+    public class PurchaseAPI extends AbstractAPI {
+
+        public PurchaseAPI(ServiceProvider provider) {
+            super(provider);
+        }
+
+        /**
+         * List of purchases for a company
+         *
+         * @param company  The owning company for services
+         * @param plParams Parameters for this call
+         * @return Collection of Purchase
+         * @throws IOException
+         */
+        public BBCollection<Purchase> purchaseList(Company company, PurchaseListParams plParams) throws IOException {
+            UriTemplate template = AdminURLS.Purchase.purchaseList()
+                    .set("companyId", company.id)
+                    .set(plParams.getParams());
+            URL url = new URL(template.expand());
+            return new BBCollection<>(httpService().api_GET(url), configService().auth_token, "purchases", Purchase.class);
+        }
+
+        public Observable<BBCollection<Purchase>> purchaseListObs(final Company company, final PurchaseListParams plParams) {
+            return Observable.fromCallable(() -> purchaseList(company, plParams));
+        }
+
+        /**
+         * Get all details about a specific purchase
+         *
+         * @param company the company that owns the purchase
+         * @param purchaseId the purchase to read
+         * @return Purchase
+         * @throws IOException
+         */
+        public Purchase purchaseRead(Company company, String purchaseId) throws IOException{
+            URL url = new URL(AdminURLS.Purchase.purchaseRead()
+                    .set("companyId", company.id)
+                    .set("purchaseId", purchaseId)
+                    .expand());
+
+            return new Purchase(httpService().api_GET(url));
+        }
+
+        public Observable<Purchase> purchaseReadObs(final Company company, String purchaseId) {
+            return Observable.fromCallable(() -> purchaseRead(company, purchaseId));
+        }
+
+        /**
+         * Make a purchase as paid
+         *
+         * @param company the company that owns the purchase
+         * @param purchaseId the purchase to mark as paid
+         * @param ppParams
+         * @return Purchase
+         * @throws IOException
+         */
+        public Purchase purchasePay(Company company, String purchaseId, PurchaseParams ppParams) throws IOException{
+            URL url = new URL(AdminURLS.Purchase.purchasePay()
+            .set("companyId", company.id)
+            .set("purchaseId", purchaseId)
+            .expand());
+
+            return new Purchase(httpService().api_PUT(url, ppParams.getParams()));
+        }
+
+        public Observable<Purchase> purchasePayObs(final Company company, final String purchaseId, final PurchaseParams ppParams) {
+            return Observable.fromCallable(() -> purchasePay(company, purchaseId, ppParams));
         }
     }
 }

@@ -90,7 +90,8 @@ public class OkHttpService extends AbstractHttpService {
             response = client.newCall(request).execute();
             if (!response.isSuccessful()) {
                 logger.e("Failed request: {0} {1} {2} {3}", response.code(), method, url, response.message());
-                throw new HttpException("Unexpected code " + response, response.message(), response.code());
+                String message = response.message() + response.body().string();
+                throw new HttpException("Unexpected code " + response, message, response.code());
             }
             else logger.d("{0} {1} {2}", response.code(), method, url);
 

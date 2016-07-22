@@ -51,7 +51,7 @@ public class HttpException extends IOException {
 
     @Override
     public String toString(){
-        return errorMessage;
+        return "Message: " + errorMessage + "\nBody: " + rawResponse;
     }
 
 }

@@ -195,8 +195,8 @@ public class AdminURLS {
             return UriTemplate.buildFromTemplate(new Config().serverUrl)
                     .literal("/admin")
                     .path(UriTemplateBuilder.var("companyId"))
-                    .literal("people")
-                    .literal("find_by_ref")
+                    .literal("/people")
+                    .literal("/find_by_ref")
                     .path(UriTemplateBuilder.var("refId"))
                     .build();
         }
@@ -467,6 +467,12 @@ public class AdminURLS {
                     .literal("/admin")
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/purchases")
+                    .query(
+                            UriTemplateBuilder.var("created_from"),
+                            UriTemplateBuilder.var("created_to"),
+                            UriTemplateBuilder.var("admin_booking"),
+                            UriTemplateBuilder.var("order_by"),
+                            UriTemplateBuilder.var("order_by_reverse"))
                     .build();
         }
 
@@ -476,6 +482,16 @@ public class AdminURLS {
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/purchases")
                     .path(UriTemplateBuilder.var("purchaseId"))
+                    .build();
+        }
+
+        public static UriTemplate purchasePay() {
+            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+                    .literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .literal("/purchases")
+                    .path(UriTemplateBuilder.var("purchaseId"))
+                    .literal("/pay")
                     .build();
         }
     }
