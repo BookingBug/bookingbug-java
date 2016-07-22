@@ -54,7 +54,7 @@ public class AddressAPITest extends AbstractAPITest {
             BBCollection<Address> addresses;
 
             //All addresses
-            addresses = defaultAPI.admin().address().addressList(company, null);
+            addresses = defaultAPI.admin().address().addressList(company, new Params());
             assertNotNull(addresses);
 
             //Paginated addresses
