@@ -1,0 +1,7 @@
+{
+  "start_time": "string",
+  "end_time": "string",
+  "allday": "string",
+  "person_id": "string",
+  "resource_id": "string"
+}

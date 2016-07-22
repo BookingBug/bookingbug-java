@@ -1627,7 +1627,7 @@ public class AdminAPI extends AbstractAPI {
          * @return Collection of Session
          * @throws IOException
          */
-        public BBCollection<Session> sessionList(Company company, SessionListParams slParams) throws IOException{
+        public BBCollection<Session> sessionList(Company company, SessionListParams slParams) throws IOException {
             URL url = new URL(Utils.inflateLink(AdminURLS.Session.sessionList()
                     .set("companyId", company.id)
                     .expand(), slParams.getParams()));
@@ -1638,18 +1638,133 @@ public class AdminAPI extends AbstractAPI {
         /**
          * Get all details about a specific session
          *
-         * @param company    the company that owns the session
+         * @param company   the company that owns the session
          * @param sessionId the session to read
          * @return Session
          * @throws IOException
          */
-        public Session sessionRead(Company company, String sessionId) throws IOException{
+        public Session sessionRead(Company company, String sessionId) throws IOException {
             URL url = new URL(AdminURLS.Session.sessionRead()
-            .set("companyId", company.id)
-            .set("sessionId", sessionId)
-            .expand());
+                    .set("companyId", company.id)
+                    .set("sessionId", sessionId)
+                    .expand());
 
             return new Session(httpService().api_GET(url));
+        }
+    }
+
+
+    /**
+     * Accessor to create an instance of {@link SlotAPI} with current configuration
+     *
+     * @return SlotAPI instance
+     */
+    public SlotAPI slot() {
+        return new SlotAPI(newProvider());
+    }
+
+    public class SlotAPI extends AbstractAPI {
+        public SlotAPI(ServiceProvider provider) {
+            super(provider);
+        }
+
+        /**
+         * List of slots for a company. Results are returned as a paginated list
+         *
+         * @param company  The owning company for slots
+         * @param slParams Parameters for this call
+         * @return Collection of Slot
+         * @throws IOException
+         */
+        public BBCollection<Slot> slotList(Company company, SlotListParams slParams) throws IOException {
+            URL url = new URL(Utils.inflateLink(AdminURLS.Slot.slotList()
+                    .set("companyId", company.id)
+                    .expand(), slParams.getParams()));
+
+            return new BBCollection<>(httpService().api_GET(url), configService().auth_token, "slots", Slot.class);
+        }
+
+        public Observable<BBCollection<Slot>> slotListObs(final Company company, final SlotListParams slParams) {
+            return Observable.fromCallable(() -> slotList(company, slParams));
+        }
+
+        /**
+         * Create a new slot
+         *
+         * @param company  the company for slot
+         * @param scParams Contains parameters for slot creation. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return Slot
+         * @throws IOException
+         */
+        public Slot slotCreate(Company company, SlotParams.Create scParams) throws IOException {
+            URL url = new URL(UriTemplate.fromTemplate(company.getSlotsLink()).expand());
+            return new Slot(httpService().api_POST(url, scParams.getParams()));
+        }
+
+        public Observable<Slot> slotCreateObs(final Company company, final SlotParams.Create scParams) {
+            return Observable.fromCallable(() -> slotCreate(company, scParams));
+        }
+
+        /**
+         * Cancel a slot
+         *
+         * @param company the company for slot
+         * @param slotId  the slot to cancel
+         * @return SchemaForm
+         * @throws IOException
+         */
+        public SchemaForm getSlotDeleteSchema(Company company, String slotId) throws IOException {
+            URL url = new URL(AdminURLS.Slot.slotDelete()
+                    .set("companyId", company.id)
+                    .set("slotID", slotId)
+                    .expand());
+            return new SchemaForm(httpService().api_DELETE(url));
+        }
+
+        public Observable<SchemaForm> slotDeleteObs(final Company company, String slotId) {
+            return Observable.fromCallable(() -> getSlotDeleteSchema(company, slotId));
+        }
+
+        /**
+         * Get all the details about a specific slot
+         *
+         * @param company the company that owns the slot
+         * @param slotId the slot to read
+         * @return Slot
+         * @throws IOException
+         */
+        public Slot slotRead(Company company, String slotId) throws IOException{
+            URL url = new URL(AdminURLS.Slot.slotRead()
+            .set("companyId", company.id)
+            .set("slotId", slotId)
+            .expand());
+
+            return new Slot(httpService().api_GET(url));
+        }
+
+        public Observable<Slot> slotReadObs(final Company company, final String slotId) {
+            return Observable.fromCallable(() -> slotRead(company, slotId));
+        }
+
+        /**
+         * Update a slot
+         *
+         * @param slot   the slot to update
+         * @param suParams Contains parameters for slot update. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return Slot
+         * @throws IOException
+         */
+        public Slot slotUpdate(Slot slot, SlotParams.Update suParams) throws IOException {
+            URL url = new URL(slot.getSelf());
+            return new Slot(httpService().api_PUT(url, suParams.getParams()));
+        }
+
+        public Observable<Slot> slotUpdateObs(final Slot slot, final SlotParams.Update suParams) {
+            return Observable.fromCallable(() -> slotUpdate(slot, suParams));
         }
     }
 }

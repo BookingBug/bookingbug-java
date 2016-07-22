@@ -270,6 +270,15 @@ public class AdminURLS {
                     .path(UriTemplateBuilder.var("slotId"))
                     .build();
         }
+
+        public static UriTemplate slotDelete() {
+            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+                    .literal("admin")
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .literal("slots")
+                    .path(UriTemplateBuilder.var("slotId"))
+                    .build();
+        }
     }
 
 
