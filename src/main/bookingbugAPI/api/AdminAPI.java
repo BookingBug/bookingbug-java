@@ -1603,4 +1603,53 @@ public class AdminAPI extends AbstractAPI {
             return Observable.fromCallable(() -> questionList(company, qlParams));
         }
     }
+
+
+    /**
+     * Accessor to create an instance of {@link SessionAPI} with current configuration
+     *
+     * @return SessionAPI instance
+     */
+    public SessionAPI session() {
+        return new SessionAPI(newProvider());
+    }
+
+    public class SessionAPI extends AbstractAPI {
+        public SessionAPI(ServiceProvider provider) {
+            super(provider);
+        }
+
+        /**
+         * List of sessions for a company
+         *
+         * @param company  The owning company for sessions
+         * @param slParams Parameters for this call
+         * @return Collection of Session
+         * @throws IOException
+         */
+        public BBCollection<Session> sessionList(Company company, SessionListParams slParams) throws IOException{
+            URL url = new URL(Utils.inflateLink(AdminURLS.Session.sessionList()
+                    .set("companyId", company.id)
+                    .expand(), slParams.getParams()));
+
+            return new BBCollection<>(httpService().api_GET(url), configService().auth_token, "sessions", Session.class);
+        }
+
+        /**
+         * Get all details about a specific session
+         *
+         * @param company    the company that owns the session
+         * @param sessionId the session to read
+         * @return Session
+         * @throws IOException
+         */
+        public Session sessionRead(Company company, String sessionId) throws IOException{
+            URL url = new URL(AdminURLS.Session.sessionRead()
+            .set("companyId", company.id)
+            .set("sessionId", sessionId)
+            .expand());
+
+            return new Session(httpService().api_GET(url));
+        }
+    }
 }
