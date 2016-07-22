@@ -29,6 +29,8 @@ public abstract class AbstractAPITest {
     protected static final String resourceId = "5";
     protected static final String adminId = "23455";
     protected static final String personId = "15289";
+    protected static final String clinicId = "12345";
+
     protected static final String token = "ro13e9jaWi3kvA4fMToU1w";
 
     protected API defaultAPI;
@@ -165,5 +167,22 @@ public abstract class AbstractAPITest {
         }
         assertNotNull(person);
         return person;
+    }
+
+    public Clinic getClinic() {
+        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withAuthToken(token);
+        config.withCacheService(new SQLiteCacheService(config));
+        return getClinic(new API(config));
+    }
+
+    public Clinic getClinic(API api) {
+        Clinic clinic = null;
+        try {
+            clinic = api.admin().clinic().clinicRead(getCompany(), clinicId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assertNotNull(clinic);
+        return clinic;
     }
 }

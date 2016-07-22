@@ -804,4 +804,24 @@ public class AdminURLS {
                     .build();
         }
     }
+
+    public static class Clinic {
+        public static UriTemplate clinicRead() {
+            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+                    .literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .literal("/clinics")
+                    .build();
+        }
+
+        public static UriTemplate clinicCancel() {
+            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+                    .literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .literal("/clinics")
+                    .path(UriTemplateBuilder.var("clinicId"))
+                    .literal("/cancel")
+                    .build();
+        }
+    }
 }

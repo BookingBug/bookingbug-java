@@ -1377,6 +1377,120 @@ public class AdminAPI extends AbstractAPI {
 
         // TODO: 15.07.2016 Test setPersonAttendance
 
-        // TODO: 15.07.2016 Implement getQueuersToAMember() 
+        // TODO: 15.07.2016 Implement getQueuersToAMember()
+    }
+
+
+    /**
+     * Accessor to create an instance of {@link ClinicAPI} with current configuration
+     *
+     * @return ClinicAPI instance
+     */
+    public ClinicAPI clinic() {
+        return new ClinicAPI(newProvider());
+    }
+
+    public class ClinicAPI extends AbstractAPI {
+
+        public ClinicAPI(ServiceProvider provider) {
+            super(provider);
+        }
+
+        /**
+         * Load specific clinic details
+         *
+         * @param company
+         * @param clinicId
+         * @return Clinic
+         * @throws IOException
+         */
+        public Clinic clinicRead(Company company, String clinicId) throws IOException {
+            URL url = new URL(AdminURLS.Clinic.clinicRead()
+                    .set("companyId", company.id)
+                    .set("clinicId", clinicId)
+                    .expand());
+            return new Clinic(httpService().api_GET(url));
+        }
+
+        public Observable<Clinic> clinicReadObs(final Company company, final String clinicId) {
+            return Observable.fromCallable(() -> clinicRead(company, clinicId));
+        }
+
+        /**
+         * List of Resources for a company. Results are returned as a paginated list
+         *
+         * @param company  The owning company for services
+         * @param clParams Parameters for this call
+         * @return Collection of Service
+         * @throws IOException
+         */
+        public BBCollection<Clinic> clinicList(Company company, Params clParams) throws IOException {
+            UriTemplate template = Utils.TemplateWithPagination(company.getClinicsLink(), clParams);
+            URL url = new URL(template.expand());
+
+            return new BBCollection<>(httpService().api_GET(url), configService().auth_token, "clinics", Clinic.class);
+        }
+
+        public Observable<BBCollection<Clinic>> clinicListObs(final Company company, final Params rlParams) {
+            return Observable.fromCallable(() -> clinicList(company, rlParams));
+        }
+
+        /**
+         * Create a new clinic
+         *
+         * @param company  the company for clinic
+         * @param ccParams Contains parameters for clinic creation. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return Clinic
+         * @throws IOException
+         */
+        public Clinic clinicCreate(Company company, ClinicParams.Create ccParams) throws IOException {
+            URL url = new URL(UriTemplate.fromTemplate(company.getClinicsLink()).expand());
+            return new Clinic(httpService().api_POST(url, ccParams.getParams()));
+        }
+
+        public Observable<Clinic> clinicCreateObs(final Company company, final ClinicParams.Create rcParams) {
+            return Observable.fromCallable(() -> clinicCreate(company, rcParams));
+        }
+
+        /**
+         * Cancel a clinic
+         *
+         * @param company  the company for clinic
+         * @param clinicId the clinic to cancel
+         * @return Clinic
+         * @throws IOException
+         */
+        public Clinic clinicCancel(Company company, String clinicId, Params ccparams) throws IOException {
+            URL url = new URL(AdminURLS.Clinic.clinicCancel()
+                    .set("companyId", company.id)
+                    .set("clinicID", clinicId)
+                    .expand());
+            return new Clinic(httpService().api_POST(url, ccparams.getParams()));
+        }
+
+        public Observable<Clinic> clinicCancelObs(final Company company, String clinicId, Params ccParams) {
+            return Observable.fromCallable(() -> clinicCancel(company, clinicId, ccParams));
+        }
+
+        /**
+         * Update a clinic
+         *
+         * @param clinic   the clinic to update
+         * @param cuParams Contains parameters for clinic update. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return Clinic
+         * @throws IOException
+         */
+        public Clinic clinicUpdate(Clinic clinic, ClinicParams.Update cuParams) throws IOException {
+            URL url = new URL(clinic.getSelf());
+            return new Clinic(httpService().api_PUT(url, cuParams.getParams()));
+        }
+
+        public Observable<Clinic> clinicUpdateObs(final Clinic clinic, final ClinicParams.Update cuParams) {
+            return Observable.fromCallable(() -> clinicUpdate(clinic, cuParams));
+        }
     }
 }
