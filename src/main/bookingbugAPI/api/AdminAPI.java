@@ -657,4 +657,90 @@ public class AdminAPI extends AbstractAPI {
             return Observable.fromCallable(()->getNewEventChainSchema(company));
         }
     }
+
+
+    /**
+     * Accessor to create an instance of {@link EventChainAPI} with current configuration
+     * @return EventChainAPI instance
+     */
+    public EventGroupAPI eventGroup() {
+        return new EventGroupAPI(newProvider());
+    }
+
+    public class EventGroupAPI extends AbstractAPI {
+        public EventGroupAPI(ServiceProvider provider) {
+            super(provider);
+        }
+
+        /**
+         * Load specific event chain details
+         * @param company
+         * @param eventGroupId
+         * @return EventChain
+         * @throws IOException
+         */
+        public EventGroup eventGroupRead(Company company, String eventGroupId) throws IOException{
+            URL url = new URL(AdminURLS.EventGroup.eventGroupRead()
+                    .set("companyId", company.id)
+                    .set("eventGroupId", eventGroupId)
+                    .expand());
+            return new EventGroup(httpService().api_GET(url));
+        }
+
+        public Observable<EventGroup> eventGroupReadObs(final Company company, final String eventGroupId) {
+            return Observable.fromCallable(()->eventGroupRead(company, eventGroupId));
+        }
+
+        /**
+         * List of event chains for a company. Results are returned as a paginated list
+         * @param company The owning company for services
+         * @param rlParams Parameters for this call
+         * @return Collection of Service
+         * @throws IOException
+         */
+        public BBCollection<EventGroup> eventGroupList(Company company, Params rlParams) throws IOException {
+            UriTemplate template = Utils.TemplateWithPagination(company.getEventGroupsLink(), rlParams);
+            URL url = new URL(template.expand());
+
+            return new BBCollection<>(httpService().api_GET(url), configService().auth_token, "eventGroups", EventGroup.class);
+        }
+
+        public Observable<BBCollection<EventGroup>> eventGroupListObs(final Company company, final Params rlParams) {
+            return Observable.fromCallable(()->eventGroupList(company, rlParams));
+        }
+
+        /**
+         * Get a schema for editing a eventGroup
+         * @param company
+         * @param eventGroupId the event chain to edit
+         * @return
+         * @throws IOException
+         */
+        public SchemaForm getEditEventGroupSchema(Company company, String eventGroupId) throws IOException {
+            URL url = new URL(AdminURLS.EventGroup.eventGroupEdit()
+                    .set("companyId", company.id)
+                    .set("eventGroupId", eventGroupId)
+                    .expand());
+            return new SchemaForm(httpService().api_GET(url));
+        }
+
+        public Observable<SchemaForm> getEditEventGroupSchemaObs(final Company company, final String eventGroupId) {
+            return Observable.fromCallable(()->getEditEventGroupSchema(company, eventGroupId));
+        }
+
+        /**
+         * Get the schema for creating a new event chain
+         * @param company The company to own the event chain
+         * @return SchemaForm
+         * @throws IOException
+         */
+        public SchemaForm getNewEventGroupSchema(Company company) throws IOException {
+            URL url = new URL(UriTemplate.fromTemplate(company.getEventGroupsLink()).expand());
+            return new SchemaForm(httpService().api_GET(url));
+        }
+
+        public Observable<SchemaForm> getNewEventGroupSchemaObs(final Company company) {
+            return Observable.fromCallable(()->getNewEventGroupSchema(company));
+        }
+    }
 }
