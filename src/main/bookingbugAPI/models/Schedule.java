@@ -8,6 +8,10 @@ public class Schedule extends BBRoot {
         super(httpServiceResponse);
     }
 
+    public Schedule(HttpServiceResponse httpServiceResponse, String auth_token) {
+        super(httpServiceResponse, auth_token);
+    }
+
     public String getName() {
         return get("name");
     }

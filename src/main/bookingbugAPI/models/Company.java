@@ -1778,7 +1778,7 @@ public class Company extends BBRoot{
      *
      * @return The schedules link associated with the current Company object
      */
-    public String getSchedules() {
+    public String getSchedulesLink() {
         return getLink("schedules");
     }
 

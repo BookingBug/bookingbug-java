@@ -586,6 +586,24 @@ public class AdminURLS {
                     .path(UriTemplateBuilder.var("scheduleId"))
                     .build();
         }
+
+        public static UriTemplate scheduleDelete(){
+            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+                    .literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .literal("/schedules")
+                    .path(UriTemplateBuilder.var("scheduleId"))
+                    .build();
+        }
+
+        public static UriTemplate scheduleUpdate() {
+            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+                    .literal("/admin")
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .literal("/schedules")
+                    .path(UriTemplateBuilder.var("scheduleId"))
+                    .build();
+        }
     }
 
 

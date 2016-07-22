@@ -10,7 +10,6 @@ import rx.Observable;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.concurrent.Callable;
 
 
 public class AdminAPI extends AbstractAPI {
@@ -22,6 +21,7 @@ public class AdminAPI extends AbstractAPI {
 
     /**
      * Accessor to create an instance of {@link BookingAPI} with current configuration
+     *
      * @return BookingAPI instance
      */
     public BookingAPI booking() {
@@ -36,7 +36,8 @@ public class AdminAPI extends AbstractAPI {
 
         /**
          * Get a list of admin bookings for a company
-         * @param company The owning company for bookin
+         *
+         * @param company  The owning company for bookin
          * @param bLParams The parameters for this call
          * @return Collection of bookings
          * @throws IOException
@@ -53,7 +54,8 @@ public class AdminAPI extends AbstractAPI {
 
         /**
          * Get all details about a specific booking
-         * @param company the company owning the booking
+         *
+         * @param company   the company owning the booking
          * @param bookingId the id of booking to read
          * @return Booking
          * @throws IOException
@@ -67,11 +69,12 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<Booking> bookingReadObs(final Company company, final String bookingId) {
-            return Observable.fromCallable(()->bookingRead(company, bookingId));
+            return Observable.fromCallable(() -> bookingRead(company, bookingId));
         }
 
         /**
          * Get the edit schema for booking
+         *
          * @param booking
          * @return SchemaForm
          * @throws IOException
@@ -82,13 +85,14 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<SchemaForm> getEditBookingSchemaObs(final Booking booking) {
-            return Observable.fromCallable(()->getEditBookingSchema(booking));
+            return Observable.fromCallable(() -> getEditBookingSchema(booking));
         }
     }
 
 
     /**
      * Accessor to create an instance of {@link CompanyAPI} with current configuration
+     *
      * @return CompanyAPI instance
      */
     public CompanyAPI company() {
@@ -104,6 +108,7 @@ public class AdminAPI extends AbstractAPI {
 
         /**
          * Load All of the Links and Properties of a Company
+         *
          * @param companyId the id of company
          * @return Company
          * @throws IOException
@@ -114,7 +119,7 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<Company> companyReadObs(final String companyId) {
-            return Observable.fromCallable(()->companyRead(companyId));
+            return Observable.fromCallable(() -> companyRead(companyId));
         }
 
     }
@@ -122,6 +127,7 @@ public class AdminAPI extends AbstractAPI {
 
     /**
      * Accessor to create an instance of {@link ServiceAPI} with current configuration
+     *
      * @return ServiceAPI instance
      */
     public ServiceAPI service() {
@@ -137,7 +143,8 @@ public class AdminAPI extends AbstractAPI {
 
         /**
          * List of Services for a company. Results are returned as a paginated list
-         * @param company The owning company for services
+         *
+         * @param company  The owning company for services
          * @param slParams Parameters for this call
          * @return Collection of Service
          * @throws IOException
@@ -146,22 +153,23 @@ public class AdminAPI extends AbstractAPI {
             UriTemplate template = Utils.TemplateWithPagination(company.getServicesLink(), slParams);
             URL url = new URL(template.expand());
 
-            BBCollection<Service> services = new BBCollection<Service>(httpService().api_GET(url), configService().auth_token,  "services", Service.class);
+            BBCollection<Service> services = new BBCollection<Service>(httpService().api_GET(url), configService().auth_token, "services", Service.class);
             return services;
         }
 
-        public Observable<BBCollection<Service>> serviceListObs(final Company company, final ServiceListParams slParams){
-            return Observable.fromCallable(()->serviceList(company, slParams));
+        public Observable<BBCollection<Service>> serviceListObs(final Company company, final ServiceListParams slParams) {
+            return Observable.fromCallable(() -> serviceList(company, slParams));
         }
 
         /**
          * Load a Specific Service Details
-         * @param company The owning company for service
+         *
+         * @param company   The owning company for service
          * @param serviceId the id of service to load
          * @return Service
          * @throws IOException
          */
-        public Service serviceRead(Company company, String serviceId) throws IOException{
+        public Service serviceRead(Company company, String serviceId) throws IOException {
             URL url = new URL(AdminURLS.Service.serviceRead()
                     .set("companyId", company.id)
                     .set("serviceId", serviceId)
@@ -170,11 +178,12 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<Service> serviceReadObs(final Company company, final String serviceId) {
-            return Observable.fromCallable(()->serviceRead(company, serviceId));
+            return Observable.fromCallable(() -> serviceRead(company, serviceId));
         }
 
         /**
          * Get schema for creating a new service
+         *
          * @param company The owning company
          * @return SchemaForm
          * @throws IOException
@@ -185,12 +194,13 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<SchemaForm> getNewServiceSchemaObs(final Company company) {
-            return Observable.fromCallable(()->getNewServiceSchema(company));
+            return Observable.fromCallable(() -> getNewServiceSchema(company));
         }
 
         /**
          * Create a service
-         * @param company the company to own the service
+         *
+         * @param company  the company to own the service
          * @param sCParams Contains parameters for service creation. If the schema is used, then set the json form output
          *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
          *                 in order to ignore declared fields
@@ -198,17 +208,18 @@ public class AdminAPI extends AbstractAPI {
          * @throws IOException
          */
         public Service serviceCreate(Company company, ServiceParams.ServiceCreateParams sCParams) throws IOException {
-            URL url = new URL (company.getServicesLink());
+            URL url = new URL(company.getServicesLink());
             return new Service(httpService().api_POST(url, sCParams.getParams()));
         }
 
         public Observable<Service> serviceCreateObs(final Company company, final ServiceParams.ServiceCreateParams sCParams) {
-            return Observable.fromCallable(()->serviceCreate(company, sCParams));
+            return Observable.fromCallable(() -> serviceCreate(company, sCParams));
         }
 
         /**
          * Update a service
-         * @param service the service to update
+         *
+         * @param service  the service to update
          * @param sUParams Contains parameters for service update. If the schema is used, then set the json form output
          *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
          *                 in order to ignore declared fields
@@ -216,16 +227,17 @@ public class AdminAPI extends AbstractAPI {
          * @throws IOException
          */
         public Service serviceUpdate(Service service, ServiceParams.ServiceUpdateParams sUParams) throws IOException {
-            URL url = new URL (service.getEditLink());
+            URL url = new URL(service.getEditLink());
             return new Service(httpService().api_POST(url, sUParams.getParams()));
         }
 
         public Observable<Service> serviceUpdateObs(final Service service, final ServiceParams.ServiceUpdateParams sUParams) {
-            return Observable.fromCallable(()->serviceUpdate(service, sUParams));
+            return Observable.fromCallable(() -> serviceUpdate(service, sUParams));
         }
 
         /**
          * Get a schema for creating a new booking with provided service
+         *
          * @param service The service
          * @return SchemaForm
          * @throws IOException
@@ -236,11 +248,12 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<SchemaForm> getNewBookingSchemaObs(final Service service) {
-            return Observable.fromCallable(()->getNewBookingSchema(service));
+            return Observable.fromCallable(() -> getNewBookingSchema(service));
         }
 
         /**
          * Get a schema for editing a service
+         *
          * @param service The service to be edited
          * @return SchemaForm
          * @throws IOException
@@ -251,13 +264,14 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<SchemaForm> getEditServiceSchemaObs(final Service service) {
-            return Observable.fromCallable(()->getEditServiceSchema(service));
+            return Observable.fromCallable(() -> getEditServiceSchema(service));
         }
     }
 
 
     /**
      * Accessor to create an instance of {@link ServiceAPI} with current configuration
+     *
      * @return ServiceAPI instance
      */
     public ClientAPI client() {
@@ -273,7 +287,8 @@ public class AdminAPI extends AbstractAPI {
 
         /**
          * List of Clients for a company. Results are returned as a paginated list
-         * @param company The owning company for clients
+         *
+         * @param company  The owning company for clients
          * @param clParams Parameters for this call
          * @return Collection of Client
          * @throws IOException
@@ -282,16 +297,17 @@ public class AdminAPI extends AbstractAPI {
             UriTemplate template = Utils.TemplateWithPagination(company.getClientLink(), clParams);
             URL url = new URL(template.expand());
 
-            BBCollection<Client> clients = new BBCollection<Client>(httpService().api_GET(url), configService().auth_token,  "clients", Client.class);
+            BBCollection<Client> clients = new BBCollection<Client>(httpService().api_GET(url), configService().auth_token, "clients", Client.class);
             return clients;
         }
 
         public Observable<BBCollection<Client>> clientListObs(final Company company, final Params clParams) {
-            return Observable.fromCallable(()->clientList(company, clParams));
+            return Observable.fromCallable(() -> clientList(company, clParams));
         }
 
         /**
          * Load a specific client details
+         *
          * @param company  The owning company for client
          * @param clientId The client's id
          * @return Client
@@ -306,13 +322,14 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<Client> clientReadObs(final Company company, final String clientId) {
-            return Observable.fromCallable(()->clientRead(company, clientId));
+            return Observable.fromCallable(() -> clientRead(company, clientId));
         }
 
         /**
          * Load a specific client details
-         * @param company  The owning company for client
-         * @param email The client's email
+         *
+         * @param company The owning company for client
+         * @param email   The client's email
          * @return Client
          * @throws IOException
          */
@@ -322,11 +339,12 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<Client> clientReadByEmailObs(final Company company, final String email) {
-            return Observable.fromCallable(()->clientReadByEmail(company, email));
+            return Observable.fromCallable(() -> clientReadByEmail(company, email));
         }
 
         /**
          * Get the schema for editing a client
+         *
          * @param client The client to edit
          * @return SchemaForm
          * @throws IOException
@@ -337,12 +355,13 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<SchemaForm> getEditClientSchemaObs(final Client client) {
-            return Observable.fromCallable(()->getEditClientSchema(client));
+            return Observable.fromCallable(() -> getEditClientSchema(client));
         }
 
         /**
          * Enable/Disable specific client
-         * @param company The company for the client
+         *
+         * @param company  The company for the client
          * @param ctParams parameters for this call
          * @return Client TODO: check return type after 401 is solved
          * @throws IOException
@@ -353,12 +372,13 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<Client> clientEnableDisableObs(final Company company, final ClientToggleParams ctParams) {
-            return Observable.fromCallable(()->clientEnableDisable(company, ctParams));
+            return Observable.fromCallable(() -> clientEnableDisable(company, ctParams));
         }
 
         /**
          * Update a client
-         * @param client the client to update
+         *
+         * @param client   the client to update
          * @param cuParams Contains parameters for client update. If the schema is used, then set the json form output
          *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
          *                 in order to ignore declared fields
@@ -366,17 +386,18 @@ public class AdminAPI extends AbstractAPI {
          * @throws IOException
          */
         public Client clientUpdate(Client client, ClientParams.Update cuParams) throws IOException {
-            URL url = new URL (client.getSelf());
+            URL url = new URL(client.getSelf());
             return new Client(httpService().api_PUT(url, cuParams.getParams()));
         }
 
         public Observable<Client> clientUpdateObs(final Client client, final ClientParams.Update cuParams) {
-            return Observable.fromCallable(()->clientUpdate(client, cuParams));
+            return Observable.fromCallable(() -> clientUpdate(client, cuParams));
         }
 
         /**
          * Create a client
-         * @param company the company for client
+         *
+         * @param company  the company for client
          * @param clParams Contains parameters for client creation. If the schema is used, then set the json form output
          *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
          *                 in order to ignore declared fields
@@ -384,12 +405,12 @@ public class AdminAPI extends AbstractAPI {
          * @throws IOException
          */
         public Client clientCreate(Company company, ClientParams.Create clParams) throws IOException {
-            URL url = new URL (UriTemplate.fromTemplate(company.getClientLink()).expand());
+            URL url = new URL(UriTemplate.fromTemplate(company.getClientLink()).expand());
             return new Client(httpService().api_POST(url, clParams.getParams()));
         }
 
         public Observable<Client> clientCreateObs(final Company company, final ClientParams.Create clParams) {
-            return Observable.fromCallable(()->clientCreate(company, clParams));
+            return Observable.fromCallable(() -> clientCreate(company, clParams));
         }
 
     }
@@ -397,6 +418,7 @@ public class AdminAPI extends AbstractAPI {
 
     /**
      * Accessor to create an instance of {@link ResourceAPI} with current configuration
+     *
      * @return ResourceAPI instance
      */
     public ResourceAPI resource() {
@@ -411,12 +433,13 @@ public class AdminAPI extends AbstractAPI {
 
         /**
          * Load specific resource details
+         *
          * @param company
          * @param resourceId
          * @return Resource
          * @throws IOException
          */
-        public Resource resourceRead(Company company, String resourceId) throws IOException{
+        public Resource resourceRead(Company company, String resourceId) throws IOException {
             URL url = new URL(AdminURLS.Resource.resourceRead()
                     .set("companyId", company.id)
                     .set("resourceId", resourceId)
@@ -425,12 +448,13 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<Resource> resourceReadObs(final Company company, final String resourceId) {
-            return Observable.fromCallable(()->resourceRead(company, resourceId));
+            return Observable.fromCallable(() -> resourceRead(company, resourceId));
         }
 
         /**
          * List of Resources for a company. Results are returned as a paginated list
-         * @param company The owning company for services
+         *
+         * @param company  The owning company for services
          * @param rlParams Parameters for this call
          * @return Collection of Service
          * @throws IOException
@@ -439,17 +463,18 @@ public class AdminAPI extends AbstractAPI {
             UriTemplate template = Utils.TemplateWithPagination(company.getResourcesLink(), rlParams);
             URL url = new URL(template.expand());
 
-            BBCollection<Resource> resources = new BBCollection<Resource>(httpService().api_GET(url), configService().auth_token,  "resources", Resource.class);
+            BBCollection<Resource> resources = new BBCollection<Resource>(httpService().api_GET(url), configService().auth_token, "resources", Resource.class);
             return resources;
         }
 
         public Observable<BBCollection<Resource>> resourceListObs(final Company company, final Params rlParams) {
-            return Observable.fromCallable(()->resourceList(company, rlParams));
+            return Observable.fromCallable(() -> resourceList(company, rlParams));
         }
 
         /**
          * Create a new resource
-         * @param company the company for resource
+         *
+         * @param company  the company for resource
          * @param rcParams Contains parameters for resource creation. If the schema is used, then set the json form output
          *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
          *                 in order to ignore declared fields
@@ -457,16 +482,17 @@ public class AdminAPI extends AbstractAPI {
          * @throws IOException
          */
         public Resource resourceCreate(Company company, ResourceParams.Create rcParams) throws IOException {
-            URL url = new URL (UriTemplate.fromTemplate(company.getResourcesLink()).expand());
+            URL url = new URL(UriTemplate.fromTemplate(company.getResourcesLink()).expand());
             return new Resource(httpService().api_POST(url, rcParams.getParams()));
         }
 
         public Observable<Resource> resourceCreateObs(final Company company, final ResourceParams.Create rcParams) {
-            return Observable.fromCallable(()->resourceCreate(company, rcParams));
+            return Observable.fromCallable(() -> resourceCreate(company, rcParams));
         }
 
         /**
          * Update a resource
+         *
          * @param resource the resource to update
          * @param ruParams Contains parameters for resource update. If the schema is used, then set the json form output
          *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
@@ -475,16 +501,17 @@ public class AdminAPI extends AbstractAPI {
          * @throws IOException
          */
         public Resource resourceUpdate(Resource resource, ResourceParams.Update ruParams) throws IOException {
-            URL url = new URL (resource.getSelf());
+            URL url = new URL(resource.getSelf());
             return new Resource(httpService().api_PUT(url, ruParams.getParams()));
         }
 
         public Observable<Resource> resourceUpdateObs(final Resource resource, final ResourceParams.Update ruParams) {
-            return Observable.fromCallable(()->resourceUpdate(resource, ruParams));
+            return Observable.fromCallable(() -> resourceUpdate(resource, ruParams));
         }
 
         /**
          * Get the schema for creating a new resource
+         *
          * @param company The company to own the resource
          * @return SchemaForm
          * @throws IOException
@@ -495,11 +522,12 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<SchemaForm> getNewResourceSchemaObs(final Company company) {
-            return Observable.fromCallable(()->getNewResourceSchema(company));
+            return Observable.fromCallable(() -> getNewResourceSchema(company));
         }
 
         /**
          * Get the schema for editing a resource
+         *
          * @param resource The resource to edit
          * @return SchemaForm
          * @throws IOException
@@ -510,14 +538,16 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<SchemaForm> getEditResourceSchemaObs(final Resource resource) {
-            return Observable.fromCallable(()->getEditResourceSchema(resource));
+            return Observable.fromCallable(() -> getEditResourceSchema(resource));
         }
 
         //TODO: Add block and schedule calls
     }
 
+
     /**
      * Accessor to create an instance of {@link EventChainAPI} with current configuration
+     *
      * @return EventChainAPI instance
      */
     public EventChainAPI eventChain() {
@@ -531,12 +561,13 @@ public class AdminAPI extends AbstractAPI {
 
         /**
          * Load specific event chain details
+         *
          * @param company
          * @param eventChainId
          * @return EventChain
          * @throws IOException
          */
-        public EventChain eventChainRead(Company company, String eventChainId) throws IOException{
+        public EventChain eventChainRead(Company company, String eventChainId) throws IOException {
             URL url = new URL(AdminURLS.EventChain.eventChainRead()
                     .set("companyId", company.id)
                     .set("eventChainId", eventChainId)
@@ -545,17 +576,18 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<EventChain> eventChainReadObs(final Company company, final String eventChainId) {
-            return Observable.fromCallable(()->eventChainRead(company, eventChainId));
+            return Observable.fromCallable(() -> eventChainRead(company, eventChainId));
         }
 
         /**
          * Load specific event chain details by reference
+         *
          * @param company
-         * @param refId the reference to the event chain to read
+         * @param refId   the reference to the event chain to read
          * @return EventChain
          * @throws IOException
          */
-        public EventChain eventChainReadByRefId(Company company, String refId) throws IOException{
+        public EventChain eventChainReadByRefId(Company company, String refId) throws IOException {
             URL url = new URL(AdminURLS.EventChain.eventChainReadUsingRefId()
                     .set("companyId", company.id)
                     .set("refId", refId)
@@ -564,12 +596,13 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<EventChain> eventChainReadByRefIdObs(final Company company, final String refId) {
-            return Observable.fromCallable(()->eventChainReadByRefId(company, refId));
+            return Observable.fromCallable(() -> eventChainReadByRefId(company, refId));
         }
 
         /**
          * List of event chains for a company. Results are returned as a paginated list
-         * @param company The owning company for services
+         *
+         * @param company  The owning company for services
          * @param rlParams Parameters for this call
          * @return Collection of Service
          * @throws IOException
@@ -582,49 +615,52 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<BBCollection<EventChain>> eventChainListObs(final Company company, final Params rlParams) {
-            return Observable.fromCallable(()->eventChainList(company, rlParams));
+            return Observable.fromCallable(() -> eventChainList(company, rlParams));
         }
 
         /**
          * Create a new event chain
-         * @param company the company for event chain
+         *
+         * @param company   the company for event chain
          * @param eccParams Contains parameters for event chain creation. If the schema is used, then set the json form output
-         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
-         *                 in order to ignore declared fields
+         *                  to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                  in order to ignore declared fields
          * @return EventChain
          * @throws IOException
          */
         public EventChain eventChainCreate(Company company, EventChainParams.Create eccParams) throws IOException {
-            URL url = new URL (UriTemplate.fromTemplate(company.getEventChainsLink()).expand());
+            URL url = new URL(UriTemplate.fromTemplate(company.getEventChainsLink()).expand());
             return new EventChain(httpService().api_POST(url, eccParams.getParams()));
         }
 
         public Observable<EventChain> eventChainCreateObs(final Company company, final EventChainParams.Create rcParams) {
-            return Observable.fromCallable(()->eventChainCreate(company, rcParams));
+            return Observable.fromCallable(() -> eventChainCreate(company, rcParams));
         }
 
         /**
          * Update a event chain
+         *
          * @param eventChain the event chain to update
-         * @param ecuParams Contains parameters for event chain update. If the schema is used, then set the json form output
-         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
-         *                 in order to ignore declared fields
+         * @param ecuParams  Contains parameters for event chain update. If the schema is used, then set the json form output
+         *                   to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                   in order to ignore declared fields
          * @return EventChain
          * @throws IOException
          */
 
         public EventChain eventChainUpdate(EventChain eventChain, EventChainParams.Update ecuParams) throws IOException {
-            URL url = new URL (eventChain.getSelf());
+            URL url = new URL(eventChain.getSelf());
             return new EventChain(httpService().api_PUT(url, ecuParams.getParams()));
         }
 
         public Observable<EventChain> eventChainUpdateObs(final EventChain eventChain, final EventChainParams.Update ruParams) {
-            return Observable.fromCallable(()->eventChainUpdate(eventChain, ruParams));
+            return Observable.fromCallable(() -> eventChainUpdate(eventChain, ruParams));
         }
 
 
         /**
          * Get a schema for editing a eventChain
+         *
          * @param company
          * @param eventChainId the event chain to edit
          * @return
@@ -639,11 +675,12 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<SchemaForm> getEditEventChainSchemaObs(final Company company, final String eventChainId) {
-            return Observable.fromCallable(()->getEditEventChainSchema(company, eventChainId));
+            return Observable.fromCallable(() -> getEditEventChainSchema(company, eventChainId));
         }
 
         /**
          * Get the schema for creating a new event chain
+         *
          * @param company The company to own the event chain
          * @return SchemaForm
          * @throws IOException
@@ -654,14 +691,15 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<SchemaForm> getNewEventChainSchemaObs(final Company company) {
-            return Observable.fromCallable(()->getNewEventChainSchema(company));
+            return Observable.fromCallable(() -> getNewEventChainSchema(company));
         }
     }
 
 
     /**
-     * Accessor to create an instance of {@link EventChainAPI} with current configuration
-     * @return EventChainAPI instance
+     * Accessor to create an instance of {@link EventGroupAPI} with current configuration
+     *
+     * @return EventGroupAPI instance
      */
     public EventGroupAPI eventGroup() {
         return new EventGroupAPI(newProvider());
@@ -673,13 +711,14 @@ public class AdminAPI extends AbstractAPI {
         }
 
         /**
-         * Load specific event chain details
+         * Load specific event group details
+         *
          * @param company
          * @param eventGroupId
          * @return EventChain
          * @throws IOException
          */
-        public EventGroup eventGroupRead(Company company, String eventGroupId) throws IOException{
+        public EventGroup eventGroupRead(Company company, String eventGroupId) throws IOException {
             URL url = new URL(AdminURLS.EventGroup.eventGroupRead()
                     .set("companyId", company.id)
                     .set("eventGroupId", eventGroupId)
@@ -688,12 +727,13 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<EventGroup> eventGroupReadObs(final Company company, final String eventGroupId) {
-            return Observable.fromCallable(()->eventGroupRead(company, eventGroupId));
+            return Observable.fromCallable(() -> eventGroupRead(company, eventGroupId));
         }
 
         /**
          * List of event chains for a company. Results are returned as a paginated list
-         * @param company The owning company for services
+         *
+         * @param company  The owning company for services
          * @param rlParams Parameters for this call
          * @return Collection of Service
          * @throws IOException
@@ -706,13 +746,14 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<BBCollection<EventGroup>> eventGroupListObs(final Company company, final Params rlParams) {
-            return Observable.fromCallable(()->eventGroupList(company, rlParams));
+            return Observable.fromCallable(() -> eventGroupList(company, rlParams));
         }
 
         /**
          * Get a schema for editing a eventGroup
+         *
          * @param company
-         * @param eventGroupId the event chain to edit
+         * @param eventGroupId the event group to edit
          * @return
          * @throws IOException
          */
@@ -725,12 +766,13 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<SchemaForm> getEditEventGroupSchemaObs(final Company company, final String eventGroupId) {
-            return Observable.fromCallable(()->getEditEventGroupSchema(company, eventGroupId));
+            return Observable.fromCallable(() -> getEditEventGroupSchema(company, eventGroupId));
         }
 
         /**
-         * Get the schema for creating a new event chain
-         * @param company The company to own the event chain
+         * Get the schema for creating a new event group
+         *
+         * @param company The company to own the event group
          * @return SchemaForm
          * @throws IOException
          */
@@ -740,7 +782,162 @@ public class AdminAPI extends AbstractAPI {
         }
 
         public Observable<SchemaForm> getNewEventGroupSchemaObs(final Company company) {
-            return Observable.fromCallable(()->getNewEventGroupSchema(company));
+            return Observable.fromCallable(() -> getNewEventGroupSchema(company));
+        }
+    }
+
+
+    /**
+     * Accessor to create an instance of {@link ScheduleAPI} with current configuration
+     *
+     * @return ScheduleAPI instance
+     */
+    public ScheduleAPI schedule() {
+        return new ScheduleAPI(newProvider());
+    }
+
+    public class ScheduleAPI extends AbstractAPI {
+
+        public ScheduleAPI(ServiceProvider provider) {
+            super(provider);
+        }
+
+        /**
+         * Get a list of admin schedules for a company
+         *
+         * @param company  The owning company for schedule
+         * @param sLParams The parameters for this call
+         * @return Collection of schedules
+         * @throws IOException
+         */
+        public BBCollection<Schedule> scheduleList(Company company, Params sLParams) throws IOException {
+            UriTemplate template = Utils.TemplateWithPagination(company.getSchedulesLink(), sLParams);
+            URL url = new URL(template.expand());
+            BBCollection<Schedule> schedules = new BBCollection<Schedule>(httpService().api_GET(url), getAuthToken(), "schedules", Schedule.class);
+            return schedules;
+        }
+
+        public Observable<BBCollection<Schedule>> scheduleListObs(final Company company, final Params sLParams) {
+            return Observable.fromCallable(() -> scheduleList(company, sLParams));
+        }
+
+        /**
+         * Create a schedule
+         *
+         * @param company  the company to own the schedule
+         * @param sCParams Contains parameters for schedule creation. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return Service
+         * @throws IOException
+         */
+        public Schedule scheduleCreate(Company company, ScheduleParams.Create sCParams) throws IOException {
+            URL url = new URL(company.getSchedulesLink());
+            return new Schedule(httpService().api_POST(url, sCParams.getParams()));
+        }
+
+        public Observable<Schedule> scheduleCreateObs(final Company company, final ScheduleParams.Create sCParams) {
+            return Observable.fromCallable(() -> scheduleCreate(company, sCParams));
+        }
+
+        /**
+         * Get schema for creating a new schedule
+         *
+         * @param company The owning company
+         * @return SchemaForm
+         * @throws IOException
+         */
+        public SchemaForm getNewScheduleSchema(Company company) throws IOException {
+            URL url = new URL(UriTemplate.fromTemplate(company.getNewScheduleLink()).expand());
+            return new SchemaForm(httpService().api_GET(url));
+        }
+
+        public Observable<SchemaForm> getNewScheduleSchemaObs(final Company company) {
+            return Observable.fromCallable(() -> getNewScheduleSchema(company));
+        }
+
+        /**
+         * Delete a schedule
+         *
+         * @param company The owning company
+         * @return SchemaForm
+         * @throws IOException
+         */
+        public SchemaForm scheduleDelete(Company company, String scheduleId) throws IOException {
+            URL url = new URL(AdminURLS.Schedule.scheduleDelete()
+                    .set("companyId", company.id)
+                    .set("scheduleId", scheduleId)
+                    .expand());
+            return new SchemaForm(httpService().api_DELETE(url));
+        }
+
+        public Observable<SchemaForm> getNewScheduleSchemaObs(final Company company, final String scheduleID) {
+            return Observable.fromCallable(() -> scheduleDelete(company, scheduleID));
+        }
+
+        /**
+         * Get all details about a specific schedule
+         *
+         * @param company    the company owning the schedule
+         * @param scheduleId the id of schedule to read
+         * @return Schedule
+         * @throws IOException
+         */
+        public Schedule scheduleRead(Company company, String scheduleId) throws IOException {
+            URL url = new URL(AdminURLS.Schedule.scheduleRead()
+                    .set("companyId", company.id)
+                    .set("scheduleId", scheduleId)
+                    .expand());
+            return new Schedule(httpService().api_GET(url));
+        }
+
+        public Observable<Schedule> scheduleReadObs(final Company company, final String scheduleId) {
+            return Observable.fromCallable(() -> scheduleRead(company, scheduleId));
+        }
+
+        /**
+         * Update a schedule
+         *
+         * @param company    the company owning the schedule
+         * @param scheduleId the schedule to update
+         * @param sUParams   Contains parameters for schedule update. If the schema is used, then set the json form output
+         *                   to this through {@link bookingbugAPI.models.params.Params#setJson(String)}
+         *                   in order to ignore declared fields
+         * @return Schedule
+         * @throws IOException
+         */
+        public Schedule scheduleUpdate(Company company, String scheduleId, ScheduleParams.Update sUParams) throws IOException {
+            URL url = new URL(AdminURLS.Schedule.scheduleUpdate()
+                    .set("companyId", company.id)
+                    .set("scheduleId", scheduleId)
+                    .expand());
+
+            return new Schedule(httpService().api_PUT(url, sUParams.getParams()));
+        }
+
+        public Observable<Schedule> serviceUpdateObs(final Company company, final String scheduleId, final ScheduleParams.Update sUParams) {
+            return Observable.fromCallable(() -> scheduleUpdate(company, scheduleId, sUParams));
+        }
+
+        /**
+         * Get the edit schema for schedule
+         *
+         * @param company    the company owning the schedule
+         * @param scheduleId the if of schedule to edit
+         * @return SchemaForm
+         * @throws IOException
+         */
+        public SchemaForm getEditScheduleSchema(Company company, String scheduleId) throws IOException {
+            URL url = new URL(AdminURLS.Schedule.scheduleEdit()
+                    .set("companyId", company.id)
+                    .set("scheduleId", scheduleId)
+                    .expand());
+
+            return new SchemaForm(httpService().api_GET(url));
+        }
+
+        public Observable<SchemaForm> getEditScheduleSchemaObs(Company company, String scheduleId) {
+            return Observable.fromCallable(() -> getEditScheduleSchema(company, scheduleId));
         }
     }
 }

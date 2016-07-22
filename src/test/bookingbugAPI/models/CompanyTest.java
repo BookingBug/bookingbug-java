@@ -75,7 +75,7 @@ public class CompanyTest extends ModelTest {
         assertTrue(company.getSpaceStatusesLink().equals(jsonLinks.get("space_statuses").get("href").textValue()));
         assertTrue(company.getNewPersonLink().equals(jsonLinks.get("new_person").get("href").textValue()));
         assertTrue(company.getNewResourceLink().equals(jsonLinks.get("new_resource").get("href").textValue()));
-        assertTrue(company.getSchedules().equals(jsonLinks.get("schedules").get("href").textValue()));
+        assertTrue(company.getSchedulesLink().equals(jsonLinks.get("schedules").get("href").textValue()));
         assertTrue(company.getNewScheduleLink().equals(jsonLinks.get("new_schedule").get("href").textValue()));
         assertTrue(company.getAdministratorsLink().equals(jsonLinks.get("administrators").get("href").textValue()));
         assertTrue(company.getNewAdministratorLink().equals(jsonLinks.get("new_administrator").get("href").textValue()));
