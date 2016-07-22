@@ -1528,12 +1528,12 @@ public class AdminAPI extends AbstractAPI {
         /**
          * Get all details about a specific purchase
          *
-         * @param company the company that owns the purchase
+         * @param company    the company that owns the purchase
          * @param purchaseId the purchase to read
          * @return Purchase
          * @throws IOException
          */
-        public Purchase purchaseRead(Company company, String purchaseId) throws IOException{
+        public Purchase purchaseRead(Company company, String purchaseId) throws IOException {
             URL url = new URL(AdminURLS.Purchase.purchaseRead()
                     .set("companyId", company.id)
                     .set("purchaseId", purchaseId)
@@ -1549,23 +1549,58 @@ public class AdminAPI extends AbstractAPI {
         /**
          * Make a purchase as paid
          *
-         * @param company the company that owns the purchase
+         * @param company    the company that owns the purchase
          * @param purchaseId the purchase to mark as paid
          * @param ppParams
          * @return Purchase
          * @throws IOException
          */
-        public Purchase purchasePay(Company company, String purchaseId, PurchaseParams ppParams) throws IOException{
+        public Purchase purchasePay(Company company, String purchaseId, PurchaseParams ppParams) throws IOException {
             URL url = new URL(AdminURLS.Purchase.purchasePay()
-            .set("companyId", company.id)
-            .set("purchaseId", purchaseId)
-            .expand());
+                    .set("companyId", company.id)
+                    .set("purchaseId", purchaseId)
+                    .expand());
 
             return new Purchase(httpService().api_PUT(url, ppParams.getParams()));
         }
 
         public Observable<Purchase> purchasePayObs(final Company company, final String purchaseId, final PurchaseParams ppParams) {
             return Observable.fromCallable(() -> purchasePay(company, purchaseId, ppParams));
+        }
+    }
+
+
+    /**
+     * Accessor to create an instance of {@link QuestionAPI} with current configuration
+     *
+     * @return QuestionAPI instance
+     */
+    public QuestionAPI question() {
+        return new QuestionAPI(newProvider());
+    }
+
+    public class QuestionAPI extends AbstractAPI {
+        public QuestionAPI(ServiceProvider provider) {
+            super(provider);
+        }
+
+        /**
+         * List of questions for a company
+         *
+         * @param company  The owning company for questions
+         * @param qlParams Parameters for this call
+         * @return Collection of Question
+         * @throws IOException
+         */
+        public BBCollection<Question> questionList(Company company, QuestionListParams qlParams) throws IOException {
+            URL url = new URL(Utils.inflateLink(AdminURLS.Question.questionList()
+                    .set("companyId", company.id).expand(), qlParams.getParams()));
+
+            return new BBCollection<>(httpService().api_GET(url), configService().auth_token, "questions", Question.class);
+        }
+
+        public Observable<BBCollection<Question>> questionListObs(final Company company, final QuestionListParams qlParams) {
+            return Observable.fromCallable(() -> questionList(company, qlParams));
         }
     }
 }
