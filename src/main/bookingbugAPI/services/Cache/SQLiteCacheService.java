@@ -12,6 +12,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -21,6 +22,7 @@ public class SQLiteCacheService extends AbstractCacheService {
 
     SQLite db;
     ServiceProvider provider;
+    public static final int expiryDurationSec = 5 * 60;
 
     static {
         //For OrmLite log garbage
@@ -81,8 +83,18 @@ public class SQLiteCacheService extends AbstractCacheService {
             builder.where().eq("url", url).and().eq("method", method);
             List<PlainHttpService.NetResponse> responses = respDao.query(builder.prepare());
             if(responses.size() > 0) {
-                logger.v("Restoring from cache result for {0} {1}", url, method);
-                return responses.get(0);
+
+                PlainHttpService.NetResponse response = responses.get(0);
+
+                //Check if response expired and delete it if true
+                if( (Calendar.getInstance().getTimeInMillis() - response.getTimestamp().getTime()) / 1000 > expiryDurationSec ) {
+                    logger.v("Cache for {0} {1} is expired", url, method);
+                    respDao.delete(response);
+                }
+                else {
+                    logger.v("Restoring from cache result for {0} {1}", url, method);
+                    return responses.get(0);
+                }
             }
 
         } catch (SQLException e) {

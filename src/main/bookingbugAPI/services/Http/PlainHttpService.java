@@ -19,6 +19,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -264,6 +265,9 @@ public class PlainHttpService {
         @DatabaseField
         private String resp;
 
+        @DatabaseField(version = true)
+        private Date timestamp;
+
         public NetResponse(){}
 
         public NetResponse(String url, String method, String resp) {
@@ -274,6 +278,10 @@ public class PlainHttpService {
 
         public String getResp() {
             return resp;
+        }
+
+        public Date getTimestamp() {
+            return timestamp;
         }
     }
 }
