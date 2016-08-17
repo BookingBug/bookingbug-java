@@ -13,7 +13,7 @@ import bookingbugAPI2.services.ServiceProvider;
  * Abstract API class
  * Contains basic methods and members
  */
-public abstract class AbstractAPI implements ServiceProvider {
+public abstract class AbstractAPI<T> implements ServiceProvider {
 
     final String CACHE_TAG;
     ServiceProvider provider;
@@ -21,6 +21,47 @@ public abstract class AbstractAPI implements ServiceProvider {
     public AbstractAPI(ServiceProvider provider){
         this.provider = provider;
         this.CACHE_TAG = this.getClass().getName();
+    }
+
+    /**
+     * Calls {@link AbstractAPI#fresh(boolean)} with true
+     * @return API instance
+     */
+    public T fresh() {
+        return fresh(true);
+    }
+
+    /**
+     * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
+     * Disables and clears the cache just for the next api call if {@code fresh} is true
+     * @return API instance
+     */
+    public T fresh(boolean fresh) {
+        provider.cacheService().setOneTimeFresh(fresh);
+        return (T)this;
+    }
+
+    /**
+     * Calls {@link AbstractAPI#freshAndClear(boolean)} with true
+     * @return API instance
+     */
+    public T freshAndClear() {
+        return freshAndClear(true);
+    }
+
+    /**
+     * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
+     *       {@link bookingbugAPI2.services.Cache.AbstractCacheService#invalidateResultsByTag(String)}
+     * Disables the cache just for the next call and clears all cache records with same CACHE_TAG if {@code fresh} is true
+     * <b>Must be called on terminal api instances (CompanyAPI, etc)</b>
+     * @return
+     */
+    public T freshAndClear(boolean fresh) {
+        if(fresh) {
+            provider.cacheService().invalidateResultsByTag(CACHE_TAG);
+            provider.cacheService().setOneTimeFresh(true);
+        }
+        return (T)this;
     }
 
     /**

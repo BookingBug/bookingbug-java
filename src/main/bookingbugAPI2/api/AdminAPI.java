@@ -28,20 +28,10 @@ public class AdminAPI extends AbstractAPI {
         return new BookingAPI(newProvider());
     }
 
-    public class BookingAPI extends AbstractAPI {
+    public class BookingAPI extends AbstractAPI<BookingAPI> {
 
         public BookingAPI(ServiceProvider provider) {
             super(provider);
-        }
-
-        /**
-         * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
-         * Disables and clears the cache just for the next api call
-         * @return BookingAPI instance
-         */
-        public BookingAPI fresh() {
-            provider.cacheService().setOneTimeFresh(true);
-            return this;
         }
 
         /**
@@ -108,21 +98,11 @@ public class AdminAPI extends AbstractAPI {
         return new CompanyAPI(newProvider());
     }
 
-    public class CompanyAPI extends AbstractAPI {
+    public class CompanyAPI extends AbstractAPI<CompanyAPI> {
 
 
         public CompanyAPI(ServiceProvider provider) {
             super(provider);
-        }
-
-        /**
-         * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
-         * Disables and clears the cache just for the next api call
-         * @return CompanyAPI instance
-         */
-        public CompanyAPI fresh() {
-            provider.cacheService().setOneTimeFresh(true);
-            return this;
         }
 
         /**
@@ -153,22 +133,13 @@ public class AdminAPI extends AbstractAPI {
         return new ServiceAPI(newProvider());
     }
 
-    public class ServiceAPI extends AbstractAPI {
+    public class ServiceAPI extends AbstractAPI<ServiceAPI> {
 
 
         public ServiceAPI(ServiceProvider provider) {
             super(provider);
         }
 
-        /**
-         * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
-         * Disables and clears the cache just for the next api call
-         * @return ServiceAPI instance
-         */
-        public ServiceAPI fresh() {
-            provider.cacheService().setOneTimeFresh(true);
-            return this;
-        }
 
         /**
          * List of Services for a company. Results are returned as a paginated list
@@ -306,22 +277,13 @@ public class AdminAPI extends AbstractAPI {
         return new ClientAPI(newProvider());
     }
 
-    public class ClientAPI extends AbstractAPI {
+    public class ClientAPI extends AbstractAPI<ClientAPI> {
 
 
         public ClientAPI(ServiceProvider provider) {
             super(provider);
         }
 
-        /**
-         * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
-         * Disables and clears the cache just for the next api call
-         * @return ServiceAPI instance
-         */
-        public ClientAPI fresh() {
-            provider.cacheService().setOneTimeFresh(true);
-            return this;
-        }
 
         /**
          * List of Clients for a company. Results are returned as a paginated list
@@ -462,21 +424,12 @@ public class AdminAPI extends AbstractAPI {
         return new ResourceAPI(newProvider());
     }
 
-    public class ResourceAPI extends AbstractAPI {
+    public class ResourceAPI extends AbstractAPI<ResourceAPI> {
 
         public ResourceAPI(ServiceProvider provider) {
             super(provider);
         }
 
-        /**
-         * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
-         * Disables and clears the cache just for the next api call
-         * @return ResourceAPI instance
-         */
-        public ResourceAPI fresh() {
-            provider.cacheService().setOneTimeFresh(true);
-            return this;
-        }
 
         /**
          * Load specific resource details
@@ -600,20 +553,11 @@ public class AdminAPI extends AbstractAPI {
         return new EventChainAPI(newProvider());
     }
 
-    public class EventChainAPI extends AbstractAPI {
+    public class EventChainAPI extends AbstractAPI<EventChainAPI> {
         public EventChainAPI(ServiceProvider provider) {
             super(provider);
         }
 
-        /**
-         * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
-         * Disables and clears the cache just for the next api call
-         * @return EventChainAPI instance
-         */
-        public EventChainAPI fresh() {
-            provider.cacheService().setOneTimeFresh(true);
-            return this;
-        }
 
         /**
          * Load specific event chain details
@@ -761,20 +705,11 @@ public class AdminAPI extends AbstractAPI {
         return new EventGroupAPI(newProvider());
     }
 
-    public class EventGroupAPI extends AbstractAPI {
+    public class EventGroupAPI extends AbstractAPI<EventGroupAPI> {
         public EventGroupAPI(ServiceProvider provider) {
             super(provider);
         }
 
-        /**
-         * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
-         * Disables and clears the cache just for the next api call
-         * @return EventGroupAPI instance
-         */
-        public EventGroupAPI fresh() {
-            provider.cacheService().setOneTimeFresh(true);
-            return this;
-        }
 
         /**
          * Load specific event group details
@@ -862,21 +797,12 @@ public class AdminAPI extends AbstractAPI {
         return new ScheduleAPI(newProvider());
     }
 
-    public class ScheduleAPI extends AbstractAPI {
+    public class ScheduleAPI extends AbstractAPI<ScheduleAPI> {
 
         public ScheduleAPI(ServiceProvider provider) {
             super(provider);
         }
 
-        /**
-         * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
-         * Disables and clears the cache just for the next api call
-         * @return ScheduleAPI instance
-         */
-        public ScheduleAPI fresh() {
-            provider.cacheService().setOneTimeFresh(true);
-            return this;
-        }
 
         /**
          * Get a list of admin schedules for a company
@@ -934,7 +860,7 @@ public class AdminAPI extends AbstractAPI {
         /**
          * Delete a schedule
          *
-         * @param company The owning company
+         * @param company    The owning company
          * @param scheduleId The id of schedule
          * @return Schedule
          * @throws IOException
@@ -1027,21 +953,12 @@ public class AdminAPI extends AbstractAPI {
         return new AddressAPI(newProvider());
     }
 
-    public class AddressAPI extends AbstractAPI {
+    public class AddressAPI extends AbstractAPI<AddressAPI> {
 
         public AddressAPI(ServiceProvider provider) {
             super(provider);
         }
 
-        /**
-         * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
-         * Disables and clears the cache just for the next api call
-         * @return AddressAPI instance
-         */
-        public AddressAPI fresh() {
-            provider.cacheService().setOneTimeFresh(true);
-            return this;
-        }
 
         /**
          * Get a list of addresses for a company
@@ -1083,7 +1000,7 @@ public class AdminAPI extends AbstractAPI {
         /**
          * Delete an address
          *
-         * @param company the company to own the address
+         * @param company   the company to own the address
          * @param addressId the address id
          * @return SchemaForm
          * @throws IOException
@@ -1151,21 +1068,12 @@ public class AdminAPI extends AbstractAPI {
         return new AdministratorAPI(newProvider());
     }
 
-    public class AdministratorAPI extends AbstractAPI {
+    public class AdministratorAPI extends AbstractAPI<AdministratorAPI> {
 
         public AdministratorAPI(ServiceProvider provider) {
             super(provider);
         }
 
-        /**
-         * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
-         * Disables and clears the cache just for the next api call
-         * @return AdministratorAPI instance
-         */
-        public AdministratorAPI fresh() {
-            provider.cacheService().setOneTimeFresh(true);
-            return this;
-        }
 
         /**
          * Get a list of administrators for a company
@@ -1312,20 +1220,11 @@ public class AdminAPI extends AbstractAPI {
         return new PersonAPI(newProvider());
     }
 
-    public class PersonAPI extends AbstractAPI {
+    public class PersonAPI extends AbstractAPI<PersonAPI> {
         public PersonAPI(ServiceProvider provider) {
             super(provider);
         }
 
-        /**
-         * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
-         * Disables and clears the cache just for the next api call
-         * @return PersonAPI instance
-         */
-        public PersonAPI fresh() {
-            provider.cacheService().setOneTimeFresh(true);
-            return this;
-        }
 
         /**
          * Load a specific person details by reference
@@ -1497,21 +1396,12 @@ public class AdminAPI extends AbstractAPI {
         return new ClinicAPI(newProvider());
     }
 
-    public class ClinicAPI extends AbstractAPI {
+    public class ClinicAPI extends AbstractAPI<ClinicAPI> {
 
         public ClinicAPI(ServiceProvider provider) {
             super(provider);
         }
 
-        /**
-         * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
-         * Disables and clears the cache just for the next api call
-         * @return ClinicAPI instance
-         */
-        public ClinicAPI fresh() {
-            provider.cacheService().setOneTimeFresh(true);
-            return this;
-        }
 
         /**
          * Load specific clinic details
@@ -1621,20 +1511,10 @@ public class AdminAPI extends AbstractAPI {
         return new PurchaseAPI(newProvider());
     }
 
-    public class PurchaseAPI extends AbstractAPI {
+    public class PurchaseAPI extends AbstractAPI<PurchaseAPI> {
 
         public PurchaseAPI(ServiceProvider provider) {
             super(provider);
-        }
-
-        /**
-         * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
-         * Disables and clears the cache just for the next api call
-         * @return PurchaseAPI instance
-         */
-        public PurchaseAPI fresh() {
-            provider.cacheService().setOneTimeFresh(true);
-            return this;
         }
 
         /**
@@ -1711,19 +1591,9 @@ public class AdminAPI extends AbstractAPI {
         return new QuestionAPI(newProvider());
     }
 
-    public class QuestionAPI extends AbstractAPI {
+    public class QuestionAPI extends AbstractAPI<QuestionAPI> {
         public QuestionAPI(ServiceProvider provider) {
             super(provider);
-        }
-
-        /**
-         * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
-         * Disables and clears the cache just for the next api call
-         * @return QuestionAPI instance
-         */
-        public QuestionAPI fresh() {
-            provider.cacheService().setOneTimeFresh(true);
-            return this;
         }
 
         /**
@@ -1756,20 +1626,11 @@ public class AdminAPI extends AbstractAPI {
         return new SessionAPI(newProvider());
     }
 
-    public class SessionAPI extends AbstractAPI {
+    public class SessionAPI extends AbstractAPI<SessionAPI> {
         public SessionAPI(ServiceProvider provider) {
             super(provider);
         }
 
-        /**
-         * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
-         * Disables and clears the cache just for the next api call
-         * @return SessionAPI instance
-         */
-        public SessionAPI fresh() {
-            provider.cacheService().setOneTimeFresh(true);
-            return this;
-        }
 
         /**
          * List of sessions for a company
@@ -1815,20 +1676,11 @@ public class AdminAPI extends AbstractAPI {
         return new SlotAPI(newProvider());
     }
 
-    public class SlotAPI extends AbstractAPI {
+    public class SlotAPI extends AbstractAPI<SlotAPI> {
         public SlotAPI(ServiceProvider provider) {
             super(provider);
         }
 
-        /**
-         * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
-         * Disables and clears the cache just for the next api call
-         * @return SlotAPI instance
-         */
-        public SlotAPI fresh() {
-            provider.cacheService().setOneTimeFresh(true);
-            return this;
-        }
 
         /**
          * List of slots for a company. Results are returned as a paginated list
@@ -1893,15 +1745,15 @@ public class AdminAPI extends AbstractAPI {
          * Get all the details about a specific slot
          *
          * @param company the company that owns the slot
-         * @param slotId the slot to read
+         * @param slotId  the slot to read
          * @return Slot
          * @throws IOException
          */
-        public Slot slotRead(Company company, String slotId) throws IOException{
+        public Slot slotRead(Company company, String slotId) throws IOException {
             URL url = new URL(AdminURLS.Slot.slotRead()
-            .set("companyId", company.id)
-            .set("slotId", slotId)
-            .expand());
+                    .set("companyId", company.id)
+                    .set("slotId", slotId)
+                    .expand());
 
             return new Slot(httpService().api_GET(url, CACHE_TAG));
         }
@@ -1913,7 +1765,7 @@ public class AdminAPI extends AbstractAPI {
         /**
          * Update a slot
          *
-         * @param slot   the slot to update
+         * @param slot     the slot to update
          * @param suParams Contains parameters for slot update. If the schema is used, then set the json form output
          *                 to this through {@link bookingbugAPI2.models.params.Params#setJson(String)}
          *                 in order to ignore declared fields
