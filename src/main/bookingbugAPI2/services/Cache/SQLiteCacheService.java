@@ -11,6 +11,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
+import javax.annotation.Nullable;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
@@ -22,7 +23,6 @@ public class SQLiteCacheService extends AbstractCacheService {
 
     SQLite db;
     ServiceProvider provider;
-    public static final int expiryDurationSec = 5 * 60;
 
     static {
         //For OrmLite log garbage
@@ -49,9 +49,10 @@ public class SQLiteCacheService extends AbstractCacheService {
      * @param url the url
      * @param method the http method (verb)
      * @param resp the response to cache
+     * @param CACHE_TAG the TAG for cache record
      */
     @Override
-    public void storeResult(String url, String method, String resp) {
+    public void storeResult(String url, String method, String resp, @Nullable String CACHE_TAG) {
         Dao<PlainHttpService.NetResponse, Integer> respDao;
         AbstractLoggerService.Logger logger = provider.loggerService().getLogger(SQLiteCacheService.class.getName());
         try {
@@ -59,7 +60,7 @@ public class SQLiteCacheService extends AbstractCacheService {
             db.createIfNotExists();
             respDao = db.getDao();
 
-            PlainHttpService.NetResponse response = new PlainHttpService.NetResponse(url, method, resp);
+            PlainHttpService.NetResponse response = new PlainHttpService.NetResponse(url, method, resp, CACHE_TAG);
             respDao.create(response);
 
         } catch (SQLException e) {
@@ -87,7 +88,7 @@ public class SQLiteCacheService extends AbstractCacheService {
                 PlainHttpService.NetResponse response = responses.get(0);
 
                 //Check if response expired or if isFresh() and delete it if true
-                if( (Calendar.getInstance().getTimeInMillis() - response.getTimestamp().getTime()) / 1000 > expiryDurationSec || isOneTimeFresh()) {
+                if( (Calendar.getInstance().getTimeInMillis() - response.getTimestamp().getTime()) / 1000 >= expiryDurationSec || isOneTimeFresh()) {
                     logger.v("Cache for {0} {1} is expired", url, method);
                     respDao.delete(response);
                     setOneTimeFresh(false);
@@ -118,6 +119,22 @@ public class SQLiteCacheService extends AbstractCacheService {
                 logger.v("Cache for {0} {1} invalidated", url, method);
                 respDao.delete(response);
             }
+        } catch (SQLException e) {
+            logger.e(e, "Error when invalidating cache");
+        }
+    }
+
+    @Override
+    public void invalidateResultsByTag(String CACHE_TAG) {
+        AbstractLoggerService.Logger logger = provider.loggerService().getLogger(SQLiteCacheService.class.getName());
+        try {
+            db.createIfNotExists();
+            Dao<PlainHttpService.NetResponse, Integer> respDao = db.getDao();
+            QueryBuilder<PlainHttpService.NetResponse, Integer> builder = respDao.queryBuilder();
+            builder.where().eq("CACHE_TAG", CACHE_TAG);
+            List<PlainHttpService.NetResponse> responses = respDao.query(builder.prepare());
+            respDao.delete(responses);
+            logger.v("Invalidated {0} caches with tag {1}", responses.size(), CACHE_TAG);
         } catch (SQLException e) {
             logger.e(e, "Error when invalidating cache");
         }

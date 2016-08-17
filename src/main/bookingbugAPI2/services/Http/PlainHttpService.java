@@ -268,12 +268,23 @@ public class PlainHttpService {
         @DatabaseField(version = true)
         private Date timestamp;
 
+        @DatabaseField
+        private String CACHE_TAG;
+
         public NetResponse(){}
 
         public NetResponse(String url, String method, String resp) {
             this.url = url;
             this.method = method;
             this.resp = resp;
+            this.CACHE_TAG = null;
+        }
+
+        public NetResponse(String url, String method, String resp, String CACHE_TAG) {
+            this.url = url;
+            this.method = method;
+            this.resp = resp;
+            this.CACHE_TAG = CACHE_TAG;
         }
 
         public String getResp() {

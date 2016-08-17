@@ -15,10 +15,12 @@ import bookingbugAPI2.services.ServiceProvider;
  */
 public abstract class AbstractAPI implements ServiceProvider {
 
+    final String CACHE_TAG;
     ServiceProvider provider;
 
     public AbstractAPI(ServiceProvider provider){
         this.provider = provider;
+        this.CACHE_TAG = this.getClass().getName();
     }
 
     /**

@@ -126,6 +126,13 @@ public class JavaLoggerService extends AbstractLoggerService {
             //ConsoleHandler with custom formatter
             ConsoleHandler consoleHandler = new ConsoleHandler();
             consoleHandler.setFormatter(formatter);
+
+            logger.setUseParentHandlers(false);
+            Handler[] handlers = logger.getHandlers();
+            for(Handler handler : handlers)
+                if(handler.getClass() == ConsoleHandler.class)
+                    logger.removeHandler(handler);
+
             logger.addHandler(consoleHandler);
         }
 

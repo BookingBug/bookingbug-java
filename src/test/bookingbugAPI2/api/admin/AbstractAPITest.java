@@ -47,11 +47,11 @@ public abstract class AbstractAPITest {
         }
 
         @Override
-        protected HttpServiceResponse callApi(URL url, String method, String contentType, Map params) throws HttpException {
+        protected HttpServiceResponse callApi(URL url, String method, String contentType, Map params, String CACHE_TAG) throws HttpException {
             String strUrl = url.toString();
             strUrl = strUrl.replaceFirst("^(?:https?:\\/\\/)?(?:[^@\\n]+@)?(?:www\\.)?([^:\\/\\n]+)", provider.configService().serverUrl);
             try {
-                return super.callApi(new URL(strUrl), method, contentType, params);
+                return super.callApi(new URL(strUrl), method, contentType, params, CACHE_TAG);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
                 throw new HttpException("Cannot replace url with mock", e);

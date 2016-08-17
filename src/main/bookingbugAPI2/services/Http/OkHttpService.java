@@ -35,10 +35,11 @@ public class OkHttpService extends AbstractHttpService {
      * @param contentType String, can be {@link Http#urlEncodedContentType} or {@link Http#jsonContentType}
      * @param params Map, a generic Map with parameters for POST, PUT or UPDATE. Will be serialized according
      *               to {@code contentType}
+     * @param CACHE_TAG the TAG for cache record
      * @return {@link HttpServiceResponse}
      * @throws HttpException
      */
-    protected HttpServiceResponse callApi(URL url, String method, String contentType, Map params) throws HttpException {
+    protected HttpServiceResponse callApi(URL url, String method, String contentType, Map params, String CACHE_TAG) throws HttpException {
         ConfigService config = provider.configService();
         AbstractLoggerService.Logger logger = provider.loggerService().getLogger(OkHttpService.class.getName());
         PlainHttpService.NetResponse cache = null;
@@ -98,7 +99,11 @@ public class OkHttpService extends AbstractHttpService {
             String raw_resp = response.body().string();
 
             if(Objects.equals(method, "GET"))
-                provider.cacheService().storeResult(url.toString(), method, raw_resp);
+                provider.cacheService().storeResult(url.toString(), method, raw_resp, CACHE_TAG);
+            else if(CACHE_TAG != null) {
+                //POST / PUT / UPDATE / DELETE methods => invalidate cache with provided tag
+                provider.cacheService().invalidateResultsByTag(CACHE_TAG);
+            }
 
             return new HttpServiceResponse(Utils.stringToContentRep(raw_resp), url.toString(), method, contentType, params, config.auth_token);
         } catch (IOException e) {
