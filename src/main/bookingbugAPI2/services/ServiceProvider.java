@@ -1,8 +1,8 @@
 package bookingbugAPI2.services;
 
-import bookingbugAPI2.services.Cache.AbstractCacheService;
-import bookingbugAPI2.services.Http.AbstractHttpService;
-import bookingbugAPI2.services.Logger.AbstractLoggerService;
+import bookingbugAPI2.services.cache.AbstractCacheService;
+import bookingbugAPI2.services.http.AbstractHttpService;
+import bookingbugAPI2.services.logger.AbstractLoggerService;
 
 /**
  * Created by sebi on 07.07.2016.

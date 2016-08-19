@@ -1,4 +1,4 @@
-package bookingbugAPI2.services.Logger;
+package bookingbugAPI2.services.logger;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

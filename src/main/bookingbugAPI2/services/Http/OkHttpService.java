@@ -1,8 +1,8 @@
-package bookingbugAPI2.services.Http;
+package bookingbugAPI2.services.http;
 
 import bookingbugAPI2.models.HttpException;
 import bookingbugAPI2.services.ConfigService;
-import bookingbugAPI2.services.Logger.AbstractLoggerService;
+import bookingbugAPI2.services.logger.AbstractLoggerService;
 import bookingbugAPI2.services.ServiceProvider;
 import helpers2.Http;
 import helpers2.HttpServiceResponse;
@@ -91,7 +91,8 @@ public class OkHttpService extends AbstractHttpService {
             response = client.newCall(request).execute();
             if (!response.isSuccessful()) {
                 logger.e("Failed request: {0} {1} {2} {3}", response.code(), method, url, response.message());
-                String message = response.message() + response.body().string();
+                //String message = response.message() + response.body().string();
+                String message = response.body().string();
                 throw new HttpException("Unexpected code " + response, message, response.code());
             }
             else logger.d("{0} {1} {2}", response.code(), method, url);

@@ -35,4 +35,9 @@ public class CompanyAPITest extends AbstractAPITest{
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void getCompanyForAdministrator() {
+        //TODO implement this
+    }
 }

@@ -1,7 +1,7 @@
 package bookingbugAPI2.models;
 
 import bookingbugAPI2.api.PublicURLS;
-import bookingbugAPI2.services.Http.PlainHttpService;
+import bookingbugAPI2.services.http.PlainHttpService;
 import helpers2.HttpServiceResponse;
 
 import java.io.IOException;

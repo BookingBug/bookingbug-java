@@ -1,0 +1,77 @@
+{
+  "email": "sebii@assist.ro",
+  "path": "https://assist-dev03.bookingbug.com/api/v1",
+  "_embedded": {
+    "members": [],
+    "administrators": [
+      {
+        "name": "Sebi Macarescu",
+        "email": "sebii@assist.ro",
+        "role": "admin",
+        "company_id": 37047,
+        "company_name": "Sebi Company 1",
+        "_links": {
+          "self": {
+            "href": "https://assist-dev03.bookingbug.com/api/v1/admin/37047/administrators/59"
+          },
+          "edit": {
+            "href": "https://assist-dev03.bookingbug.com/api/v1/admin/37047/administrators/59/edit"
+          },
+          "company": {
+            "href": "https://assist-dev03.bookingbug.com/api/v1/admin/37047/company"
+          },
+          "login": {
+            "href": "https://assist-dev03.bookingbug.com/api/v1/login/admin/37047"
+          },
+          "base_login": {
+            "href": "https://assist-dev03.bookingbug.com/api/v1/login/admin"
+          }
+        }
+      },
+      {
+        "name": "Sebi Macarescu",
+        "email": "sebii@assist.ro",
+        "role": "admin",
+        "company_id": 37048,
+        "company_name": "Sebi Company 2",
+        "_links": {
+          "self": {
+            "href": "https://assist-dev03.bookingbug.com/api/v1/admin/37048/administrators/63"
+          },
+          "edit": {
+            "href": "https://assist-dev03.bookingbug.com/api/v1/admin/37048/administrators/63/edit"
+          },
+          "company": {
+            "href": "https://assist-dev03.bookingbug.com/api/v1/admin/37048/company"
+          },
+          "login": {
+            "href": "https://assist-dev03.bookingbug.com/api/v1/login/admin/37048"
+          },
+          "base_login": {
+            "href": "https://assist-dev03.bookingbug.com/api/v1/login/admin"
+          }
+        }
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "https://assist-dev03.bookingbug.com/api/v1/login"
+    },
+    "members": [],
+    "administrators": [
+      {
+        "href": "https://assist-dev03.bookingbug.com/api/v1/admin/37047/administrators/59",
+        "templated": true
+      },
+      {
+        "href": "https://assist-dev03.bookingbug.com/api/v1/admin/37048/administrators/63",
+        "templated": true
+      },
+      {
+        "href": "https://assist-dev03.bookingbug.com/api/v1/admin//user/30",
+        "templated": true
+      }
+    ]
+  }
+}

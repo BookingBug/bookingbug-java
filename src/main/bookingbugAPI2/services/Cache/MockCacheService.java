@@ -1,6 +1,6 @@
-package bookingbugAPI2.services.Cache;
+package bookingbugAPI2.services.cache;
 
-import bookingbugAPI2.services.Http.PlainHttpService;
+import bookingbugAPI2.services.http.PlainHttpService;
 
 import javax.annotation.Nullable;
 

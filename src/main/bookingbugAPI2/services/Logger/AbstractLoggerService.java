@@ -1,4 +1,4 @@
-package bookingbugAPI2.services.Logger;
+package bookingbugAPI2.services.logger;
 
 /**
  * Created by sebi on 05.07.2016.

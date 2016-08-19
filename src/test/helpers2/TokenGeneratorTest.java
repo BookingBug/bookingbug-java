@@ -1,6 +1,6 @@
 package helpers2;
 
-import bookingbugAPI2.services.Http.PlainHttpService;
+import bookingbugAPI2.services.http.PlainHttpService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;

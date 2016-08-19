@@ -1,7 +1,7 @@
-package bookingbugAPI2.services.Cache;
+package bookingbugAPI2.services.cache;
 
-import bookingbugAPI2.services.Http.PlainHttpService;
-import bookingbugAPI2.services.Logger.AbstractLoggerService;
+import bookingbugAPI2.services.http.PlainHttpService;
+import bookingbugAPI2.services.logger.AbstractLoggerService;
 import bookingbugAPI2.services.ServiceProvider;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -45,7 +45,7 @@ public class SQLiteCacheService extends AbstractCacheService {
     }
 
     /**
-     * Cache a network result
+     * cache a network result
      * @param url the url
      * @param method the http method (verb)
      * @param resp the response to cache
@@ -89,7 +89,7 @@ public class SQLiteCacheService extends AbstractCacheService {
 
                 //Check if response expired or if isFresh() and delete it if true
                 if( (Calendar.getInstance().getTimeInMillis() - response.getTimestamp().getTime()) / 1000 >= expiryDurationSec || isOneTimeFresh()) {
-                    logger.v("Cache for {0} {1} is expired", url, method);
+                    logger.v("cache for {0} {1} is expired", url, method);
                     respDao.delete(response);
                     setOneTimeFresh(false);
                 }
@@ -116,7 +116,7 @@ public class SQLiteCacheService extends AbstractCacheService {
             List<PlainHttpService.NetResponse> responses = respDao.query(builder.prepare());
             if(responses.size() > 0) {
                 PlainHttpService.NetResponse response = responses.get(0);
-                logger.v("Cache for {0} {1} invalidated", url, method);
+                logger.v("cache for {0} {1} invalidated", url, method);
                 respDao.delete(response);
             }
         } catch (SQLException e) {

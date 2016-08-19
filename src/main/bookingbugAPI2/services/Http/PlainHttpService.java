@@ -1,4 +1,4 @@
-package bookingbugAPI2.services.Http;
+package bookingbugAPI2.services.http;
 
 import bookingbugAPI2.models.HttpException;
 import com.j256.ormlite.dao.Dao;

@@ -2,7 +2,7 @@ package bookingbugAPI2.services;
 
 import bookingbugAPI2.api.PublicURLS;
 import bookingbugAPI2.models.HttpException;
-import bookingbugAPI2.services.Http.PlainHttpService;
+import bookingbugAPI2.services.http.PlainHttpService;
 import org.junit.*;
 
 import java.net.MalformedURLException;

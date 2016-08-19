@@ -5,19 +5,92 @@ import bookingbugAPI2.models.params.*;
 import bookingbugAPI2.services.ServiceProvider;
 import com.damnhandy.uri.template.UriTemplate;
 import helpers2.Http;
+import helpers2.HttpServiceResponse;
 import helpers2.Utils;
 import rx.Observable;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class AdminAPI extends AbstractAPI {
 
+    AdminURLS urls;
 
     public AdminAPI(ServiceProvider provider) {
         super(provider);
+        urls = new AdminURLS(provider);
     }
+
+
+    /**
+     * Accessor to create an instance of {@link LoginAPI} with current configuration
+     *
+     * @return LoginAPI instance
+     */
+    public LoginAPI login() {
+        return new LoginAPI(provider);
+    }
+
+    public class LoginAPI extends AbstractAPI<LoginAPI> {
+
+        public LoginAPI(ServiceProvider provider) {
+            super(provider);
+        }
+
+        /**
+         * Authenticate with email and password
+         *
+         * @param email    the user email
+         * @param password the user password
+         * @return Login instance
+         * @throws IOException
+         */
+        public Login auth(String email, String password) throws IOException {
+            URL url = new URL(urls.login().auth().expand());
+            Map params = new HashMap<>();
+            params.put("email", email);
+            params.put("password", password);
+            HttpServiceResponse resp;
+            try {
+                resp = httpService().api_POST(url, params);
+            } catch (HttpException e) {
+                if (e.getStatusCode() == 400) {
+                    resp = new HttpServiceResponse(Utils.stringToContentRep(e.getRawResponse()), url.toString(), "POST", Http.urlEncodedContentType, params, provider.configService().auth_token);
+                } else throw e;
+            }
+
+            return new Login(resp);
+        }
+
+        public Observable<Login> authObs(final String email, final String password) {
+            return Observable.fromCallable(() -> auth(email, password));
+        }
+
+        /**
+         * Authenticate the company administrator with provided credentials
+         *
+         * @param administrator The administrator to login with
+         * @param email         the administrator email
+         * @param password      the administrator password
+         * @return Login instance
+         * @throws IOException
+         */
+        public Login authWithCompanyAdministrator(Administrator administrator, String email, String password) throws IOException {
+            URL url = new URL(administrator.getLoginLink());
+            Map params = new HashMap<>();
+            params.put("email", email);
+            params.put("password", password);
+            return new Login(httpService().api_POST(url, params));
+        }
+
+        public Observable<Login> authWithCompanyAdministratorObs(final Administrator administrator, final String email, final String password) throws IOException {
+            return Observable.fromCallable(() -> authWithCompanyAdministrator(administrator, email, password));
+        }
+    }
+
 
     /**
      * Accessor to create an instance of {@link BookingAPI} with current configuration
@@ -121,6 +194,21 @@ public class AdminAPI extends AbstractAPI {
             return Observable.fromCallable(() -> companyRead(companyId));
         }
 
+        /**
+         * Get the company for specified administrator
+         *
+         * @param administrator the administrator for the company
+         * @return Company
+         * @throws IOException
+         */
+        public Company getCompanyForAdministrator(Administrator administrator) throws IOException {
+            URL url = new URL(administrator.getCompanyLink());
+            return new Company(httpService().api_GET(url, CACHE_TAG));
+        }
+
+        public Observable<Company> getCompanyForAdministratorObs(final Administrator administrator) {
+            return Observable.fromCallable(() -> getCompanyForAdministrator(administrator));
+        }
     }
 
 
@@ -1074,6 +1162,29 @@ public class AdminAPI extends AbstractAPI {
             super(provider);
         }
 
+        /**
+         * Get the administrator for a specific login. It searches in embedded objects and if not found calls
+         * the administrator link
+         *
+         * @param login The login
+         * @return Administrator instance
+         * @throws IOException
+         */
+        public Administrator getAdministratorForLogin(Login login) throws IOException {
+            String adminLink = login.getAdministratorLink();
+            BBCollection<Administrator> admins = login.getAdministrators();
+            //search embedded object
+            for (Administrator admin : admins) {
+                if (admin.getSelf().equals(adminLink))
+                    return admin;
+            }
+            URL url = new URL(adminLink);
+            return new Administrator(httpService().api_GET(url, CACHE_TAG), getAuthToken());
+        }
+
+        public Observable<Administrator> getAdministratorForLoginObs(Login login) {
+            return Observable.fromCallable(() -> getAdministratorForLogin(login));
+        }
 
         /**
          * Get a list of administrators for a company

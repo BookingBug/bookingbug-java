@@ -1,8 +1,6 @@
 package bookingbugAPI2.services;
 
 import bookingbugAPI2.api.AbstractAPI;
-import bookingbugAPI2.services.Cache.MockCacheService;
-import bookingbugAPI2.services.Http.OkHttpService;
 import com.squareup.okhttp.mockwebserver.Dispatcher;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;

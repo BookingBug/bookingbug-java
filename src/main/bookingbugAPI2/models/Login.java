@@ -1,7 +1,7 @@
 package bookingbugAPI2.models;
 
 import bookingbugAPI2.api.AdminURLS;
-import bookingbugAPI2.services.Http.PlainHttpService;
+import bookingbugAPI2.services.http.PlainHttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 import com.theoryinpractise.halbuilder.api.Link;
@@ -10,7 +10,6 @@ import helpers2.HttpServiceResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,15 +39,12 @@ public class Login extends BBRoot {
     }
 
     /**
-     * Returns the admin credentials.
-     *
-     * @return the credentials associated with the current Login object.
+     * Returns true if Login is associated to multiple companies
+     * When authenticating users must call this method and if true, authenticate with administrator instead
+     * @return
      */
-    public Map<String, String> getCredentials() {
-        Map<String, String> credentials = new HashMap<>();
-        credentials.put("email", email);
-        credentials.put("password", password);
-        return credentials;
+    public boolean isMultiLogin() {
+        return getAuthToken() == null;
     }
 
     /**
@@ -134,23 +130,13 @@ public class Login extends BBRoot {
         return administrator;
     }
 
-    /**
-     *Returns the administrator from inserted link.
-     * @param link
-     * @return the administrator associated with the current login object.
-     * @throws IOException
-     */
-    public Administrator getAdministrator(Link link) throws IOException {
-        URL url = new URL(UriTemplate.fromTemplate(link.getHref()).expand());
-        return new Administrator(PlainHttpService.api_GET(url, auth_token), auth_token);
-    }
 
     /**Returns the list of administrators
      *
      * @return
      */
     public BBCollection<Administrator> getAdministrators() {
-        return new BBCollection<Administrator>(new HttpServiceResponse(getResource("administrators")), auth_token, Administrator.class);
+        return new BBCollection<>(new HttpServiceResponse(getRep()), auth_token, "administrators", Administrator.class);
     }
 
     /**

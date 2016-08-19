@@ -1,11 +1,35 @@
 package bookingbugAPI2.api;
 
+import bookingbugAPI2.services.ServiceProvider;
 import com.damnhandy.uri.template.UriTemplate;
 import com.damnhandy.uri.template.UriTemplateBuilder;
 import helpers2.Config;
 
-
+//TODO: Fix URLS (refactor to be same with Login)
 public class AdminURLS {
+
+    ServiceProvider provider;
+
+    public AdminURLS(ServiceProvider provider) {
+        this.provider = provider;
+    }
+
+    /**
+     * Accessor to create an instance of {@link Login}
+     *
+     * @return Login instance
+     */
+    public Login login() {
+        return new Login();
+    }
+
+    public class Login {
+        public UriTemplate auth() {
+            return UriTemplate.buildFromTemplate(provider.configService().serverUrl)
+                    .literal("/login")
+                    .build();
+        }
+    }
 
     public static class Company {
 
@@ -28,15 +52,7 @@ public class AdminURLS {
                     .literal("/company_configuration")
                     .build();
         }
-/*
-        public static UriTemplate administratorCreate() {
-            return UriTemplate.buildFromTemplate(new Config().serverUrl)
-                    .literal("/admin")
-                    .path(UriTemplateBuilder.var("companyId"))
-                    .literal("/administrators")
-                    .build();
-        }
-*/
+
     }
 
     public static class Address {

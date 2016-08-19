@@ -1,12 +1,12 @@
 package bookingbugAPI2.api;
 
-import bookingbugAPI2.services.Http.AbstractHttpService;
-import bookingbugAPI2.services.Cache.AbstractCacheService;
-import bookingbugAPI2.services.Cache.SQLiteCacheService;
+import bookingbugAPI2.services.http.AbstractHttpService;
+import bookingbugAPI2.services.cache.AbstractCacheService;
+import bookingbugAPI2.services.cache.SQLiteCacheService;
 import bookingbugAPI2.services.ConfigService;
-import bookingbugAPI2.services.Logger.AbstractLoggerService;
-import bookingbugAPI2.services.Logger.JavaLoggerService;
-import bookingbugAPI2.services.Http.OkHttpService;
+import bookingbugAPI2.services.logger.AbstractLoggerService;
+import bookingbugAPI2.services.logger.JavaLoggerService;
+import bookingbugAPI2.services.http.OkHttpService;
 import bookingbugAPI2.services.ServiceProvider;
 
 /**
@@ -32,7 +32,7 @@ public abstract class AbstractAPI<T> implements ServiceProvider {
     }
 
     /**
-     * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
+     * Calls {@link bookingbugAPI2.services.cache.AbstractCacheService#setOneTimeFresh(boolean)}
      * Disables and clears the cache just for the next api call if {@code fresh} is true
      * @return API instance
      */
@@ -50,8 +50,8 @@ public abstract class AbstractAPI<T> implements ServiceProvider {
     }
 
     /**
-     * Calls {@link bookingbugAPI2.services.Cache.AbstractCacheService#setOneTimeFresh(boolean)}
-     *       {@link bookingbugAPI2.services.Cache.AbstractCacheService#invalidateResultsByTag(String)}
+     * Calls {@link bookingbugAPI2.services.cache.AbstractCacheService#setOneTimeFresh(boolean)}
+     *       {@link bookingbugAPI2.services.cache.AbstractCacheService#invalidateResultsByTag(String)}
      * Disables the cache just for the next call and clears all cache records with same CACHE_TAG if {@code fresh} is true
      * <b>Must be called on terminal api instances (CompanyAPI, etc)</b>
      * @return

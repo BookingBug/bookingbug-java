@@ -3,9 +3,9 @@ package bookingbugAPI2.api.admin;
 import bookingbugAPI2.api.API;
 import bookingbugAPI2.api.AbstractAPI;
 import bookingbugAPI2.models.*;
-import bookingbugAPI2.services.Cache.MockCacheService;
-import bookingbugAPI2.services.Cache.SQLiteCacheService;
-import bookingbugAPI2.services.Http.OkHttpService;
+import bookingbugAPI2.services.cache.MockCacheService;
+import bookingbugAPI2.services.cache.SQLiteCacheService;
+import bookingbugAPI2.services.http.OkHttpService;
 import bookingbugAPI2.services.ServiceProvider;
 import com.squareup.okhttp.mockwebserver.Dispatcher;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
@@ -49,7 +49,7 @@ public abstract class AbstractAPITest {
         @Override
         protected HttpServiceResponse callApi(URL url, String method, String contentType, Map params, String CACHE_TAG) throws HttpException {
             String strUrl = url.toString();
-            strUrl = strUrl.replaceFirst("^(?:https?:\\/\\/)?(?:[^@\\n]+@)?(?:www\\.)?([^:\\/\\n]+)", provider.configService().serverUrl);
+            strUrl = strUrl.replaceFirst("^(?:https?:\\/\\/)?(?:[^@\\n]+@)?(?:www\\.)?([^:\\/\\n]+)(:\\d+)?", provider.configService().serverUrl);
             try {
                 return super.callApi(new URL(strUrl), method, contentType, params, CACHE_TAG);
             } catch (MalformedURLException e) {

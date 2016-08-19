@@ -8,6 +8,8 @@ import com.squareup.okhttp.mockwebserver.Dispatcher;
 import com.squareup.okhttp.mockwebserver.MockResponse;
 import com.squareup.okhttp.mockwebserver.MockWebServer;
 import com.squareup.okhttp.mockwebserver.RecordedRequest;
+import helpers2.HttpServiceResponse;
+import helpers2.Utils;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -37,7 +39,7 @@ public class AdministratorAPITest extends AbstractAPITest {
                 return new MockResponse().setResponseCode(201).setBody(resp.toString());
             }
 
-            return new MockResponse().setResponseCode(400).setBody("{}");
+            return new MockResponse().setResponseCode(200).setBody(ModelTest.getJSON("json/admin.json").toString());
         }
     };
 
@@ -46,7 +48,15 @@ public class AdministratorAPITest extends AbstractAPITest {
     public void setUp() {
         super.setUp();
         company = getCompany();
-        administrator = getAdministrator();
+        MockWebServer server = null;
+        try {
+            server = mockServer(dispatcher);
+            administrator = getAdministrator(mockAPI);
+            server.shutdown();
+        } catch (IOException e) {
+            e.printStackTrace();
+            administrator = null;
+        }
     }
 
     @Test
@@ -84,6 +94,18 @@ public class AdministratorAPITest extends AbstractAPITest {
             e.printStackTrace();
             assert false : e;
         }
+    }
+
+    @Test
+    public void getAdministratorForLogin() throws IOException {
+        MockWebServer server = mockServer(dispatcher);
+        //TODO: replace with login api
+        Login login = new Login(new HttpServiceResponse(Utils.stringToContentRep(ModelTest.getJSON("json/login.json").toString())));
+
+        Administrator administrator = mockAPI.admin().administrator().getAdministratorForLogin(login);
+        assertNotNull(administrator);
+
+        server.shutdown();
     }
 
     //TODO: Fix 405 Not allowed
