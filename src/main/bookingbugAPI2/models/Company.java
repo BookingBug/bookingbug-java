@@ -23,25 +23,26 @@ import java.util.Map;
 
 import static com.theoryinpractise.halbuilder.api.RepresentationFactory.HAL_JSON;
 
-public class Company extends BBRoot{
+public class Company extends BBRoot {
 
     private Service servicesList;
     private Administrator administratorList;
     private BBRoot administratorSchema;
 
 
-    public Company(HttpServiceResponse httpServiceResponse){
+    public Company(HttpServiceResponse httpServiceResponse) {
         super(httpServiceResponse);
     }
 
 
-    public Company(HttpServiceResponse httpServiceResponse, String auth_token){
+    public Company(HttpServiceResponse httpServiceResponse, String auth_token) {
         super(httpServiceResponse);
         this.auth_token = auth_token;
     }
 
 
-    public Company() {}
+    public Company() {
+    }
 
 
 /*
@@ -69,11 +70,12 @@ public class Company extends BBRoot{
 
     /**
      * Load All of the Links and Properties of a Company
+     *
      * @return CompanyConfig
      * @throws IOException
      */
     public CompanyConfig companyRead_Admin() throws IOException {
-        URL url = new URL (AdminURLS.Company.companyConfigRead().set("companyId", this.id).expand());
+        URL url = new URL(AdminURLS.Company.companyConfigRead().set("companyId", this.id).expand());
         BBCollection<CompanyConfig> config = new BBCollection<CompanyConfig>(PlainHttpService.api_GET(url, auth_token), auth_token, "config", CompanyConfig.class);
         return config.getObjectAtIndex(0);
     }
@@ -81,6 +83,7 @@ public class Company extends BBRoot{
 
     /**
      * Get the Bookable Items Based on Another Item
+     *
      * @param bilParams
      * @return BBCollection<BookableItem>
      * @throws IOException
@@ -95,6 +98,7 @@ public class Company extends BBRoot{
 
     /**
      * Get All Bookable Services
+     *
      * @return BBCollection<Service>
      * @throws IOException
      */
@@ -121,6 +125,7 @@ public class Company extends BBRoot{
 
     /**
      * List of Services for a Company.
+     *
      * @return BBCollection<Service>
      * @throws IOException
      */
@@ -136,6 +141,7 @@ public class Company extends BBRoot{
 
     /**
      * Get a Specific Service.
+     *
      * @param serviceId Service Id
      * @return Service
      * @throws IOException
@@ -149,6 +155,7 @@ public class Company extends BBRoot{
 
     /**
      * Load a Specific Service Details
+     *
      * @param serviceId
      * @return Service
      * @throws IOException
@@ -170,6 +177,7 @@ public class Company extends BBRoot{
 
     /**
      * Get All Bookable People for a Company.
+     *
      * @return BBCollection<People>
      * @throws IOException
      */
@@ -190,6 +198,7 @@ public class Company extends BBRoot{
 
     /**
      * Get a Specific Bookable Person’s Details.
+     *
      * @param personId Person Id
      * @return People
      * @throws IOException
@@ -203,6 +212,7 @@ public class Company extends BBRoot{
 
     /**
      * Get a Specific Person Details using a Reference ID
+     *
      * @return People
      * @throws IOException
      */
@@ -216,6 +226,7 @@ public class Company extends BBRoot{
     /**
      * Get All Bookable Resources
      * Results are returned as a paginated list.
+     *
      * @return BBCollection<Resource>
      * @throws IOException
      */
@@ -228,6 +239,7 @@ public class Company extends BBRoot{
 
     /**
      * Get All Questions for a Company
+     *
      * @param qlParams
      * @return BBCollection<Resource>
      * @throws IOException
@@ -242,6 +254,7 @@ public class Company extends BBRoot{
 
     /**
      * resourceList_Admin
+     *
      * @param rlParams
      * @return BBCollection<Resource>
      * @throws IOException
@@ -256,6 +269,7 @@ public class Company extends BBRoot{
 
     /**
      * Get a Specific Bookable Resource
+     *
      * @param resourceId Resource Id
      * @return Resource
      * @throws IOException
@@ -269,6 +283,7 @@ public class Company extends BBRoot{
 
     /**
      * Load a Specific Resource Details
+     *
      * @param resourceId
      * @return Resource
      * @throws IOException
@@ -282,6 +297,7 @@ public class Company extends BBRoot{
 
     /**
      * Search for a Range of Calendar Bookings for a Business.
+     *
      * @param slParams SlotListParams
      * @return BBCollection<Slot>
      * @throws IOException
@@ -296,6 +312,7 @@ public class Company extends BBRoot{
 
     /**
      * Get the Details and Links of a Specific Booked Slot
+     *
      * @param slotId
      * @return Slot
      * @throws IOException
@@ -309,6 +326,7 @@ public class Company extends BBRoot{
 
     /**
      * Load All of the Links and Properties of a Company
+     *
      * @param companyId Company Id
      * @return Resource
      * @throws IOException
@@ -321,6 +339,7 @@ public class Company extends BBRoot{
 
     /**
      * Get a List of Bookable Events.
+     *
      * @return BBCollection<Event>
      * @throws IOException
      */
@@ -330,6 +349,7 @@ public class Company extends BBRoot{
 
     /**
      * Get a List of Bookable Events.
+     *
      * @param params Parameters for pagination
      * @return BBCollection<Event>
      * @throws IOException
@@ -345,6 +365,7 @@ public class Company extends BBRoot{
 
     /**
      * Get a Specific Event.
+     *
      * @return Event
      * @throws IOException
      */
@@ -357,6 +378,7 @@ public class Company extends BBRoot{
 
     /**
      * Get the Bookable Items Based on Another Item
+     *
      * @return BBCollection<BookableItem>
      * @throws IOException
      */
@@ -369,6 +391,7 @@ public class Company extends BBRoot{
 
     /**
      * This loads a list of bookable items for a particular date
+     *
      * @return BBCollection<BookableItem>
      * @throws IOException
      */
@@ -381,6 +404,7 @@ public class Company extends BBRoot{
 
     /**
      * Get Data for a range of Days
+     *
      * @return Resource
      * @throws IOException
      */
@@ -388,7 +412,7 @@ public class Company extends BBRoot{
         URL url = new URL(
                 PublicURLS.Bookable.availabilityDaysForBookableItem()
                         .set("companyId", this.id)
-                        .set((Map)params.getParams())
+                        .set((Map) params.getParams())
                         .expand());
         return new BBRoot(PlainHttpService.api_GET(url, auth_token), auth_token);
     }
@@ -396,6 +420,7 @@ public class Company extends BBRoot{
 
     /**
      * Get Data for availabile times for a day
+     *
      * @return Resource
      * @throws IOException
      */
@@ -403,7 +428,7 @@ public class Company extends BBRoot{
         URL url = new URL(
                 PublicURLS.Bookable.availabilityTimesForBookableItem()
                         .set("companyId", this.id)
-                        .set((Map)params.getParams())
+                        .set((Map) params.getParams())
                         .expand());
         return new BBCollection<BookableAvailability>(PlainHttpService.api_GET(url, auth_token), auth_token, "events", BookableAvailability.class);
     }
@@ -411,6 +436,7 @@ public class Company extends BBRoot{
 
     /**
      * Check if available
+     *
      * @return Resource
      * @throws IOException
      */
@@ -422,6 +448,7 @@ public class Company extends BBRoot{
 
     /**
      * Details about how a client should book
+     *
      * @return Resource
      * @throws IOException
      */
@@ -433,6 +460,7 @@ public class Company extends BBRoot{
 
     /**
      * Get All Event Groups.
+     *
      * @return BBCollection<EventGroup>
      * @throws IOException
      */
@@ -446,11 +474,12 @@ public class Company extends BBRoot{
 
     /**
      * Get a Specific Event Group.
+     *
      * @return EventGroup
      * @throws IOException
      */
     public EventGroup eventGroupRead(String eventGroupId) throws IOException {
-        URL url = new URL (PublicURLS.EventGroup.eventGroupRead().set("companyId", this.id).set("serviceId", eventGroupId).expand());
+        URL url = new URL(PublicURLS.EventGroup.eventGroupRead().set("companyId", this.id).set("serviceId", eventGroupId).expand());
         BBCollection<EventGroup> eventGroups = new BBCollection<EventGroup>(PlainHttpService.api_GET(url, auth_token), auth_token, "event_group", EventGroup.class);
         return eventGroups.getObjectAtIndex(0);
     }
@@ -458,6 +487,7 @@ public class Company extends BBRoot{
 
     /**
      * Get a List of Courses or Repeating Events for a Company.
+     *
      * @return BBCollection<EventChain>
      * @throws IOException
      */
@@ -467,6 +497,7 @@ public class Company extends BBRoot{
 
     /**
      * Get a List of Courses or Repeating Events for a Company.
+     *
      * @param params Parameters for pagination
      * @return BBCollection<EventChain>
      * @throws IOException
@@ -483,11 +514,12 @@ public class Company extends BBRoot{
 
     /**
      * Get a Specific Event Chain.
+     *
      * @return EventChain
      * @throws IOException
      */
     public EventChain eventChainRead(String eventChainId) throws IOException {
-        URL url = new URL (PublicURLS.EventChain.eventChainRead().set("companyId", this.id).set("eventChainId", eventChainId).expand());
+        URL url = new URL(PublicURLS.EventChain.eventChainRead().set("companyId", this.id).set("eventChainId", eventChainId).expand());
         BBCollection<EventChain> eventChains = new BBCollection<EventChain>(PlainHttpService.api_GET(url, auth_token), auth_token, "event_chain", EventChain.class);
         return eventChains.getObjectAtIndex(0);
     }
@@ -496,6 +528,7 @@ public class Company extends BBRoot{
     /**
      * Get All Questions for a Company.
      * <BR>Results are returned as a group of question for a specific question group.
+     *
      * @return BBCollection<BookingQuestion>
      * @throws IOException
      */
@@ -508,6 +541,7 @@ public class Company extends BBRoot{
 
     /**
      * Question Read
+     *
      * @param questionId Question Id
      * @return BookingQuestion
      * @throws IOException
@@ -521,6 +555,7 @@ public class Company extends BBRoot{
 
     /**
      * Get all Survey Questions for a Service
+     *
      * @param detail_group_id Question Group Id
      * @return BBCollection<SurveyQuestion>
      * @throws IOException
@@ -534,6 +569,7 @@ public class Company extends BBRoot{
 
     /**
      * List of Categories for a Company.
+     *
      * @return BBCollection<Category>
      * @throws IOException
      */
@@ -547,6 +583,7 @@ public class Company extends BBRoot{
 
     /**
      * Load a Specific Category Details
+     *
      * @param categoryId Category Id
      * @return Category
      * @throws IOException
@@ -554,12 +591,13 @@ public class Company extends BBRoot{
     public Category categoryRead(String categoryId) throws IOException {
         URL url = new URL(PublicURLS.Category.categoryRead().set("companyId", this.id).set("categoryId", categoryId).expand());
         BBCollection<Category> categories = new BBCollection<Category>(PlainHttpService.api_GET(url, auth_token), auth_token, "categories", Category.class);
-        return (Category)categories.getObjectAtIndex(0);
+        return (Category) categories.getObjectAtIndex(0);
     }
 
 
     /**
      * List of Categories for a Company
+     *
      * @return Resource
      * @throws IOException
      */
@@ -571,6 +609,7 @@ public class Company extends BBRoot{
 
     /**
      * Create a new client for a business
+     *
      * @return Resource
      * @throws IOException
      */
@@ -582,6 +621,7 @@ public class Company extends BBRoot{
 
     /**
      * Update a client.
+     *
      * @param clientId
      * @return Resource
      * @throws IOException
@@ -594,6 +634,7 @@ public class Company extends BBRoot{
 
     /**
      * Search for a client by email against the company that you are currently logged in as
+     *
      * @param email Email
      * @return Resource
      * @throws IOException
@@ -607,6 +648,7 @@ public class Company extends BBRoot{
 
     /**
      * Get all the child clients of a particular client
+     *
      * @param clientId Client Id
      * @return Resource
      * @throws IOException
@@ -621,6 +663,7 @@ public class Company extends BBRoot{
 
     /**
      * Get All Custom Booking Text for a Company
+     *
      * @return
      * @throws IOException
      */
@@ -632,6 +675,7 @@ public class Company extends BBRoot{
 
     /**
      * Get all possible Space Statuses for a Company
+     *
      * @return Resource
      * @throws IOException
      */
@@ -641,15 +685,15 @@ public class Company extends BBRoot{
     }
 
 
-
     /**
      * Loads all of the public settings for a company, this allows you to configure a booking widget,
      * and shows all of the details need to book and show an appropriate widget.
+     *
      * @return CompanySettings
      * @throws IOException
      */
     public CompanySettings getSettings() throws IOException {
-        if(getRep().getResourcesByRel("settings").size() > 0) {
+        if (getRep().getResourcesByRel("settings").size() > 0) {
             //Return settings from embedded
             return new CompanySettings(new HttpServiceResponse((ContentRepresentation) getRep().getResourcesByRel("settings").get(0)));
         } else {
@@ -663,6 +707,7 @@ public class Company extends BBRoot{
      * You can either get all the company questions or pass a param to specifiy that you only want company questions
      * that apply to either a service, resource, person, company:
      * <BR>Service = 1, Resource = 2, Person = 3, Company = 4.
+     *
      * @return Resource
      * @throws IOException
      */
@@ -677,6 +722,7 @@ public class Company extends BBRoot{
      * <BR>Provide a company id to retrieve a list of addresses associated with that company.
      * This is a list of company branch/store/resource addresses, not client addresses.
      * Results are returned as a paginated list.
+     *
      * @return Resource
      * @throws IOException
      */
@@ -689,6 +735,7 @@ public class Company extends BBRoot{
 
     /**
      * Get All Addresses for a Company.
+     *
      * @param alParams AddressListParams
      * @return BBCollection<Address>
      * @throws IOException
@@ -704,19 +751,20 @@ public class Company extends BBRoot{
     /**
      * Get a Specific Address.
      * <BR>Provide a company id and address id to retrieve the details and links of that branch/store/resource address.
+     *
      * @param addressId Address Id
      * @return Resource
      * @throws IOException
      */
     public Address addressRead(String addressId) throws IOException {
-        URL url = new URL (AdminURLS.Address.addressRead().set("companyId", this.id).set("addressId", addressId).expand());
+        URL url = new URL(AdminURLS.Address.addressRead().set("companyId", this.id).set("addressId", addressId).expand());
         BBCollection<Address> addresses = new BBCollection<Address>(PlainHttpService.api_GET(url, auth_token), auth_token, "address", Address.class);
         return addresses.getObjectAtIndex(0);
     }
 
 
     public Address addressRead_Admin(String addressId) throws IOException {
-        URL url = new URL (AdminURLS.Address.addressRead().set("companyId", this.id).set("id", addressId).expand());
+        URL url = new URL(AdminURLS.Address.addressRead().set("companyId", this.id).set("id", addressId).expand());
         BBCollection<Address> addresses = new BBCollection<Address>(PlainHttpService.api_GET(url, auth_token), auth_token, "address", Address.class);
         return addresses.getObjectAtIndex(0);
     }
@@ -724,6 +772,7 @@ public class Company extends BBRoot{
 
     /**
      * Sessions. Results are returned as a paginated list.
+     *
      * @param slParams
      * @return BBCollection<Session>
      * @throws IOException
@@ -737,7 +786,7 @@ public class Company extends BBRoot{
 
 
     public Session sessionRead_Admin(String sessionId) throws IOException {
-        URL url = new URL (AdminURLS.Session.sessionRead().set("companyId", this.id).set("sessionId", sessionId).expand());
+        URL url = new URL(AdminURLS.Session.sessionRead().set("companyId", this.id).set("sessionId", sessionId).expand());
         BBCollection<Session> session = new BBCollection<Session>(PlainHttpService.api_GET(url, auth_token), auth_token, "session", Session.class);
         return session.getObjectAtIndex(0);
     }
@@ -745,6 +794,7 @@ public class Company extends BBRoot{
 
     /**
      * Get the address result for a particular customer
+     *
      * @param customerId Customer Id
      * @return Resource
      * @throws IOException
@@ -758,6 +808,7 @@ public class Company extends BBRoot{
 
     /**
      * Get a list of possible addresses from a postcode
+     *
      * @param postcode Postcode
      * @return Resource
      * @throws IOException
@@ -772,6 +823,7 @@ public class Company extends BBRoot{
 
     /**
      * Get all Products for a Company
+     *
      * @return Resource
      * @throws IOException
      */
@@ -784,12 +836,13 @@ public class Company extends BBRoot{
 
     /**
      * Get a specific Product
+     *
      * @param productId Product Id
      * @return Resource
      * @throws IOException
      */
     public Product productsRead(String productId) throws IOException {
-        URL url = new URL (PublicURLS.Products.productRead().set("companyId", this.id).set("productId", productId).expand());
+        URL url = new URL(PublicURLS.Products.productRead().set("companyId", this.id).set("productId", productId).expand());
         BBCollection<Product> products = new BBCollection<Product>(PlainHttpService.api_GET(url, auth_token), auth_token, "product", Product.class);
         return products.getObjectAtIndex(0);
     }
@@ -797,6 +850,7 @@ public class Company extends BBRoot{
 
     /**
      * Slot List
+     *
      * @return Resource
      * @throws IOException
      */
@@ -809,6 +863,7 @@ public class Company extends BBRoot{
 
     /**
      * Slot Read
+     *
      * @param slotId Slot Id
      * @return Resource
      * @throws IOException
@@ -822,6 +877,7 @@ public class Company extends BBRoot{
 
     /**
      * Get a list of images attached to an event group.
+     *
      * @param eventGroupId Event Group Id
      * @return Resource
      * @throws IOException
@@ -834,8 +890,9 @@ public class Company extends BBRoot{
 
     /**
      * TODO: ???
+     *
      * @param eventGroupId Event Group Id
-     * @param id Id
+     * @param id           Id
      * @return
      * @throws IOException
      */
@@ -847,6 +904,7 @@ public class Company extends BBRoot{
 
     /**
      * Get all the deals for a Company
+     *
      * @return Resource
      * @throws IOException
      */
@@ -858,11 +916,12 @@ public class Company extends BBRoot{
 
     /**
      * Get all the deals for a Company.
+     *
      * @return BBCollection<Deal>
      * @throws IOException
      */
     public BBCollection<Deal> dealList_Admin() throws IOException {
-        URL url = new URL (AdminURLS.Deal.dealList().set("companyId", this.id).expand());
+        URL url = new URL(AdminURLS.Deal.dealList().set("companyId", this.id).expand());
         BBCollection<Deal> deals = new BBCollection<Deal>(PlainHttpService.api_GET(url, auth_token), auth_token, "deals", Deal.class);
         return deals;
     }
@@ -870,12 +929,13 @@ public class Company extends BBRoot{
 
     /**
      * Get the deal from a company using the reference id.
+     *
      * @param referenceId
      * @return Deal
      * @throws IOException
      */
     public Deal dealReadByRef_Admin(String referenceId) throws IOException {
-        URL url = new URL (AdminURLS.Deal.dealReadByRef().set("companyId", this.id).set("referenceId", referenceId).expand());
+        URL url = new URL(AdminURLS.Deal.dealReadByRef().set("companyId", this.id).set("referenceId", referenceId).expand());
         BBCollection<Deal> deals = new BBCollection<Deal>(PlainHttpService.api_GET(url, auth_token), auth_token, "deal", Deal.class);
         return deals.getObjectAtIndex(0);
     }
@@ -883,12 +943,13 @@ public class Company extends BBRoot{
 
     /**
      * List all the deals codes for a deal
+     *
      * @param dealId
      * @return BBCollection<DealCodes>
      * @throws IOException
      */
     public BBCollection<DealCodes> dealCodesList_Admin(String dealId) throws IOException {
-        URL url = new URL (AdminURLS.Deal.dealCodes().set("companyId", this.id).set("dealId", dealId).expand());
+        URL url = new URL(AdminURLS.Deal.dealCodes().set("companyId", this.id).set("dealId", dealId).expand());
         BBCollection<DealCodes> dealCodes = new BBCollection<DealCodes>(PlainHttpService.api_GET(url, auth_token), auth_token, "dealCodes", DealCodes.class);
         return dealCodes;
     }
@@ -896,6 +957,7 @@ public class Company extends BBRoot{
 
     /**
      * Get A Deal
+     *
      * @param dealId Deal Id
      * @return Resource
      * @throws IOException
@@ -908,6 +970,7 @@ public class Company extends BBRoot{
 
     /**
      * Get all the service groups for a Company
+     *
      * @return Resource
      * @throws IOException
      */
@@ -919,6 +982,7 @@ public class Company extends BBRoot{
 
     /**
      * Get a Service Group
+     *
      * @param groupId Group Id
      * @return Resource
      * @throws IOException
@@ -931,6 +995,7 @@ public class Company extends BBRoot{
 
     /**
      * Get Contents and Details of the Current Cached Basket
+     *
      * @return Resource
      * @throws IOException
      */
@@ -942,6 +1007,7 @@ public class Company extends BBRoot{
 
     /**
      * Add Shopping Item To Basket
+     *
      * @return Resource
      * @throws IOException
      */
@@ -953,6 +1019,7 @@ public class Company extends BBRoot{
 
     /**
      * Confirm and Pay for the Items in the Shopping Basket
+     *
      * @return Resource
      * @throws IOException
      */
@@ -964,6 +1031,7 @@ public class Company extends BBRoot{
 
     /**
      * Empty the Shopping Basket
+     *
      * @return Resource
      * @throws IOException
      */
@@ -976,6 +1044,7 @@ public class Company extends BBRoot{
 
     /**
      * Get the Details of a Specific Item in the Shopping Basket
+     *
      * @param basketItemId Basket Item Id
      * @return Resource
      * @throws IOException
@@ -988,6 +1057,7 @@ public class Company extends BBRoot{
 
     /**
      * Remove an Item for the Shopping Basket
+     *
      * @param basketItemId Basket Item Id
      * @return Resource
      * @throws IOException
@@ -1000,6 +1070,7 @@ public class Company extends BBRoot{
 
     /**
      * Add a new file attachment to a basket item
+     *
      * @param basketItemId Basket Item Id
      * @return Resource
      * @throws IOException
@@ -1012,11 +1083,12 @@ public class Company extends BBRoot{
 
     /**
      * Update a file attachment for a basket item
+     *
      * @param basketItemId Basket Item Id
      * @return Resource
      * @throws IOException
      */
-    public Resource updateFileAttachmentToBasketItem(String basketItemId, Map<String,String> params) throws IOException {
+    public Resource updateFileAttachmentToBasketItem(String basketItemId, Map<String, String> params) throws IOException {
         URL url = new URL(PublicURLS.Basket.updateFileAttachmentToBasketItem().set("companyId", this.id).set("basketItemId", basketItemId).expand());
         return new Resource(PlainHttpService.api_PUT(url, params, auth_token), auth_token);
     }
@@ -1024,7 +1096,8 @@ public class Company extends BBRoot{
 
     /**
      * Get a file attachment for a basket
-     * @param basketId Basket Id
+     *
+     * @param basketId     Basket Id
      * @param attachmentId Attachment Id
      * @return
      * @throws IOException
@@ -1037,6 +1110,7 @@ public class Company extends BBRoot{
 
     /**
      * Attempt to apply a deal to a basket
+     *
      * @return Resource
      * @throws IOException
      */
@@ -1048,10 +1122,11 @@ public class Company extends BBRoot{
 
     /**
      * Delete a coupon from a basket
+     *
      * @return Resource
      * @throws IOException
      */
-    public Resource removeDeal(Map<String,String> params) throws IOException {
+    public Resource removeDeal(Map<String, String> params) throws IOException {
         URL url = new URL(PublicURLS.Basket.removeDeal().set("companyId", this.id).expand());
         return new Resource(PlainHttpService.api_PUT(url, params, auth_token), auth_token);
     }
@@ -1059,10 +1134,11 @@ public class Company extends BBRoot{
 
     /**
      * Attempt to apply a discount coupon to a basket
+     *
      * @return Resource
      * @throws IOException
      */
-    public Resource applyBasketCoupon(Map<String,String> params) throws IOException {
+    public Resource applyBasketCoupon(Map<String, String> params) throws IOException {
         URL url = new URL(PublicURLS.Basket.applyBasketCoupon().set("companyId", this.id).expand());
         return new Resource(PlainHttpService.api_POST(url, params, auth_token), auth_token);
     }
@@ -1070,6 +1146,7 @@ public class Company extends BBRoot{
 
     /**
      * Delete a coupon from a basket
+     *
      * @return Resource
      * @throws IOException
      */
@@ -1080,19 +1157,20 @@ public class Company extends BBRoot{
 
     public Booking bookingCreate_Admin(BookingCreateParams bCParams) throws IOException {
         String urlStr = AdminURLS.Bookings.bookingCreate().set("companyId", this.id).expand();
-        URL url = new URL (urlStr);
+        URL url = new URL(urlStr);
 
         return new Booking(PlainHttpService.api_POST(url, bCParams.getParams(), auth_token), auth_token);
     }
 
     /**
      * getBookingList
+     *
      * @return BBCollection<Booking>
      * @throws IOException
      */
     public BBCollection<Booking> bookingList_Admin(BookingListParams bLParams) throws IOException {
         URL url;
-        if(getLink("bookings") != null)
+        if (getLink("bookings") != null)
             url = new URL(Utils.inflateLink(getLink("bookings"), bLParams.getParams()));
         else {
             UriTemplate template = AdminURLS.Bookings.bookingList().set("companyId", this.id);
@@ -1105,116 +1183,48 @@ public class Company extends BBRoot{
 
     /**
      * getBookingRead_Admin
+     *
      * @param bookingId
      * @return Booking
      * @throws IOException
      */
     public Booking bookingRead_Admin(String bookingId) throws IOException {
-        URL url = new URL (AdminURLS.Bookings.bookingRead().set("companyId", this.id).set("bookingId", bookingId).expand());
+        URL url = new URL(AdminURLS.Bookings.bookingRead().set("companyId", this.id).set("bookingId", bookingId).expand());
         BBCollection<Booking> bookings = new BBCollection<Booking>(PlainHttpService.api_GET(url, auth_token), auth_token, "booking", Booking.class);
         return bookings.getObjectAtIndex(0);
     }
 
 
-
-
     /**
      * Get all the coupons for a Company.
+     *
      * @return BBCollection<Coupons>
      * @throws IOException
      */
     public BBCollection<Coupons> couponsList_Admin() throws IOException {
-        URL url = new URL (AdminURLS.Coupons.couponList().set("companyId", this.id).expand());
+        URL url = new URL(AdminURLS.Coupons.couponList().set("companyId", this.id).expand());
         BBCollection<Coupons> coupons = new BBCollection<Coupons>(PlainHttpService.api_GET(url, auth_token), auth_token, "coupons", Coupons.class);
         return coupons;
     }
 
 
     /**
-     * List of Clients for a Company.
-     * @param clParams
-     * @return BBCollection<Client>
-     * @throws IOException
-     */
-    public BBCollection<Client> clientList_Admin(ClientListParams clParams) throws IOException {
-        String urlStr = AdminURLS.Client.clientList().set("companyId", this.id).expand();
-        URL url = new URL(Utils.inflateLink(urlStr, clParams.getParams()));
-        BBCollection<Client> clients = new BBCollection<Client>(PlainHttpService.api_GET(url, auth_token), auth_token, "clients", Client.class);
-        return clients;
-    }
-
-
-    /**
-     * Load a Specific Client Details.
-     * @param clientId
-     * @return Client
-     * @throws IOException
-     */
-    public Client clientRead_Admin(String clientId) throws IOException {
-        URL url = new URL (AdminURLS.Client.clientRead().set("companyId", this.id).set("clientId", clientId).expand());
-        BBCollection<Client> clients = new BBCollection<Client>(PlainHttpService.api_GET(url, auth_token), auth_token, "clients", Client.class);
-        return clients.getObjectAtIndex(0);
-    }
-
-    /**
-     * Create a Client for a company
-     * @param cCParams
-     * @return Client
-     * @throws IOException
-     */
-    public Client clientCreate_Admin(ClientCreateParams cCParams) throws IOException {
-        String urlStr = AdminURLS.Client.clientCreate().set("companyId", this.id).expand();
-        URL url = new URL (urlStr);
-
-        return new Client(PlainHttpService.api_POST(url, cCParams.getParams(), auth_token), auth_token);
-    }
-
-
-    /**
      * Read details about a logged in user, including details about which companies they have access to.
+     *
      * @param userId
      * @return User
      * @throws IOException
      */
     public User userRead_Admin(String userId) throws IOException {
-        URL url = new URL (AdminURLS.User.userRead().set("companyId", this.id).set("userId", userId).expand());
+        URL url = new URL(AdminURLS.User.userRead().set("companyId", this.id).set("userId", userId).expand());
         BBCollection<User> users = new BBCollection<User>(PlainHttpService.api_GET(url, auth_token), auth_token, "user", User.class);
         return users.getObjectAtIndex(0);
     }
 
 
     /**
-     * Get a Specific Client Details using a Reference ID
-     * @param crrParams
-     * @param referenceId
-     * @return Client
-     * @throws IOException
-     */
-    public Client clientReadByRef_Admin(ClientReadRefParams crrParams, String referenceId) throws IOException {
-        String urlStr = AdminURLS.Client.clientReadUsingRefId().set("companyId", this.id).set("referenceId", referenceId).expand();
-        URL url = new URL(Utils.inflateLink(urlStr, crrParams.getParams()));
-        BBCollection<Client> clients = new BBCollection<Client>(PlainHttpService.api_GET(url, auth_token), auth_token, "clients", Client.class);
-        return clients.getObjectAtIndex(0);
-    }
-
-
-    /**
-     * Get a Specific Client Details from their email
-     * @param creParams
-     * @param email
-     * @return Client
-     * @throws IOException
-     */
-    public Client clientReadByEmail_Admin(ClientReadEmailParams creParams, String email) throws IOException {
-        String urlStr = AdminURLS.Client.clientReadUsingEmail().set("companyId", this.id).set("email", email).expand();
-        URL url = new URL(Utils.inflateLink(urlStr, creParams.getParams()));
-        BBCollection<Client> clients = new BBCollection<Client>(PlainHttpService.api_GET(url, auth_token), auth_token, "clients", Client.class);
-        return clients.getObjectAtIndex(0);
-    }
-
-
-    /**
      * Get a list of Purchases.
+     *
      * @param plParams
      * @return BBCollection<Purchase>
      * @throws IOException
@@ -1229,18 +1239,20 @@ public class Company extends BBRoot{
 
     /**
      * Get a Specific Purchase
+     *
      * @param purchaseId
      * @return Purchase
      * @throws IOException
      */
     public Purchase purchaseRead_Admin(String purchaseId) throws IOException {
-        URL url = new URL (AdminURLS.Purchase.purchaseRead().set("companyId", this.id).set("purchaseId", purchaseId).expand());
+        URL url = new URL(AdminURLS.Purchase.purchaseRead().set("companyId", this.id).set("purchaseId", purchaseId).expand());
         BBCollection<Purchase> purchases = new BBCollection<Purchase>(PlainHttpService.api_GET(url, auth_token), auth_token, "purchase", Purchase.class);
         return purchases.getObjectAtIndex(0);
     }
 
     /**
      * Get the Client Schema
+     *
      * @return BBRoot
      * @throws IOException
      */
@@ -1274,6 +1286,7 @@ public class Company extends BBRoot{
 
     /**
      * Create a new Client
+     *
      * @param data
      * @return BBRoot
      * @throws HttpException
@@ -1281,12 +1294,13 @@ public class Company extends BBRoot{
      */
     public BBRoot createClient(Map<String, String> data) throws HttpException, MalformedURLException {
         String link = response.getRep().getLinkByRel("client").getHref();
-        URL url = new URL (link);
+        URL url = new URL(link);
         return new BBRoot(PlainHttpService.api_POST(url, data, auth_token), auth_token);
     }
 
     /**
      * Create a new Person
+     *
      * @param data
      * @return BBRoot
      * @throws HttpException
@@ -1294,12 +1308,13 @@ public class Company extends BBRoot{
      */
     public BBRoot createPerson(Map<String, String> data) throws HttpException, MalformedURLException {
         String uri = AdminURLS.Person.personCreate().set("companyId", get("id")).expand();
-        URL url = new URL (uri);
+        URL url = new URL(uri);
         return new BBRoot(PlainHttpService.api_POST(url, data, auth_token), auth_token);
     }
 
     /**
      * Update a person
+     *
      * @param person
      * @param data
      * @return BBRoot
@@ -1308,17 +1323,18 @@ public class Company extends BBRoot{
      */
     public BBRoot updatePerson(Person person, Map<String, String> data) throws HttpException, MalformedURLException {
         String uri = AdminURLS.Person.personUpdate().set("companyId", get("id")).set("personId", person.get("id")).expand();
-        URL url = new URL (uri);
+        URL url = new URL(uri);
         return new BBRoot(PlainHttpService.api_PUT(url, PlainHttpService.jsonContentType, data, auth_token), auth_token);
     }
 
     /**
      * Get the administrators
+     *
      * @return Administrator
      * @throws IOException
      */
     public Administrator getAdministrators() throws IOException {
-        if(administratorList == null) {
+        if (administratorList == null) {
             String link = response.getRep().getLinkByRel("administrators").getHref();
             URL url = new URL(UriTemplate.fromTemplate(link).expand());
             HttpServiceResponse response = PlainHttpService.api_GET(url, auth_token);
@@ -1329,11 +1345,12 @@ public class Company extends BBRoot{
 
     /**
      * Get the administrator schema
+     *
      * @return BBRoot
      * @throws IOException
      */
     public BBRoot getAdministratorSchema() throws IOException {
-        if(administratorSchema == null) {
+        if (administratorSchema == null) {
             String link = response.getRep().getLinkByRel("new_administrator").getHref();
             URL url = new URL(UriTemplate.fromTemplate(link).expand());
             HttpServiceResponse response = PlainHttpService.api_GET(url, auth_token);
@@ -1344,6 +1361,7 @@ public class Company extends BBRoot{
 
     /**
      * Create a new administrator
+     *
      * @param data
      * @return Administrator
      * @throws HttpException
@@ -1351,12 +1369,13 @@ public class Company extends BBRoot{
      */
     public Administrator createAdministrator(Map<String, String> data) throws HttpException, MalformedURLException {
         String uri = AdminURLS.Administrator.administratorCreate().set("companyId", get("id")).expand();
-        URL url = new URL (uri);
+        URL url = new URL(uri);
         return new Administrator(PlainHttpService.api_POST(url, data, auth_token), auth_token);
     }
 
     /**
      * Update a person
+     *
      * @param data
      * @return BBRoot
      * @throws HttpException
@@ -1364,7 +1383,7 @@ public class Company extends BBRoot{
      */
     public BBRoot updatePerson(Map<String, String> data) throws HttpException, MalformedURLException {
         String uri = AdminURLS.Person.personCreate().set("companyId", get("id")).expand();
-        URL url = new URL (uri);
+        URL url = new URL(uri);
         return new BBRoot(PlainHttpService.api_POST(url, data, auth_token), auth_token);
     }
 
@@ -1888,6 +1907,46 @@ public class Company extends BBRoot{
      */
     public String getExternalBookings() {
         return getLink("external_bookings");
+    }
+
+    /**
+     * Check if company has resources configured
+     *
+     * @return true if the company has resources configured
+     */
+    public boolean hasResources() {
+        //TODO: Use settings when BB updates the api
+        return getResourcesLink() != null;
+    }
+
+    /**
+     * Check if company has events configured
+     *
+     * @return true if the company has events configured
+     */
+    public boolean hasEvents() {
+        //TODO: Use settings when BB updates the api
+        return getEventsLink() != null;
+    }
+
+    /**
+     * Check if company has services configured
+     *
+     * @return true if the company has services configured
+     */
+    public boolean hasServices() {
+        //TODO: Use settings when BB updates the api
+        return getServicesLink() != null;
+    }
+
+    /**
+     * Check if company has people configured
+     *
+     * @return true if the company has people configured
+     */
+    public boolean hasPeople() {
+        //TODO: Use settings when BB updates the api
+        return getPeopleLink() != null;
     }
 
 }

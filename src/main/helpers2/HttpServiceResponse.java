@@ -1,6 +1,8 @@
 package helpers2;
 
 import bookingbugAPI2.services.http.PlainHttpService;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.theoryinpractise.halbuilder.api.ContentRepresentation;
 
 import java.util.Map;
@@ -8,13 +10,16 @@ import java.util.Map;
 
 public class HttpServiceResponse {
 
+    @JsonIgnore
     protected ContentRepresentation rep;
+
     protected String url;
     protected String method;
     protected String contentType = PlainHttpService.jsonContentType;
     protected Map params;
     protected String authToken;
 
+    public HttpServiceResponse(){}
 
     public HttpServiceResponse(ContentRepresentation rep) {
         this.rep = rep;
@@ -51,6 +56,15 @@ public class HttpServiceResponse {
         this.rep = rep;
     }
 
+    @JsonProperty
+    public String getRepString() {
+        return this.getRep().getContent();
+    }
+
+    public void setRepString(String rep) {
+        this.rep = Utils.stringToContentRep(rep);
+    }
+
 
     public String getUrl() {
         return url;
@@ -69,6 +83,13 @@ public class HttpServiceResponse {
         this.method = method;
     }
 
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
 
     public void setParams(Map params) {
         this.params = params;
@@ -79,6 +100,7 @@ public class HttpServiceResponse {
         return params;
     }
 
+    @JsonIgnore
     public String getParamsStr() {
 
         Config config = new Config();

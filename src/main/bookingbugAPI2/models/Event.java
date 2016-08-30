@@ -195,4 +195,13 @@ public class Event extends BBRoot {
     public String getBookLink() {
         return getLink("book");
     }
+
+    /**
+     * Returns the new booking link
+     *
+     * @return the link to create a new booking
+     */
+    public String getNewBookingLink() {
+        return getLink("new_booking");
+    }
 }

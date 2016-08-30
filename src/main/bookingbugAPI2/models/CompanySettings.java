@@ -119,8 +119,8 @@ public class CompanySettings extends BBRoot {
      *
      * @return the payment tax associated with the current company settings.
      */
-    public int getPaymentTax() {
-        return getInteger("payment_tax", 0);
+    public double getPaymentTax() {
+        return getDouble("payment_tax", 0.0);
     }
 
     /**

@@ -42,7 +42,6 @@ public class BBRoot {
     protected HttpServiceResponse response;
     protected String auth_token = null;
     public String id;
-    public Map<String, String> data;
     public int INTEGER_DEFAULT_VALUE = 0;
     public double DOUBLE_DEFAULT_VALUE = 0.0;
     public boolean BOOLEAN_DEFAULT_VALUE = false;
@@ -219,7 +218,7 @@ public class BBRoot {
         String link = null;
         try {
             link = response.getRep().getLinkByRel(rel).getHref();
-        } catch (RepresentationException e) {
+        } catch (RepresentationException | NullPointerException e) {
             //e.printStackTrace();
         }
         return link;
@@ -252,9 +251,9 @@ public class BBRoot {
     }
 
     public String toPrettyString() {
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = CustomJsonDeserializer.getMapper();
         try {
-            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(response.getRep());
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(response);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return toString();

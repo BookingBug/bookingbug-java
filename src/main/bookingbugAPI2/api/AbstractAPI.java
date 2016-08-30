@@ -114,6 +114,7 @@ public abstract class AbstractAPI<T> implements ServiceProvider {
         public AbstractHttpService httpService;
         public ConfigService configService;
 
+        //TODO: fix references to services (same for all instances)
         public ApiConfig(ServiceProvider provider) {
             this.cacheService = provider.cacheService();
             this.loggerService = provider.loggerService();

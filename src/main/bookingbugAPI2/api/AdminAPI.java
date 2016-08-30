@@ -3,6 +3,7 @@ package bookingbugAPI2.api;
 import bookingbugAPI2.models.*;
 import bookingbugAPI2.models.params.*;
 import bookingbugAPI2.services.ServiceProvider;
+import bookingbugAPI2.services.http.AbstractHttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import helpers2.Http;
 import helpers2.HttpServiceResponse;
@@ -10,6 +11,7 @@ import helpers2.Utils;
 import rx.Observable;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -86,7 +88,7 @@ public class AdminAPI extends AbstractAPI {
             return new Login(httpService().api_POST(url, params));
         }
 
-        public Observable<Login> authWithCompanyAdministratorObs(final Administrator administrator, final String email, final String password) throws IOException {
+        public Observable<Login> authWithCompanyAdministratorObs(final Administrator administrator, final String email, final String password) {
             return Observable.fromCallable(() -> authWithCompanyAdministrator(administrator, email, password));
         }
     }
@@ -159,6 +161,42 @@ public class AdminAPI extends AbstractAPI {
         public Observable<SchemaForm> getEditBookingSchemaObs(final Booking booking) {
             return Observable.fromCallable(() -> getEditBookingSchema(booking));
         }
+
+        /**
+         * Create a booking for a company with provided parameters
+         *
+         * @param company  The company for booking
+         * @param bCParams The parameters to create the booking with
+         * @return Booking
+         * @throws IOException
+         */
+        public Booking bookingCreate(Company company, BookingParams.Create bCParams) throws IOException {
+            String urlStr = AdminURLS.Bookings.bookingCreate().set("companyId", company.id).expand();
+            URL url = new URL(urlStr);
+
+            return new Booking(httpService().api_POST(url, bCParams.getParams()));
+        }
+
+        public Observable<Booking> bookingCreateObs(final Company company, final BookingParams.Create bCParams) {
+            return Observable.fromCallable(() -> bookingCreate(company, bCParams));
+        }
+
+        /**
+         * Cancel a booking
+         *
+         * @param booking the booking to cancel
+         * @param params  parameters for this call
+         * @return Booking instance
+         * @throws IOException
+         */
+        public Booking cancelBooking(Booking booking, BookingParams.Cancel params) throws IOException {
+            URL url = new URL(booking.getSelf());
+            return new Booking(httpService().api_DELETE(url, Http.jsonContentType, params.getParams(), CACHE_TAG));
+        }
+
+        public Observable<Booking> cancelBookingObs(final Booking booking, final BookingParams.Cancel params) {
+            return Observable.fromCallable(() -> cancelBooking(booking, params));
+        }
     }
 
 
@@ -208,6 +246,41 @@ public class AdminAPI extends AbstractAPI {
 
         public Observable<Company> getCompanyForAdministratorObs(final Administrator administrator) {
             return Observable.fromCallable(() -> getCompanyForAdministrator(administrator));
+        }
+
+        /**
+         * Return the settings for provided company
+         *
+         * @param company the company to retrieve settings for
+         * @return CompanySettings instance
+         * @throws IOException
+         */
+        public CompanySettings getSettingsForCompany(Company company) throws IOException {
+            if (company.getResource("settings") != null)
+                return new CompanySettings(new HttpServiceResponse(company.getResource("settings")));
+            URL url = new URL(company.getSettingsLink());
+            return new CompanySettings(httpService().api_GET(url, CACHE_TAG));
+        }
+
+        public Observable<CompanySettings> getSettingsForCompanyObs(final Company company) {
+            return Observable.fromCallable(() -> getSettingsForCompany(company));
+        }
+
+        /**
+         * Get all the events for a company with provided params. Returns as paginated list
+         *
+         * @param company The company owning the events
+         * @param params  The params to filter the events
+         * @return Collection of Event
+         * @throws IOException
+         */
+        public BBCollection<Event> getEventsForCompany(Company company, CompanyParams.EventList params) throws IOException {
+            URL url = new URL(UriTemplate.fromTemplate(company.getEventsLink()).set(params.getParams()).expand());
+            return new BBCollection<>(httpService().api_GET(url, CACHE_TAG), configService().auth_token, "events", Event.class);
+        }
+
+        public Observable<BBCollection<Event>> getEventsForCompanyObs(final Company company, final CompanyParams.EventList params) {
+            return Observable.fromCallable(() -> getEventsForCompany(company, params));
         }
     }
 
@@ -401,9 +474,9 @@ public class AdminAPI extends AbstractAPI {
          * @throws IOException
          */
         public Client clientRead(Company company, String clientId) throws IOException {
-            URL url = new URL(AdminURLS.Client.clientRead()
+            URL url = new URL(urls.client().clientRead()
                     .set("companyId", company.id)
-                    .set("serviceId", clientId)
+                    .set("clientId", clientId)
                     .expand());
             return new Client(httpService().api_GET(url, CACHE_TAG));
         }
@@ -699,7 +772,7 @@ public class AdminAPI extends AbstractAPI {
             UriTemplate template = Utils.TemplateWithPagination(company.getEventChainsLink(), rlParams);
             URL url = new URL(template.expand());
 
-            return new BBCollection<>(httpService().api_GET(url, CACHE_TAG), configService().auth_token, "eventChains", EventChain.class);
+            return new BBCollection<>(httpService().api_GET(url, CACHE_TAG), configService().auth_token, "event_chains", EventChain.class);
         }
 
         public Observable<BBCollection<EventChain>> eventChainListObs(final Company company, final Params rlParams) {
@@ -780,6 +853,22 @@ public class AdminAPI extends AbstractAPI {
 
         public Observable<SchemaForm> getNewEventChainSchemaObs(final Company company) {
             return Observable.fromCallable(() -> getNewEventChainSchema(company));
+        }
+
+        /**
+         * Get the events for an eventChain
+         *
+         * @param eventChain The eventChain for events
+         * @return Collection of Event
+         * @throws IOException
+         */
+        public BBCollection<Event> getEventsForEventChain(EventChain eventChain) throws IOException {
+            URL url = new URL(eventChain.getEventsLink());
+            return new BBCollection<>(httpService().api_GET(url, CACHE_TAG), configService().auth_token, "events", Event.class);
+        }
+
+        public Observable<BBCollection<Event>> getEventsForEventChainObs(final EventChain eventChain) {
+            return Observable.fromCallable(() -> getEventsForEventChain(eventChain));
         }
     }
 
@@ -875,6 +964,38 @@ public class AdminAPI extends AbstractAPI {
         }
     }
 
+
+    /**
+     * Accessor to create an instance of {@link EventAPI} with current configuration
+     *
+     * @return EventAPI instance
+     */
+    public EventAPI event() {
+        return new EventAPI(newProvider());
+    }
+
+    public class EventAPI extends AbstractAPI<EventAPI> {
+
+        public EventAPI(ServiceProvider provider) {
+            super(provider);
+        }
+
+        /**
+         * Get a schema for creating a new booking with provided event
+         *
+         * @param event The event
+         * @return SchemaForm
+         * @throws IOException
+         */
+        public SchemaForm getNewBookingSchema(Event event) throws IOException {
+            URL url = new URL(UriTemplate.fromTemplate(event.getNewBookingLink()).expand());
+            return new SchemaForm(httpService().api_GET(url, CACHE_TAG));
+        }
+
+        public Observable<SchemaForm> getNewBookingSchemaObs(final Event event) {
+            return Observable.fromCallable(() -> getNewBookingSchema(event));
+        }
+    }
 
     /**
      * Accessor to create an instance of {@link ScheduleAPI} with current configuration

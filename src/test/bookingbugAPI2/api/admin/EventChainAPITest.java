@@ -1,8 +1,12 @@
 package bookingbugAPI2.api.admin;
 
+import bookingbugAPI2.api.API;
+import bookingbugAPI2.api.AbstractAPI;
+import bookingbugAPI2.api.AdminAPI;
 import bookingbugAPI2.models.*;
 import bookingbugAPI2.models.params.EventChainParams;
 import bookingbugAPI2.models.params.Params;
+import bookingbugAPI2.services.cache.MockCacheService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.squareup.okhttp.mockwebserver.Dispatcher;
 import com.squareup.okhttp.mockwebserver.MockResponse;
@@ -12,6 +16,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
@@ -174,6 +180,33 @@ public class EventChainAPITest extends AbstractAPITest {
             e.printStackTrace();
             assert false : e;
         }
+    }
+
+    @Test
+    public void getEventsForEventChain() {
+        String authToken = "TOoqPWGtDPa37YkJY8a9Iw";
+        String eventChainLink = "/admin/37048/event_chains/104";
+
+        AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig().withAuthToken(authToken);
+
+        AdminAPI.EventChainAPI api = new API(config).admin().eventChain();
+
+        try {
+            EventChain eventChain = new EventChain(
+                    api.httpService().api_GET(new URL(defaultAPI.configService().serverUrl + eventChainLink)));
+
+            assertNotNull(eventChain);
+
+            BBCollection<Event> events = api.getEventsForEventChain(eventChain);
+            assertNotNull(events);
+            assertTrue(events.size() > 0);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            assert false : e;
+        }
+
+
     }
 
 }

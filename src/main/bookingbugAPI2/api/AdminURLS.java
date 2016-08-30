@@ -424,26 +424,34 @@ public class AdminURLS {
         }
     }
 
+    /**
+     * Accessor to create an instance of {@link Client}
+     *
+     * @return Client instance
+     */
+    public Client client() {
+        return new Client();
+    }
 
-    public static class Client {
-        public static UriTemplate clientList() {
-            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+    public class Client {
+        public UriTemplate clientList() {
+            return UriTemplate.buildFromTemplate(provider.configService().serverUrl)
                     .literal("/admin")
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/client")
                     .build();
         }
 
-        public static UriTemplate clientCreate() {
-            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+        public UriTemplate clientCreate() {
+            return UriTemplate.buildFromTemplate(provider.configService().serverUrl)
                     .literal("/admin")
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/client")
                     .build();
         }
 
-        public static UriTemplate clientRead() {
-            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+        public UriTemplate clientRead() {
+            return UriTemplate.buildFromTemplate(provider.configService().serverUrl)
                     .literal("/admin")
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/client")
@@ -451,8 +459,8 @@ public class AdminURLS {
                     .build();
         }
 
-        public static UriTemplate clientReadUsingRefId() {
-            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+        public UriTemplate clientReadUsingRefId() {
+            return UriTemplate.buildFromTemplate(provider.configService().serverUrl)
                     .literal("/admin")
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/client")
@@ -461,8 +469,8 @@ public class AdminURLS {
                     .build();
         }
 
-        public static UriTemplate clientReadUsingEmail() {
-            return UriTemplate.buildFromTemplate(new Config().serverUrl)
+        public UriTemplate clientReadUsingEmail() {
+            return UriTemplate.buildFromTemplate(provider.configService().serverUrl)
                     .literal("/admin")
                     .path(UriTemplateBuilder.var("companyId"))
                     .literal("/client")

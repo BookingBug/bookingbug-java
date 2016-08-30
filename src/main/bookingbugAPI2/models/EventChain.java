@@ -237,6 +237,15 @@ public class EventChain extends BBRoot {
     }
 
     /**
+     * Returns the events link
+     *
+     * @return The events link associated with current EventChain object
+     */
+    public String getEventsLink() {
+        return getLink("events");
+    }
+
+    /**
      * Returns the child event chains.
      *
      * @return The child event chains assoiciated with the currnet EventChain object

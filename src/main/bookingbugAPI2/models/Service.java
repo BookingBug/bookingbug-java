@@ -3,11 +3,13 @@ package bookingbugAPI2.models;
 import bookingbugAPI2.services.http.PlainHttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import com.theoryinpractise.halbuilder.api.Link;
+import com.theoryinpractise.halbuilder.api.RepresentationException;
 import helpers2.HttpServiceResponse;
 import helpers2.Utils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -62,12 +64,18 @@ public class Service extends BBRoot {
     }
 
     /**
-     * Returns the service durations.
+     * Returns the service durations. If there is no durations key return a list containing 1
      *
      * @return the service durations associated with the current Service object.
      */
     public List<Integer> getDurations(){
-        return getObjects("durations", Integer.class);
+        try {
+            return getObjects("durations", Integer.class);
+        } catch (RepresentationException e) {
+            List<Integer> res = new LinkedList<>();
+            res.add(1);
+            return res;
+        }
     }
 
     /**
@@ -76,7 +84,11 @@ public class Service extends BBRoot {
      * @return the service prices associated with the current Service object.
      */
     public List<Integer> getPrices(){
-        return getIntegerArray("prices");
+        try {
+            return getIntegerArray("prices");
+        } catch (RepresentationException e) {
+            return new LinkedList<>();
+        }
     }
 
     /**
