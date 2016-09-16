@@ -85,7 +85,7 @@ public abstract class AbstractLoggerService {
     }
 
     public static abstract class AbstractLogger implements Logger {
-        final String TAG;
+        protected final String TAG;
 
         public AbstractLogger(String TAG) {
             this.TAG = TAG;

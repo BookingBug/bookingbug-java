@@ -182,6 +182,11 @@ public abstract class AbstractAPI<T> implements ServiceProvider {
             return (T)this;
         }
 
+        public T withLoggerService(AbstractLoggerService loggerService) {
+            this.loggerService = loggerService;
+            return (T)this;
+        }
+
         @Override
         public AbstractHttpService httpService() {
             return httpService;

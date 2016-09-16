@@ -197,7 +197,7 @@ public class EventChainAPITest extends AbstractAPITest {
 
             assertNotNull(eventChain);
 
-            BBCollection<Event> events = api.getEventsForEventChain(eventChain);
+            BBCollection<Event> events = api.getEventsForEventChain(eventChain, new Params());
             assertNotNull(events);
             assertTrue(events.size() > 0);
 

@@ -1163,25 +1163,6 @@ public class Company extends BBRoot {
     }
 
     /**
-     * getBookingList
-     *
-     * @return BBCollection<Booking>
-     * @throws IOException
-     */
-    public BBCollection<Booking> bookingList_Admin(BookingListParams bLParams) throws IOException {
-        URL url;
-        if (getLink("bookings") != null)
-            url = new URL(Utils.inflateLink(getLink("bookings"), bLParams.getParams()));
-        else {
-            UriTemplate template = AdminURLS.Bookings.bookingList().set("companyId", this.id);
-            url = new URL(Utils.inflateLink(template, bLParams.getParams()));
-        }
-        BBCollection<Booking> bookings = new BBCollection<Booking>(PlainHttpService.api_GET(url, auth_token), auth_token, "bookings", Booking.class);
-        return bookings;
-    }
-
-
-    /**
      * getBookingRead_Admin
      *
      * @param bookingId

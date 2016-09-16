@@ -54,7 +54,7 @@ public class BookingAPITest extends AbstractAPITest{
     @Test
     public void bookingList(){
         try {
-            BBCollection<Booking> bookings = defaultAPI.admin().booking().bookingList(company, new BookingListParams(1).setPerPage(10));
+            BBCollection<Booking> bookings = defaultAPI.admin().booking().bookingList(company, new BookingParams.List(1, 10));
             assertNotNull(bookings);
             assertTrue(bookings.size() > 0);
 
@@ -66,7 +66,7 @@ public class BookingAPITest extends AbstractAPITest{
     @Test
     public void bookingRead(){
         try {
-            BBCollection<Booking> bookings = defaultAPI.admin().booking().bookingList(company, new BookingListParams(1).setPerPage(10));
+            BBCollection<Booking> bookings = defaultAPI.admin().booking().bookingList(company, new BookingParams.List(1, 10));
             Booking booking = defaultAPI.admin().booking().bookingRead(company, bookings.getObjectAtIndex(0).id);
             assertNotNull(booking);
         } catch (IOException e) {
@@ -78,7 +78,7 @@ public class BookingAPITest extends AbstractAPITest{
     public void bookingEditSchema() {
         try {
             //Paginated services
-            BBCollection<Booking> bookings = defaultAPI.admin().booking().bookingList(company, new BookingListParams(1).setPerPage(10));
+            BBCollection<Booking> bookings = defaultAPI.admin().booking().bookingList(company, new BookingParams.List(1, 10));
             SchemaForm schemaForm = defaultAPI.admin().booking().getEditBookingSchema(bookings.getObjectAtIndex(0));
             assertNotNull(schemaForm);
         }catch (Exception e) {

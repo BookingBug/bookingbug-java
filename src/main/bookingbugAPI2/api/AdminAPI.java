@@ -117,12 +117,12 @@ public class AdminAPI extends AbstractAPI {
          * @return Collection of bookings
          * @throws IOException
          */
-        public BBCollection<Booking> bookingList(Company company, BookingListParams bLParams) throws IOException {
+        public BBCollection<Booking> bookingList(Company company, BookingParams.List bLParams) throws IOException {
             URL url = new URL(Utils.inflateLink(company.getBookingsLink(), bLParams.getParams()));
             return new BBCollection<>(httpService().api_GET(url, CACHE_TAG), getAuthToken(), "bookings", Booking.class);
         }
 
-        public Observable<BBCollection<Booking>> bookingListObs(final Company company, final BookingListParams bLParams) {
+        public Observable<BBCollection<Booking>> bookingListObs(final Company company, final BookingParams.List bLParams) {
             return Observable.fromCallable(() -> bookingList(company, bLParams));
         }
 
@@ -859,16 +859,18 @@ public class AdminAPI extends AbstractAPI {
          * Get the events for an eventChain
          *
          * @param eventChain The eventChain for events
+         * @param params Pagination params
          * @return Collection of Event
          * @throws IOException
          */
-        public BBCollection<Event> getEventsForEventChain(EventChain eventChain) throws IOException {
-            URL url = new URL(eventChain.getEventsLink());
+        public BBCollection<Event> getEventsForEventChain(EventChain eventChain, Params params) throws IOException {
+            UriTemplate template = Utils.TemplateWithPagination(eventChain.getEventsLink(), params);
+            URL url = new URL(template.expand());
             return new BBCollection<>(httpService().api_GET(url, CACHE_TAG), configService().auth_token, "events", Event.class);
         }
 
-        public Observable<BBCollection<Event>> getEventsForEventChainObs(final EventChain eventChain) {
-            return Observable.fromCallable(() -> getEventsForEventChain(eventChain));
+        public Observable<BBCollection<Event>> getEventsForEventChainObs(final EventChain eventChain, final Params params) {
+            return Observable.fromCallable(() -> getEventsForEventChain(eventChain, params));
         }
     }
 

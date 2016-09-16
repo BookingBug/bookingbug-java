@@ -22,6 +22,11 @@ public class Params<T extends Params> {
 		this.page = page;
 	}
 
+	public Params(int page, int per_page) {
+		this.page = page;
+		this.per_page = per_page;
+	}
+
 	public Params(Map<String, String> args){
 		setNotNullStringMap(args);
 	}

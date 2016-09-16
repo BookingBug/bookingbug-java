@@ -83,20 +83,14 @@ public class JavaLoggerService extends AbstractLoggerService {
                     StackTraceElement frame = stackTrace[ix];
                     String cname = frame.getClassName();
                     boolean isLoggerImpl = isLoggerImplFrame(cname);
-                    if (lookingForLogger) {
-                        // Skip all frames until we have found the first logger frame.
-                        if (isLoggerImpl) {
-                            lookingForLogger = false;
-                        }
-                    } else {
-                        if (!isLoggerImpl) {
-                            // skip reflection call
-                            if (!cname.startsWith("java.lang.reflect.") && !cname.startsWith("sun.reflect.")) {
-                                // We've found the relevant frame.
-                                record.setSourceClassName(cname);
-                                record.setSourceMethodName(frame.getMethodName());
-                                return;
-                            }
+                    // Skip all frames until we have found the last logger frame.
+                    if (!isLoggerImpl) {
+                        // skip reflection call
+                        if (!cname.startsWith("java.lang.reflect.") && !cname.startsWith("sun.reflect.")) {
+                            // We've found the relevant frame.
+                            record.setSourceClassName(cname);
+                            record.setSourceMethodName(frame.getMethodName());
+                            return;
                         }
                     }
                 }
@@ -112,7 +106,8 @@ public class JavaLoggerService extends AbstractLoggerService {
                 return (cname.equals("java.util.logging.Logger") ||
                         cname.startsWith("java.util.logging.LoggingProxyImpl") ||
                         cname.startsWith("sun.util.logging.") ||
-                        cname.equals(JavaLogger.class.getName()));
+                        cname.startsWith("java.util.logging.") ||
+                        cname.startsWith(JavaLogger.class.getName()));
             }
         };
 
@@ -126,6 +121,7 @@ public class JavaLoggerService extends AbstractLoggerService {
             //ConsoleHandler with custom formatter
             ConsoleHandler consoleHandler = new ConsoleHandler();
             consoleHandler.setFormatter(formatter);
+            consoleHandler.setLevel(Level.FINER);
 
             logger.setUseParentHandlers(false);
             Handler[] handlers = logger.getHandlers();
@@ -134,6 +130,7 @@ public class JavaLoggerService extends AbstractLoggerService {
                     logger.removeHandler(handler);
 
             logger.addHandler(consoleHandler);
+            logger.setLevel(Level.FINER);
         }
 
         @Override
