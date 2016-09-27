@@ -105,6 +105,23 @@ public class BookingAPITest extends AbstractAPITest{
     }
 
     @Test
+    public void bookingUpdate() {
+        try {
+            Booking toUpdate = new Booking(new HttpServiceResponse(Utils.stringToContentRep(ModelTest.getJSON("json/booking.json").toString())));
+            MockWebServer server = mockServer(dispatcher);
+            BookingParams.Update params = new BookingParams.Update()
+                    .setDatetime(new DateTime());
+            Booking booking = mockAPI.admin().booking().bookingUpdate(toUpdate, params);
+
+            assertNotNull(booking);
+            server.shutdown();
+        }catch (Exception e) {
+            e.printStackTrace();
+            assert false : e;
+        }
+    }
+
+    @Test
     public void bookingCancel() {
         try {
             MockWebServer server = mockServer(dispatcher);

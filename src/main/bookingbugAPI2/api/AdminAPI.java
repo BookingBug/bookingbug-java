@@ -182,6 +182,25 @@ public class AdminAPI extends AbstractAPI {
         }
 
         /**
+         * Update a booking
+         *
+         * @param booking   the booking to update
+         * @param buParams Contains parameters for booking update. If the schema is used, then set the json form output
+         *                 to this through {@link bookingbugAPI2.models.params.Params#setJson(String)}
+         *                 in order to ignore declared fields
+         * @return Booking
+         * @throws IOException
+         */
+        public Booking bookingUpdate(Booking booking, BookingParams.Update buParams) throws IOException {
+            URL url = new URL(booking.getSelf());
+            return new Booking(httpService().api_PUT(url, buParams.getParams(), CACHE_TAG));
+        }
+
+        public Observable<Booking> bookingUpdateObs(final Booking booking, final BookingParams.Update buParams) {
+            return Observable.fromCallable(() -> bookingUpdate(booking, buParams));
+        }
+
+        /**
          * Cancel a booking
          *
          * @param booking the booking to cancel

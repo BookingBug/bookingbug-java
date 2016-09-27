@@ -201,6 +201,79 @@ public class BookingParams {
         }
     }
 
+    public static class Update extends Params<Update> {
+        String datetime;
+        String duration;
+        String person_id;
+        String resource_id;
+        String email;
+        String email_owner;
+        String status;
+
+        public DateTime getDatetime() {
+            return new DateTime(datetime);
+        }
+
+        public String getPerson_id() {
+            return person_id;
+        }
+
+        public String getResource_id() {
+            return resource_id;
+        }
+
+        public Update setDatetime(DateTime datetime) {
+            this.datetime = ISODateTimeFormat.dateTime().print(datetime);
+            return this;
+        }
+
+        public Integer getDuration() {
+            return Integer.valueOf(duration);
+        }
+
+        public Update setDuration(Integer duration) {
+            this.duration = duration.toString();
+            return this;
+        }
+
+        public Update setPerson_id(String person_id) {
+            this.person_id = person_id;
+            return this;
+        }
+
+        public Update setResource_id(String resource_id) {
+            this.resource_id = resource_id;
+            return this;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public Update setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public String getEmail_owner() {
+            return email_owner;
+        }
+
+        public Update setEmail_owner(String email_owner) {
+            this.email_owner = email_owner;
+            return this;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public Update setStatus(String status) {
+            this.status = status;
+            return this;
+        }
+    }
+
     public static class Cancel extends Params<Cancel> {
         String notify = "true";
         String cancel_reason;

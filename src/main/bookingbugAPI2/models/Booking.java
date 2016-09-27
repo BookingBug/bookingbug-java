@@ -23,37 +23,6 @@ public class Booking extends BBRoot {
         super(response);
     }
 
-    public Booking() {
-    }
-
-    public BBRoot getSchema() throws IOException {
-        String link = getRep().getLinkByRel("edit").getHref();
-        URL url = new URL(UriTemplate.fromTemplate(link).expand());
-        return new BBRoot(PlainHttpService.api_GET(url, auth_token));
-    }
-
-    /**
-     * Returns a new Booking - update the current booking with provided params
-     *
-     * @param bParams
-     * @throws IOException
-     */
-    public Booking bookingUpdate_Admin(BookingUpdateParams bParams) throws IOException {
-        URL url = new URL(AdminURLS.Bookings.bookingUpdate().set("companyId", getCompanyId()).set("id", this.id).expand());
-        return new Booking(PlainHttpService.api_PUT(url, bParams.getParams(), auth_token), auth_token);
-    }
-
-    /**
-     * Deletes the booking
-     *
-     * @param bcParams
-     * @return
-     * @throws IOException
-     */
-    public Booking bookingCancel_Admin(BookingCancelParams bcParams) throws IOException {
-        URL url = new URL(AdminURLS.Bookings.bookingCancel().set("companyId", getCompanyId()).set("id", this.id).expand());
-        return new Booking(PlainHttpService.api_DELETE(url, PlainHttpService.jsonContentType, bcParams.getParams(), auth_token), auth_token);
-    }
 
     /**
      * Returns the booking id.
