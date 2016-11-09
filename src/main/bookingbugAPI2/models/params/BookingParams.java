@@ -252,8 +252,8 @@ public class BookingParams {
             return email;
         }
 
-        public Update setEmail(String email) {
-            this.email = email;
+        public Update setEmail(boolean email) {
+            this.email = String.valueOf(email);
             return this;
         }
 
@@ -261,8 +261,8 @@ public class BookingParams {
             return email_owner;
         }
 
-        public Update setEmail_owner(String email_owner) {
-            this.email_owner = email_owner;
+        public Update setEmail_owner(boolean email_owner) {
+            this.email_owner = String.valueOf(email_owner);
             return this;
         }
 
