@@ -208,6 +208,8 @@ public class BookingParams {
         String resource_id;
         String email;
         String email_owner;
+        String client_name;
+        String client_email;
         String status;
 
         public DateTime getDatetime() {
@@ -250,8 +252,8 @@ public class BookingParams {
             return email;
         }
 
-        public Update setEmail(String email) {
-            this.email = email;
+        public Update setEmail(boolean email) {
+            this.email = String.valueOf(email);
             return this;
         }
 
@@ -259,9 +261,25 @@ public class BookingParams {
             return email_owner;
         }
 
-        public Update setEmail_owner(String email_owner) {
-            this.email_owner = email_owner;
+        public Update setEmail_owner(boolean email_owner) {
+            this.email_owner = String.valueOf(email_owner);
             return this;
+        }
+
+        public String getClient_name() {
+            return client_name;
+        }
+
+        public void setClient_name(String client_name) {
+            this.client_name = client_name;
+        }
+
+        public String getClient_email() {
+            return client_email;
+        }
+
+        public void setClient_email(String client_email) {
+            this.client_email = client_email;
         }
 
         public String getStatus() {

@@ -3,7 +3,6 @@ package bookingbugAPI2.api;
 import bookingbugAPI2.models.*;
 import bookingbugAPI2.models.params.*;
 import bookingbugAPI2.services.ServiceProvider;
-import bookingbugAPI2.services.http.AbstractHttpService;
 import com.damnhandy.uri.template.UriTemplate;
 import helpers2.Http;
 import helpers2.HttpServiceResponse;
@@ -11,7 +10,6 @@ import helpers2.Utils;
 import rx.Observable;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -184,7 +182,7 @@ public class AdminAPI extends AbstractAPI {
         /**
          * Update a booking
          *
-         * @param booking   the booking to update
+         * @param booking  the booking to update
          * @param buParams Contains parameters for booking update. If the schema is used, then set the json form output
          *                 to this through {@link bookingbugAPI2.models.params.Params#setJson(String)}
          *                 in order to ignore declared fields
@@ -473,14 +471,14 @@ public class AdminAPI extends AbstractAPI {
          * @return Collection of Client
          * @throws IOException
          */
-        public BBCollection<Client> clientList(Company company, Params clParams) throws IOException {
+        public BBCollection<Client> clientList(Company company, ClientListParams clParams) throws IOException {
             UriTemplate template = Utils.TemplateWithPagination(company.getClientLink(), clParams);
             URL url = new URL(template.expand());
 
             return new BBCollection<>(httpService().api_GET(url, CACHE_TAG), configService().auth_token, "clients", Client.class);
         }
 
-        public Observable<BBCollection<Client>> clientListObs(final Company company, final Params clParams) {
+        public Observable<BBCollection<Client>> clientListObs(final Company company, final ClientListParams clParams) {
             return Observable.fromCallable(() -> clientList(company, clParams));
         }
 
@@ -878,7 +876,7 @@ public class AdminAPI extends AbstractAPI {
          * Get the events for an eventChain
          *
          * @param eventChain The eventChain for events
-         * @param params Pagination params
+         * @param params     Pagination params
          * @return Collection of Event
          * @throws IOException
          */
