@@ -472,8 +472,7 @@ public class AdminAPI extends AbstractAPI {
          * @throws IOException
          */
         public BBCollection<Client> clientList(Company company, ClientListParams clParams) throws IOException {
-            UriTemplate template = Utils.TemplateWithPagination(company.getClientLink(), clParams);
-            URL url = new URL(template.expand());
+            URL url = new URL(Utils.inflateLink(company.getClientLink(), clParams.getParams()));
 
             return new BBCollection<>(httpService().api_GET(url, CACHE_TAG), configService().auth_token, "clients", Client.class);
         }
