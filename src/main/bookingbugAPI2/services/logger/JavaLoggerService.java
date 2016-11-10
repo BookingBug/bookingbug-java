@@ -103,7 +103,7 @@ public class JavaLoggerService extends AbstractLoggerService {
              */
             private boolean isLoggerImplFrame(String cname) {
                 // the log record could be created for a platform logger
-                return (cname.equals("java.util.logging.Logger") ||
+                return (cname.equals("java.util.logging.logger") ||
                         cname.startsWith("java.util.logging.LoggingProxyImpl") ||
                         cname.startsWith("sun.util.logging.") ||
                         cname.startsWith("java.util.logging.") ||

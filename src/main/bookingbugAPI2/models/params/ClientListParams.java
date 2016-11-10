@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class ClientListParams extends Params<ClientListParams> {
+public class ClientListParams {
+    String page;
+    String per_page;
     String filter_by;
     String filter_by_fields;
     String order_by;
@@ -30,10 +32,10 @@ public class ClientListParams extends Params<ClientListParams> {
 
             switch (entry.getKey()) {
                 case "page":
-                    setPage(Integer.parseInt(strValue));
+                    page = strValue;
                     break;
                 case "per_page":
-                    setPerPage(Integer.parseInt(strValue));
+                    per_page = strValue;
                     break;
                 case "filter_by":
                     filter_by = strValue;
@@ -57,48 +59,70 @@ public class ClientListParams extends Params<ClientListParams> {
      *
      * @return Map<String, String[]>
      */
-    public Map<String, String[]> getParams() {
-        Map<String, String[]> params = new HashMap<String, String[]>();
+    public Map<String, String> getParams() {
+        Map<String, String> params = new HashMap<>();
 
-        params.put("page", new String[]{String.valueOf(getPage())});
-        params.put("per_page", new String[]{String.valueOf(getPer_page())});
-        params.put("filter_by", new String[]{filter_by});
-        params.put("filter_by_fields", new String[]{filter_by_fields});
-        params.put("order_by", new String[]{order_by});
-        params.put("order_by_reverse", new String[]{order_by_reverse});
+        params.put("page", page);
+        params.put("per_page", per_page);
+        params.put("filter_by", filter_by);
+        params.put("filter_by_fields", filter_by_fields);
+        params.put("order_by", order_by);
+        params.put("order_by_reverse", order_by_reverse);
 
         return params;
+    }
+
+    public String getPage() {
+        return page;
+    }
+
+    public ClientListParams setPage(String page) {
+        this.page = page;
+        return this;
+    }
+
+    public String getPer_page() {
+        return per_page;
+    }
+
+    public ClientListParams setPer_page(String per_page) {
+        this.per_page = per_page;
+        return this;
     }
 
     public String getFilterBy() {
         return filter_by;
     }
 
-    public void setFilterBy(String filter_by) {
+    public ClientListParams setFilterBy(String filter_by) {
         this.filter_by = filter_by;
+        return this;
     }
 
     public String getFilterByFields() {
         return filter_by_fields;
     }
 
-    public void setFilterByFields(String filter_by_fields) {
+    public ClientListParams setFilterByFields(String filter_by_fields) {
         this.filter_by_fields = filter_by_fields;
+        return this;
     }
 
     public String getOrderBy() {
         return order_by;
     }
 
-    public void setOrderBy(String order_by) {
+    public ClientListParams setOrderBy(String order_by) {
         this.order_by = order_by;
+        return this;
     }
 
     public String getOrderByReverse() {
         return order_by_reverse;
     }
 
-    public void setOrderByReverse(String order_by_reverse) {
+    public ClientListParams setOrderByReverse(String order_by_reverse) {
         this.order_by_reverse = order_by_reverse;
+        return this;
     }
 }

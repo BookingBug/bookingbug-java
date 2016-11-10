@@ -191,7 +191,7 @@ public class AdminAPI extends AbstractAPI {
          */
         public Booking bookingUpdate(Booking booking, BookingParams.Update buParams) throws IOException {
             URL url = new URL(booking.getSelf());
-            return new Booking(httpService().api_PUT(url, buParams.getParams(), CACHE_TAG));
+            return new Booking(httpService().api_PUT(url, buParams.getParams(), CACHE_TAG), configService().auth_token);
         }
 
         public Observable<Booking> bookingUpdateObs(final Booking booking, final BookingParams.Update buParams) {
@@ -473,7 +473,6 @@ public class AdminAPI extends AbstractAPI {
          */
         public BBCollection<Client> clientList(Company company, ClientListParams clParams) throws IOException {
             URL url = new URL(Utils.inflateLink(company.getClientLink(), clParams.getParams()));
-
             return new BBCollection<>(httpService().api_GET(url, CACHE_TAG), configService().auth_token, "clients", Client.class);
         }
 

@@ -252,8 +252,8 @@ public class BookingParams {
             return email;
         }
 
-        public Update setEmail(boolean email) {
-            this.email = String.valueOf(email);
+        public Update setEmail(String email) {
+            this.email = email;
             return this;
         }
 
@@ -261,8 +261,8 @@ public class BookingParams {
             return email_owner;
         }
 
-        public Update setEmail_owner(boolean email_owner) {
-            this.email_owner = String.valueOf(email_owner);
+        public Update setEmail_owner(String email_owner) {
+            this.email_owner = email_owner;
             return this;
         }
 
@@ -270,16 +270,18 @@ public class BookingParams {
             return client_name;
         }
 
-        public void setClient_name(String client_name) {
+        public Update setClient_name(String client_name) {
             this.client_name = client_name;
+            return this;
         }
 
         public String getClient_email() {
             return client_email;
         }
 
-        public void setClient_email(String client_email) {
+        public Update setClient_email(String client_email) {
             this.client_email = client_email;
+            return this;
         }
 
         public String getStatus() {
