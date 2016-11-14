@@ -1,5 +1,8 @@
 package helpers2;
 
+import bookingbugAPI2.api.AbstractAPI;
+import bookingbugAPI2.api.AdminURLS;
+import bookingbugAPI2.services.cache.MockCacheService;
 import bookingbugAPI2.services.http.PlainHttpService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,6 +10,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.junit.Test;
 
 import java.net.URL;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -15,7 +19,8 @@ import static org.junit.Assert.assertNotNull;
  */
 public class TokenGeneratorTest {
 
-    private static final String CompanyId = "37023";
+    private static final String companyId = "37048";
+    //private static final String companyId = "37023";
 
     @Test
     public void companyDetails(){
@@ -23,20 +28,20 @@ public class TokenGeneratorTest {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.createObjectNode();
 
-            ((ObjectNode)jsonNode).put("first_name", "John");
+            ((ObjectNode)jsonNode).put("first_name", "John2");
             ((ObjectNode)jsonNode).put("last_name", "Smith");
-            ((ObjectNode)jsonNode).put("email", "cornel+test@assist.ro");
-            ((ObjectNode)jsonNode).put("mobile", "0123456789");
+            ((ObjectNode)jsonNode).put("email", "sefu@bookingbug.com");
+            ((ObjectNode)jsonNode).put("mobile", "0123466789");
 
-            String token = TokenGenerator.getInstance(CompanyId, "abc").create(jsonNode);
+            String token = TokenGenerator.getInstance(companyId, "abcd").create(jsonNode);
 
-            String urlStr = new Config().serverUrl + "/login/sso/" + CompanyId + "?token=" + token;
-            //String urlStr = "https://eu1.bookingbug.com/api/v1/login/sso/37000?token=" + token;
-            //String urlStr = "https://eu1.bookingbug.com/api/v1/login/sso/36990?token=" + token;
-            //String urlStr = "http://192.168.100.123:3000/api/v1/login/sso/37021?token=" + token + "";
+            AbstractAPI.ApiConfig config = new AbstractAPI.ApiConfig()
+                    .withCacheService(new MockCacheService())
+                    .withAuthToken(token);
 
-            URL url = new URL(urlStr);
-            assertNotNull(PlainHttpService.api_POST(url, true));
+            String loginUrl = new AdminURLS(config).login().sso().set("companyId", companyId).set("token", token).expand();
+            HttpServiceResponse response = config.httpService().api_POST(new URL(loginUrl), new HashMap<>());
+            assertNotNull(response);
 
         } catch (Exception e) {
             e.printStackTrace();

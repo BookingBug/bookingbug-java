@@ -1,6 +1,7 @@
 package helpers2;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -107,20 +108,21 @@ public class TokenGenerator {
     }
 
 
-/*
     public static void main(String[] args) {
         try {
-            JsonNode jsonObj = new JsonNode();
-            jsonObj.put("first_name", "John");
-            jsonObj.put("last_name", "Smith");
-            jsonObj.put("email", "smith@example.com");
-            jsonObj.put("mobile", "0123456789");
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.createObjectNode();
 
-            System.out.println(TokenGenerator.getInstance().create(jsonObj));
+            //((ObjectNode)jsonNode).put("first_name", "John2");
+            //((ObjectNode)jsonNode).put("last_name", "Smith");
+            //((ObjectNode)jsonNode).put("email", "qais.mazhar@uk.pwc.com");
+            //((ObjectNode)jsonNode).put("mobile", "0123466789");
+            ((ObjectNode)jsonNode).put("reference", "512541251");
+
+            System.out.println(TokenGenerator.getInstance("37000", "zTV67mmwFYqZxM9wwqhjsOngs").create(jsonNode));
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-*/
 }

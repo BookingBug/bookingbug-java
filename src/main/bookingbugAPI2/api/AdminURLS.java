@@ -29,6 +29,14 @@ public class AdminURLS {
                     .literal("/login")
                     .build();
         }
+
+        public UriTemplate sso() {
+            return UriTemplate.buildFromTemplate(provider.configService().serverUrl)
+                    .literal("/login/sso")
+                    .path(UriTemplateBuilder.var("companyId"))
+                    .query(UriTemplateBuilder.var("token"))
+                    .build();
+        }
     }
 
     public static class Company {
