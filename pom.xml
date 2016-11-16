@@ -5,15 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>BookingBug-SDK</groupId>
-    <artifactId>BookingBug-SDK</artifactId>
-    <version>1.9</version>
+    <artifactId>BookingBug-SDK2</artifactId>
+    <version>2.2</version>
 
 
     <distributionManagement>
         <repository>
-            <id>bintray-acornel-bb-java</id>
-            <name>acornel-bb-java</name>
-            <url>https://api.bintray.com/maven/acornel/bb-java/bookingbug-java/;publish=1</url>
+            <id>bintray-bookingbug-bookingbug-java</id>
+            <name>BookingBug-bookingbug-java</name>
+            <url>https://api.bintray.com/maven/bookingbug/bookingbug-java/BookingBug-JavaSDK/;publish=1</url>
         </repository>
     </distributionManagement>
 
@@ -113,16 +113,100 @@
             <resource>
                 <directory>src/test/resources</directory>
             </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
         </resources>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <testSource>1.7</testSource>
+                    <testTarget>1.7</testTarget>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>net.orfjackal.retrolambda</groupId>
+                <artifactId>retrolambda-maven-plugin</artifactId>
+                <version>2.3.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>process-main</goal>
+                            <goal>process-test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <target>${testBytecodeTarget}</target>
+                    <defaultMethods>${testDefaultMethods}</defaultMethods>
+                    <fork>${testFork}</fork>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>animal-sniffer-maven-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>signature-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <signature>
+                        <groupId>org.codehaus.mojo.signature</groupId>
+                        <artifactId>java17</artifactId>
+                        <version>1.0</version>
+                    </signature>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>noDefaultMethods</id>
+            <properties>
+                <testDefaultMethods>false</testDefaultMethods>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <testExcludes>
+                                <pattern>**/DefaultMethodsTest.java</pattern>
+                                <pattern>**/InterfaceStaticMethodsTest.java</pattern>
+                            </testExcludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

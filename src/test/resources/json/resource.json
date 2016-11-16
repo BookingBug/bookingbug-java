@@ -1,21 +1,33 @@
 {
-  "id": 23352,
-  "name": "Consultation Room 1",
+  "id": 5,
+  "name": "My Resource 2",
+  "description": "This is Spartaaaa !",
   "type": "resource",
   "deleted": false,
   "disabled": false,
-  "company_id": 37901,
-  "email": "conor+email1@bookingbug.com,conor+email2@bookingbug.com",
-  "order": 23352,
+  "company_id": 36990,
+  "email": "andrei.robu@assist.ro",
+  "order": 5,
   "_links": {
     "self": {
-      "href": "https://uk.bookingbug.com/api/v1/37901/resources/23352"
+      "href": "https://assist-dev03.bookingbug.com/api/v1/admin/36990/resources/5"
     },
     "items": {
-      "href": "https://uk.bookingbug.com/api/v1/37901/items?resource_id=23352"
+      "href": "https://assist-dev03.bookingbug.com/api/v1/admin/36990/items?resource_id=5"
     },
     "address": {
-      "href": "https://uk.bookingbug.com/api/v1/37901/addresses/41821"
+      "href": "https://assist-dev03.bookingbug.com/api/v1/admin/36990/addresses/30192"
+    },
+    "edit": {
+      "href": "https://assist-dev03.bookingbug.com/api/v1/admin/36990/resources/5/edit"
+    },
+    "block": {
+      "href": "https://assist-dev03.bookingbug.com/api/v1/admin/36990/resources/5/block"
+    },
+    "schedule": {
+      "href": "https://assist-dev03.bookingbug.com/api/v1/admin/36990/schedules/48315{?start_date,end_date}",
+      "templated": true
     }
-  }
+  },
+  "schedule_id": 48315
 }

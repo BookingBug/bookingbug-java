@@ -1,0 +1,45 @@
+{
+  "email": "sebii@assist.ro",
+  "auth_token": "9F6UCEWzP67taH9ddCdLbw",
+  "company_id": 37047,
+  "path": "https://assist-dev03.bookingbug.com/api/v1",
+  "role": "admin",
+  "_embedded": {
+    "members": [],
+    "administrators": [
+      {
+        "name": "Sebi Macarescu",
+        "email": "sebii@assist.ro",
+        "role": "admin",
+        "company_id": 37047,
+        "company_name": "Sebi Company 1",
+        "_links": {
+          "self": {
+            "href": "https://assist-dev03.bookingbug.com/api/v1/admin/37047/administrators/59"
+          },
+          "edit": {
+            "href": "https://assist-dev03.bookingbug.com/api/v1/admin/37047/administrators/59/edit"
+          },
+          "company": {
+            "href": "https://assist-dev03.bookingbug.com/api/v1/admin/37047/company"
+          },
+          "login": {
+            "href": "https://assist-dev03.bookingbug.com/api/v1/login/admin/37047"
+          },
+          "base_login": {
+            "href": "https://assist-dev03.bookingbug.com/api/v1/login/admin"
+          }
+        }
+      }
+    ]
+  },
+  "_links": {
+    "self": {
+      "href": "https://assist-dev03.bookingbug.com/api/v1/login/37047"
+    },
+    "administrator": {
+      "href": "https://assist-dev03.bookingbug.com/api/v1/admin/37047/administrators/59",
+      "templated": true
+    }
+  }
+}

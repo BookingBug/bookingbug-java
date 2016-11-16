@@ -56,6 +56,9 @@
     },
     "all_children": {
       "href": "https://uk.bookingbug.com/api/v1/37901/services/55600/all_children"
+    },
+    "edit": {
+      "href": "https://uk.bookingbug.com/api/v1/admin/37901/services/55600/edit"
     }
   }
 }
